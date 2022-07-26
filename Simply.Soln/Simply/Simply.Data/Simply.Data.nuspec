@@ -5,8 +5,8 @@
         <version>1.0.0.0</version>
         <authors>mustafa sacli</authors>
         <owners>mustafa sacli</owners>
-        <projectUrl>https://github.com/mustafasacli/SI.Extensions.Repo</projectUrl>
-        <license type="expression">Apache-2.0</license>
+        <projectUrl>https://github.com/mustafasacli/simply</projectUrl>
+        <license type="expression">GPL-3.0 license</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <releaseNotes>first release.</releaseNotes>
         <description>Supports IDbConnection operations.</description>
