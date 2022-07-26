@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A81FF695-21AC-48C0-AA35-BA906168B95D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Simply.Common</RootNamespace>
+    <AssemblyName>Simply.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Output\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Output\Simply.Common.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>simply.common.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ArrayHelper.cs">
+      <Link>ObjectExtensions\ArrayHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\DatetimeExtensions.cs">
+      <Link>ObjectExtensions\DatetimeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\DictionaryExtensions.cs">
+      <Link>ObjectExtensions\DictionaryExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\DynamicExtensions.cs">
+      <Link>ObjectExtensions\DynamicExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\EnumExtensions.cs">
+      <Link>ObjectExtensions\EnumExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\GenericExtensions.cs">
+      <Link>ObjectExtensions\GenericExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ObjectExtension.cs">
+      <Link>ObjectExtensions\ObjectExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\PropertyExtension.cs">
+      <Link>ObjectExtensions\PropertyExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\StringExtension.cs">
+      <Link>ObjectExtensions\StringExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\TypeExtensions.cs">
+      <Link>ObjectExtensions\TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\Objects\SimpleDbCell.cs">
+      <Link>Objects\SimpleDbCell.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\Objects\SimpleDbRow.cs">
+      <Link>Objects\SimpleDbRow.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="simply.common.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>rd /s /q "$(ProjectDir)obj\Debug"
+rd /s /q "$(ProjectDir)obj\Release"
+rd /s /q "$(ProjectDir)bin\Debug"
+rd /s /q "$(ProjectDir)bin\Release"
+rd /s /q "$(ProjectDir)bin\*"
+rd /s /q "$(ProjectDir)obj\*"
+rd /s /q $(TargetDir)\*"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <id>Simply.Common</id>
+        <version>1.0.0.0</version>
+        <authors>mustafa sacli</authors>
+        <owners>mustafa sacli</owners>
+        <projectUrl>https://github.com/mustafasacli/SI.Extensions.Repo</projectUrl>
+        <license type="expression">Apache-2.0</license>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <releaseNotes>first release.</releaseNotes>
+        <description>Supports common operations.</description>
+        <copyright>Copyright ©2022 mustafa.sacli</copyright>
+        <tags>Common Extensions</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5.1" />
+        </frameworkAssemblies>
+    </metadata>
+</package>

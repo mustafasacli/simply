@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\..\src_simply\Simply.Data\Build\DbCommandBuilder.cs" Link="Build\DbCommandBuilder.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\AnyOperator.cs" Link="ConnectionExtensions\AnyOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\CountOperator.cs" Link="ConnectionExtensions\CountOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\DbConnectionExtension.cs" Link="ConnectionExtensions\DbConnectionExtension.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\DbRowListOperator.cs" Link="ConnectionExtensions\DbRowListOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\ExecuteOperator.cs" Link="ConnectionExtensions\ExecuteOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\ExecuteReaderOperator.cs" Link="ConnectionExtensions\ExecuteReaderOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\ExecuteScalarOperator.cs" Link="ConnectionExtensions\ExecuteScalarOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\FirstOperator.cs" Link="ConnectionExtensions\FirstOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\LastOperator.cs" Link="ConnectionExtensions\LastOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\ListOperator.cs" Link="ConnectionExtensions\ListOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\PagedListOperator.cs" Link="ConnectionExtensions\PagedListOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\PagedRowListOperator.cs" Link="ConnectionExtensions\PagedRowListOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\ResultSetOperator.cs" Link="ConnectionExtensions\ResultSetOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\DbConnectionTypeBuilder.cs" Link="ConnectionExtensions\DbConnectionTypeBuilder.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\DbQueryTranslator.cs" Link="ConnectionExtensions\DbQueryTranslator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\ConnectionExtensions\SingleOperator.cs" Link="ConnectionExtensions\SingleOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Constants\DbConnectionNames.cs" Link="Constants\DbConnectionNames.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Constants\InternalAppValues.cs" Link="Constants\InternalAppValues.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Constants\DbAppMessages.cs" Link="Constants\DbAppMessages.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DataExtensions\DataExtension.cs" Link="DataExtensions\DataExtension.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderAsyncOperator.cs" Link="DataReader\DataReaderAsyncOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderOperator.cs" Link="DataReader\DataReaderOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DbCommandExtensions\CommandExtensions.cs" Link="DbCommandExtensions\CommandExtensions.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DbTransactionExtensions\TransactionExtensions.cs" Link="DbTransactionExtensions\TransactionExtensions.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Enums\DbConnectionTypes.cs" Link="Enums\DbConnectionTypes.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IDbCommandResult.cs" Link="Interfaces\IDbCommandResult.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IPageInfo.cs" Link="Interfaces\IPageInfo.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Objects\BaseDbCommand.cs" Link="Objects\BaseDbCommand.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandDefinition.cs" Link="Objects\DbCommandDefinition.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandParameter.cs" Link="Objects\DbCommandParameter.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandResult.cs" Link="Objects\DbCommandResult.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs" Link="QuerySettings\Core\IQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\DB2QuerySetting.cs" Link="QuerySettings\DB2QuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Factory\QuerySettingsFactory.cs" Link="QuerySettings\Factory\QuerySettingsFactory.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\FirebirdQuerySetting.cs" Link="QuerySettings\FirebirdQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\MsSqlQuerySetting.cs" Link="QuerySettings\MsSqlQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\MySqlQuerySetting.cs" Link="QuerySettings\MySqlQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\NuodbQuerySetting.cs" Link="QuerySettings\NuodbQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\OdbcQuerySetting.cs" Link="QuerySettings\OdbcQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\OledbQuerySetting.cs" Link="QuerySettings\OledbQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\OracleQuerySetting.cs" Link="QuerySettings\OracleQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\PgSqlQuerySetting.cs" Link="QuerySettings\PgSqlQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\SqlBaseQuerySettings.cs" Link="QuerySettings\SqlBaseQuerySettings.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\SqlCEQuerySetting.cs" Link="QuerySettings\SqlCEQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\SqlDatabaseQuerySetting.cs" Link="QuerySettings\SqlDatabaseQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\SQLiteQuerySetting.cs" Link="QuerySettings\SQLiteQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\SybaseQuerySetting.cs" Link="QuerySettings\SybaseQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\SynergyQuerySetting.cs" Link="QuerySettings\SynergyQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\VistaDbQuerySetting.cs" Link="QuerySettings\VistaDbQuerySetting.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Helpers\" />
+        <Folder Include="Interfaces\" />
+        <Folder Include="Interfaces\" />
+        <Folder Include="Helpers\" />
+        <Folder Include="QuerySettings\Core\" />
+        <Folder Include="QuerySettings\Factory\" />
+        <Folder Include="QuerySettings\Core\" />
+        <Folder Include="QuerySettings\Factory\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Simply.Common.Std\Simply.Common.Std.csproj" />
+    </ItemGroup>
+
+</Project>
