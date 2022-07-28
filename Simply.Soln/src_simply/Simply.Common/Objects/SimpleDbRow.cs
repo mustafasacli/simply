@@ -34,7 +34,7 @@ namespace Simply.Common.Objects
         /// Gets the cell count.
         /// </summary>
         public int CellCount
-        { get; private set; }
+        { get { return cells?.Count ?? 0; } }
 
         /// <summary>
         /// Gets a value indicating whether throw on column duplicate.
