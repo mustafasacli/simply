@@ -13,10 +13,7 @@ namespace Simply.Data.DbTransactionExtensions
         /// <param name="transaction">IDbTransaction instance<see cref="IDbTransaction"/>.</param>
         public static void DisposeTransaction(this IDbTransaction transaction)
         {
-            if (transaction != null)
-            {
-                transaction.Dispose();
-            }
+                transaction?.Dispose();
         }
 
         /// <summary>

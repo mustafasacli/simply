@@ -22,9 +22,9 @@ namespace Simply.Data
             this.Suffix = ClosingSquareBracket.ToString();
 
             /**
-                         * https://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc36271.1550/html/blocks/blocks297.htm
-                         * You can use both the + and || (double-pipe) string operators to concatenate two or more character or binary expressions.
-                         */
+            * https://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc36271.1550/html/blocks/blocks297.htm
+            * You can use both the + and || (double-pipe) string operators to concatenate two or more character or binary expressions.
+            */
             this.StringConcatOperation = OracleStringConcatOperator;
             this.SkipAndTakeFormat = "SELECT TOP #TAKE# START AT #SKIP# + 1 * FROM (#SQL_SCRIPT#)";
             this.LastFormat =

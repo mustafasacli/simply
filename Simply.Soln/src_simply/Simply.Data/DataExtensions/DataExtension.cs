@@ -18,10 +18,10 @@ namespace Simply.Data
         /// <summary>
         /// convert datatable To List.
         /// </summary>
-        /// <typeparam name="T">    T object type.</typeparam>
+        /// <typeparam name="T">T object type.</typeparam>
         /// <param name="datatable">Datatable object.</param>
         /// <param name="accordingToColumn">The accordingToColumn<see cref="bool"/>.</param>
-        /// <returns>   Returns A List of T object.</returns>
+        /// <returns>Returns A List of T object.</returns>
         public static List<T> ToList<T>(this DataTable datatable, bool accordingToColumn) where T : new()
         {
             List<T> liste = new List<T>();
@@ -69,7 +69,7 @@ namespace Simply.Data
         /// <summary>
         /// convert datatable To List.
         /// </summary>
-        /// <typeparam name="T">    T object type.</typeparam>
+        /// <typeparam name="T">T object type.</typeparam>
         /// <param name="datatable">Datatable object.</param>
         /// <param name="unForceNullValueBind"></param>
         /// <returns>   Returns A List of T object.</returns>
@@ -113,8 +113,8 @@ namespace Simply.Data
         /// <summary>
         /// Copies datatable to a new datatble.
         /// </summary>
-        /// <param name="datatable">   DataTable object.</param>
-        /// <returns>   A DataTable.</returns>
+        /// <param name="datatable">DataTable object.</param>
+        /// <returns>A DataTable.</returns>
         public static DataTable CopyColumnsAsDatatable(this DataTable datatable)
         {
             DataTable newDatatable = new DataTable();
@@ -130,10 +130,10 @@ namespace Simply.Data
         /// <summary>
         /// Gets Page Of DataTable.
         /// </summary>
-        /// <param name="datatable">           DataTable object.</param>
-        /// <param name="pageNumber">   The page number.</param>
-        /// <param name="rowCount">     Number of rows.</param>
-        /// <returns>   The page of data table.</returns>
+        /// <param name="datatable">DataTable object.</param>
+        /// <param name="pageNumber">The page number.</param>
+        /// <param name="rowCount">Number of rows.</param>
+        /// <returns>The page of data table.</returns>
         public static DataTable GetPageOfDataTable(this DataTable datatable, int pageNumber, int rowCount)
         {
             if (datatable == null)
@@ -141,6 +141,7 @@ namespace Simply.Data
 
             if (pageNumber < 0)
                 throw new Exception("Page Number cannot be less than 0.");
+
             if (rowCount < 1)
                 throw new Exception("Row Count of Page cannot be less than 1.");
 
@@ -165,9 +166,9 @@ namespace Simply.Data
         /// <summary>
         /// Gets Columns Of DataTable.
         /// </summary>
-        /// <param name="datatable">           DataTable object.</param>
-        /// <param name="columnList">   column names array.</param>
-        /// <returns>   Returns a DataTable with Selected column names.</returns>
+        /// <param name="datatable">DataTable object.</param>
+        /// <param name="columnList">column names array.</param>
+        /// <returns>Returns a DataTable with Selected column names.</returns>
         public static DataTable GetColumnsOfDataTable(this DataTable datatable, string[] columnList)
         {
             DataTable newDatatable = new DataTable();
@@ -195,9 +196,9 @@ namespace Simply.Data
         /// <summary>
         /// Gets Columns Of DataTable.
         /// </summary>
-        /// <param name="datatable">           DataTable object.</param>
-        /// <param name="columnList">   column numbers array.</param>
-        /// <returns>   Returns a DataTable with Selected column numbers.</returns>
+        /// <param name="datatable">DataTable object.</param>
+        /// <param name="columnList">column numbers array.</param>
+        /// <returns>Returns a DataTable with Selected column numbers.</returns>
         public static DataTable GetColumnsOfDataTable(this DataTable datatable, int[] columnList)
         {
             DataTable newDatatable = new DataTable();
@@ -225,10 +226,10 @@ namespace Simply.Data
         /// <summary>
         /// Gets Object With Selected Column.
         /// </summary>
-        /// <param name="datatable">                   DataTable object.</param>
-        /// <param name="refColumn">            Name of Reference Column.</param>
-        /// <param name="refValue">             Value of Reference Column.</param>
-        /// <param name="destinationColumn">    Name of Destination Column.</param>
+        /// <param name="datatable">DataTable object.</param>
+        /// <param name="refColumn">Name of Reference Column.</param>
+        /// <param name="refValue">Value of Reference Column.</param>
+        /// <param name="destinationColumn">Name of Destination Column.</param>
         /// <returns>The <see cref="object"/>.</returns>
         public static object GetObjectWithSelectedColumn(this DataTable datatable, string refColumn, object refValue, string destinationColumn)
         {
@@ -249,9 +250,9 @@ namespace Simply.Data
         /// <summary>
         /// A DataTable extension method that export as excel with ınclude columns.
         /// </summary>
-        /// <param name="datatable">               DataTable object.</param>
-        /// <param name="fileName">         Filename of the file.</param>
-        /// <param name="includeColumns">   A variable-length parameters list containing include columns.</param>
+        /// <param name="datatable">DataTable object.</param>
+        /// <param name="fileName">Filename of the file.</param>
+        /// <param name="includeColumns">A variable-length parameters list containing include columns.</param>
         public static void ExportAsExcelWithIncludeColumns(this DataTable datatable, string fileName, object[] includeColumns)
         {
             if (includeColumns.IsNull())
@@ -386,9 +387,9 @@ namespace Simply.Data
         /// <summary>
         /// Get Some Columns As DataTable.
         /// </summary>
-        /// <param name="datatable">           DataTable object.</param>
-        /// <param name="columnList">   column names array.</param>
-        /// <returns>   some columns as table.</returns>
+        /// <param name="datatable">DataTable object.</param>
+        /// <param name="columnList">column names array.</param>
+        /// <returns>some columns as table.</returns>
         public static DataTable GetSomeColumnsAsTable(this DataTable datatable, string[] columnList)
         {
             DataTable dtNew = new DataTable();
@@ -408,7 +409,7 @@ namespace Simply.Data
                 dtNew.Columns.Add(_col.ColumnName, _col.DataType);
             }
 
-            DataRow dr = null;
+            DataRow dr;
             foreach (DataRow row in datatable.Rows)
             {
                 dr = dtNew.NewRow();
@@ -424,10 +425,10 @@ namespace Simply.Data
         /// <summary>
         /// convert datarow to T object instance.
         /// </summary>
-        /// <typeparam name="T">    Generic type parameter.</typeparam>
-        /// <param name="row">      The row to act on.</param>
-        /// <param name="columns">  (Optional) The columns.</param>
-        /// <returns>   A T instance.</returns>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="row">The row to act on.</param>
+        /// <param name="columns">(Optional) The columns.</param>
+        /// <returns>A T instance.</returns>
         public static T RowToObject<T>(this DataRow row, DataColumnCollection columns = null)
             where T : new()
         {
@@ -457,10 +458,10 @@ namespace Simply.Data
         /// <summary>
         /// Gets Column As Unique List.
         /// </summary>
-        /// <typeparam name="T">    Generic type parameter.</typeparam>
-        /// <param name="dataTable">    The dataTable to act on.</param>
-        /// <param name="columnName">   Name of the column.</param>
-        /// <returns>   The column as unique list.</returns>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="dataTable">The dataTable to act on.</param>
+        /// <param name="columnName">Name of the column.</param>
+        /// <returns>The column as unique list.</returns>
         public static List<T> GetColumnAsUniqueList<T>(this DataTable dataTable, string columnName)
         {
             if (dataTable == null)
@@ -483,8 +484,8 @@ namespace Simply.Data
         /// <summary>
         /// convert datatable to expandoobject list.
         /// </summary>
-        /// <param name="table">    The table to act on.</param>
-        /// <returns>   Table as a List{dynamic}; .</returns>
+        /// <param name="table">The table to act on.</param>
+        /// <returns>Table as a List{dynamic}.</returns>
         public static List<dynamic> ToDynamicList(this DataTable table)
         {
             List<dynamic> list = new List<dynamic>();

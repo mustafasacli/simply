@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Simply.Common.Objects;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -12,13 +13,13 @@ namespace Simply.Data
         /// <summary>
         /// Gets First Row Async.
         /// </summary>
-        /// <param name="reader">   The dataReader to act on.</param>
-        /// <returns>   An asynchronous result that yields the first row.</returns>
-        public static async Task<dynamic> FirstDynamicRowAsync(this IDataReader reader)
+        /// <param name="reader">The dataReader to act on.</param>
+        /// <returns>An asynchronous result that yields the first row.</returns>
+        public static async Task<SimpleDbRow> FirstDbRowAsync(this IDataReader reader)
         {
-            Task<dynamic> resultTask = Task.Factory.StartNew(() =>
+            Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
             {
-                return DataReaderOperator.FirstDynamicRow(reader, closeAtFinal: true);
+                return DataReaderOperator.FirstDbRow(reader, closeAtFinal: true);
             });
 
             return await resultTask;
@@ -27,13 +28,13 @@ namespace Simply.Data
         /// <summary>
         /// Gets Last Row Async.
         /// </summary>
-        /// <param name="reader">   The dataReader to act on.</param>
-        /// <returns>   An asynchronous result that yields the last row.</returns>
-        public static async Task<dynamic> LastDynamicRowAsync(this IDataReader reader)
+        /// <param name="reader">The dataReader to act on.</param>
+        /// <returns>An asynchronous result that yields the last row.</returns>
+        public static async Task<SimpleDbRow> LastDbRowAsync(this IDataReader reader)
         {
-            Task<dynamic> resultTask = Task.Factory.StartNew(() =>
+            Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
             {
-                return DataReaderOperator.LastDynamicRow(reader, closeAtFinal: true);
+                return DataReaderOperator.LastDbRow(reader, closeAtFinal: true);
             });
 
             return await resultTask;
@@ -42,31 +43,31 @@ namespace Simply.Data
         /// <summary> GetDynamicResultSetAsync
         /// Gets Dynamic ResultSet Async.
         /// </summary>
-        /// <param name="reader">       .</param>
-        /// <param name="closeAtFinal"> (Optional) .</param>
-        /// <returns>Returns dynamic object list.</returns>
-        public static async Task<List<dynamic>> GetDynamicListAsync(
+        /// <param name="reader"></param>
+        /// <param name="closeAtFinal">(Optional) .</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static async Task<List<SimpleDbRow>> GetDbRowListAsync(
             this IDataReader reader, bool closeAtFinal = false)
         {
-            Task<List<dynamic>> resultTask = Task.Factory.StartNew(() =>
+            Task<List<SimpleDbRow>> resultTask = Task.Factory.StartNew(() =>
             {
-                return DataReaderOperator.GetResultSetAsDynamic(reader, closeAtFinal);
+                return DataReaderOperator.GetResultSetAsDbRow(reader, closeAtFinal);
             });
 
             return await resultTask;
         }
 
         /// <summary> GetMultiDynamicResultSetAsync
-        /// An IDataReader extension method that gets multi dynamic result set asynchronous.
+        /// An IDataReader extension method that gets multi SimpleDbRow result set asynchronous.
         /// </summary>
         /// <param name="reader">IDataReader object.</param>
-        /// <returns>   An asynchronous result that yields the multi dynamic result set.</returns>
-        public static async Task<List<List<dynamic>>> GetMultiDynamicListAsync(
+        /// <returns>An asynchronous result that yields the multi SimpleDbRow result set.</returns>
+        public static async Task<List<List<SimpleDbRow>>> GetMultiDbRowListAsync(
            this IDataReader reader)
         {
-            Task<List<List<dynamic>>> resultTask = Task.Factory.StartNew(() =>
+            Task<List<List<SimpleDbRow>>> resultTask = Task.Factory.StartNew(() =>
             {
-                return DataReaderOperator.GetMultiDynamicList(reader);
+                return DataReaderOperator.GetMultiDbRowList(reader);
             });
 
             return await resultTask;

@@ -197,23 +197,6 @@ namespace Simply.Data.DbCommandExtensions
         }
 
         /// <summary>
-        /// Set OracleCommand BindByName with given value.
-        /// </summary>
-        /// <param name="dbCommand">Db command</param>
-        /// <param name="bindByName">BindByName property value.</param>
-        [Obsolete("This method is deprecated. it will be deleted any later version.")]
-        internal static void SetOracleCommandBindByName(this IDbCommand dbCommand, bool bindByName = true)
-        {
-            if (dbCommand == null) return;
-
-            if (dbCommand.Connection.GetDbConnectionType() == DbConnectionTypes.Oracle)
-            {
-                bool isSetted = dbCommand.SetPropertyValue(InternalAppValues.OracleCommandBindByNameProperty, bindByName);
-                if (!isSetted) Console.WriteLine(DbAppMessages.OracleCommandNoBindByNameProperty);
-            }
-        }
-
-        /// <summary>
         /// Creates DbDataParameter with given DbCommandParameter instance and parameterPrefix.
         /// </summary>
         /// <param name="command">IDbCommand instance.</param>
@@ -222,8 +205,7 @@ namespace Simply.Data.DbCommandExtensions
         /// <returns>Returns DbParameter object instance.</returns>
         public static DbParameter RegenerateDbParameter(this IDbCommand command, DbCommandParameter parameter, string parameterPrefix)
         {
-            // IDbDataParameter dbParameter = command.Connection.CreateDbCommandParameter();// .CreateParameter();
-            DbParameter dbParameter = command.Connection.CreateDbCommandParameter();// .CreateParameter();
+            DbParameter dbParameter = command.Connection.CreateDbCommandParameter();
             dbParameter.ParameterName = parameter.ParameterName;
 
             if (!string.IsNullOrWhiteSpace(parameterPrefix) && !dbParameter.ParameterName.StartsWith(parameterPrefix))

@@ -42,38 +42,7 @@ namespace Simply.Data
                 throw new ArgumentNullException(nameof(connection));
 
             string[] queryAndParameters = TranslateOdbcQuery(connection.GetDbConnectionType(), odbcSqlQuery);
-            /*
-            odbcSqlQuery = odbcSqlQuery.Trim();
-            if (!odbcSqlQuery.Contains(InternalAppValues.QuestionMark) || connection.GetDbConnectionType().IsOdbcConn())
-            { queryAndParameters.Add(odbcSqlQuery); return queryAndParameters.ToArray(); }
 
-            List<string> queryParts = odbcSqlQuery.Split(new char[] { InternalAppValues.QuestionMark }, StringSplitOptions.None).ToList() ?? ArrayHelper.EmptyList<string>();
-            IQuerySetting setting = connection.GetQuerySetting();
-
-            StringBuilder sqlBuilder = new StringBuilder();
-            int parameterCounter = 0;
-            queryAndParameters.Add(empty);
-
-            for (int counter = 0; counter < queryParts.Count - 1; counter++)
-            {
-                string parameterName = empty;
-                string item = queryParts[counter];
-                sqlBuilder.Append(item);
-
-                do
-                {
-                    parameterName = setting.ParameterPrefix + InternalAppValues.ParameterChar.ToString() + parameterCounter.ToString();
-                    parameterCounter++;
-                } while (!(queryParts.All(q => !q.Contains(parameterName)) &&
-                queryAndParameters.IndexOf(parameterName) == -1));
-
-                sqlBuilder.Append(parameterName);
-                queryAndParameters.Add(parameterName);
-            }
-
-            sqlBuilder.Append(queryParts[queryParts.Count - 1]);
-            queryAndParameters[0] = sqlBuilder.ToString();
-            */
             return queryAndParameters.ToArray();
         }
 
@@ -157,20 +126,6 @@ namespace Simply.Data
 
             for (int counter = 0; counter < commandParameters.Length; counter++)
             {
-                /*
-                DbCommandParameter cmdParameter = new DbCommandParameter
-                {
-                    DbType = commandParameters[counter].DbType,
-                    ParameterColumnName = commandParameters[counter].ParameterColumnName,
-                    Direction = commandParameters[counter].Direction,
-                    ParameterName = paramStringArray[counter],
-                    Precision = commandParameters[counter].Precision,
-                    Scale = commandParameters[counter].Scale,
-                    Size = commandParameters[counter].Size,
-                    Value = commandParameters[counter].Value
-                };
-                commandDefinition.AddDatabaseParameter(cmdParameter);
-                */
                 commandDefinition.AddParameter(
                     new DbCommandParameter
                     {
@@ -190,9 +145,6 @@ namespace Simply.Data
                 int cnt = paramStringArray.Count - commandParameters.Length;
                 for (int counter = 0; counter < cnt; counter++)
                 {
-                    //object parameter = connection.CreateDbCommandParameter(parameterName: paramStringArray[commandParameters.Length + counter],direction: ParameterDirection.Output);
-                    //commandDefinition.AddDatabaseParameter(parameter);
-
                     commandDefinition.AddParameter(
                         new DbCommandParameter
                         {
