@@ -253,6 +253,27 @@ namespace Simply.Common.Objects
             // return base.TrySetMember(binder, value);
         }
 
+        /// <summary>
+        /// Gets the cell values.
+        /// </summary>
+        /// <param name="cellNames">The cell names.</param>
+        /// <returns>An array of object.</returns>
+        public object[] GetCellValues(IEnumerable<string> cellNames)
+        {
+            object[] values = null;
+            List<string> cellNameList = cellNames?.Where(q => q.IsValid())?.ToList() ?? ArrayHelper.EmptyList<string>();
+            if (cellNameList.Any())
+            {
+                var notContainedCells = cells.Select(q => q.CellName).Where(q => !cellNameList.Contains(q)).ToList() ?? ArrayHelper.EmptyList<string>();
+                if (notContainedCells.Any())
+                    throw new Exception($"{string.Join(",", notContainedCells)} cell names not contained to cell.");
+
+                values = cells.Where(q => cellNameList.Contains(q.CellName)).Select(q => q.Value).ToArray();
+            }
+
+            return values ?? ArrayHelper.Empty<object>();
+        }
+
         #region [ protected methods ]
 
         /// <summary>
