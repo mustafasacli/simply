@@ -67,11 +67,11 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>External\Interop.IWshRuntimeLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Simply.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c03dc30a9850669f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Simply.Common.1.0.0\lib\net451\Simply.Common.dll</HintPath>
+    <Reference Include="Simply.Common, Version=1.0.1.0, Culture=neutral, PublicKeyToken=c03dc30a9850669f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Simply.Common.1.1.0\lib\net451\Simply.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Simply.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0d4e0a4d073b85f2, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Simply.Data.1.0.0\lib\net451\Simply.Data.dll</HintPath>
+    <Reference Include="Simply.Data, Version=1.1.0.0, Culture=neutral, PublicKeyToken=0d4e0a4d073b85f2, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Simply.Data.1.1.0\lib\net451\Simply.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
