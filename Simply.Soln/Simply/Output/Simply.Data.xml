@@ -1676,7 +1676,7 @@
             convert datatable to expandoobject list.
             </summary>
             <param name="table">The table to act on.</param>
-            <returns>Table as a List{dynamic}; .</returns>
+            <returns>Table as a List{dynamic}.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.AsDynamicEnumerable(System.Data.DataTable)">
              <summary>
