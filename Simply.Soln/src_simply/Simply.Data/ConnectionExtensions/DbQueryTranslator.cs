@@ -32,9 +32,11 @@ namespace Simply.Data
         /// <returns>
         /// The <see cref="string[]"/> Returns translated query and parameters in same array. First
         /// element of array is translated query and other elements are query parameters. Query :
-        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" For Sql Server Result; "SELECT T1.*
-        /// FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0" For Oracle Result; "SELECT T1.* FROM
-        /// TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0" .
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" 
+        /// For Sql Server Result;
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0"
+        /// For Oracle Result;
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0"
         /// </returns>
         public static string[] TranslateOdbcQuery(this IDbConnection connection, string odbcSqlQuery)
         {
@@ -54,9 +56,11 @@ namespace Simply.Data
         /// <returns>
         /// The <see cref="string[]"/> Returns translated query and parameters in same array. First
         /// element of array is translated query and other elements are query parameters. Query :
-        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" For Sql Server Result; "SELECT T1.*
-        /// FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0" For Oracle Result; "SELECT T1.* FROM
-        /// TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0" .
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" 
+        /// For Sql Server Result;
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0"
+        /// For Oracle Result;
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0"
         /// </returns>
         public static string[] TranslateOdbcQuery(this DbConnectionTypes connectionType, string odbcSqlQuery)
         {
@@ -103,12 +107,12 @@ namespace Simply.Data
         /// <param name="connection">Database connection <see cref="IDbConnection"/>.</param>
         /// <param name="odbcSqlQuery">The query <see cref="string"/>.</param>
         /// <param name="commandParameters">The commandParameters <see cref="DbCommandParameter[]"/>.</param>
-        /// <param name="cmdType">The cmdType <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <param name="commandTimeout">DbCommand timeout</param>
         /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
-        /// <returns>Returns Command Definition object instance <see cref="DbCommandDefinition"/>.</returns>
+        /// <returns>Returns Command Definition object instance <see cref="DbCommandDefinition" />.</returns>
         public static DbCommandDefinition BuildCommandDefinitionForTranslate(
-            this IDbConnection connection, string odbcSqlQuery, DbCommandParameter[] commandParameters, CommandType? cmdType,
+            this IDbConnection connection, string odbcSqlQuery, DbCommandParameter[] commandParameters, CommandType? commandType,
             int? commandTimeout = null, bool setOverratedParamsToOutput = false)
         {
             DbCommandDefinition commandDefinition = new DbCommandDefinition();
@@ -117,7 +121,7 @@ namespace Simply.Data
             commandParameters = commandParameters ?? ArrayHelper.Empty<DbCommandParameter>();
 
             commandDefinition.CommandText = queryAndParameters[0];
-            commandDefinition.CommandType = cmdType;
+            commandDefinition.CommandType = commandType;
             commandDefinition.CommandTimeout = commandTimeout;
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 

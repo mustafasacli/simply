@@ -148,7 +148,8 @@ namespace Simply.Data
             if (adapterTypes.Count() > 1)
             {
                 string connectionTypeName = connection.GetType().Name;
-                connectionTypeName = connectionTypeName.Substring(0, connectionTypeName.Length - InternalAppValues.ConnectionName.Length).ToLower();
+                connectionTypeName = connectionTypeName.Substring(0,
+                    connectionTypeName.Length - InternalAppValues.ConnectionName.Length).ToLower();
                 adapterType = adapterTypes.First(typ => typ.Name.ToLower().StartsWith(connectionTypeName));
             }
             else if (adapterTypes.Count() == 1)
@@ -231,7 +232,8 @@ namespace Simply.Data
             if (commandTypes.Count() > 1)
             {
                 string connectionTypeName = connection.GetType().Name;
-                connectionTypeName = connectionTypeName.Substring(0, connectionTypeName.Length - InternalAppValues.ConnectionName.Length).ToLower();
+                connectionTypeName = connectionTypeName.Substring(0,
+                    connectionTypeName.Length - InternalAppValues.ConnectionName.Length).ToLower();
                 commandParameterType = commandTypes.First(typ => typ.Name.ToLower().StartsWith(connectionTypeName));
             }
             else if (commandTypes.Count() == 1)
@@ -270,7 +272,10 @@ namespace Simply.Data
                 for (int counter = 0; counter < parameters.Length; counter++)
                 {
                     if (!parameters[counter].ParameterName.StartsWith(setting.ParameterPrefix))
-                    { parameters[counter].ParameterName = setting.ParameterPrefix + parameters[counter].ParameterName.TrimStart(); }
+                    {
+                        parameters[counter].ParameterName =
+                            setting.ParameterPrefix + parameters[counter].ParameterName.TrimStart();
+                    }
 
                     command.Parameters.Add(parameters[counter]);
                 }
