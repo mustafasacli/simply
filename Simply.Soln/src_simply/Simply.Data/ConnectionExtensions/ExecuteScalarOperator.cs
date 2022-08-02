@@ -28,7 +28,7 @@ namespace Simply.Data
             IDbTransaction transaction = null, int? commandTimeout = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType,
@@ -86,7 +86,7 @@ namespace Simply.Data
             object result = null;
 
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
@@ -113,7 +113,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns execute scalar result as object.</returns>
         public static IDbCommandResult<object> ExecuteScalarQuery(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             IDbCommandResult<object> result = new DbCommandResult<object>(-1);
 
@@ -147,7 +147,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
         public static IDbCommandResult<T> ExecuteScalarQueryAs<T>(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             IDbCommandResult<object> result =
                 ExecuteScalarQuery(connection, commandDefinition, transaction)
@@ -186,7 +186,7 @@ namespace Simply.Data
                     Value = p,
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
-            DbCommandDefinition commandDefinition =
+            SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
             commandDefinition.CommandTimeout = commandTimeout;
@@ -221,7 +221,7 @@ namespace Simply.Data
                     Value = p,
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
-            DbCommandDefinition commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             using (IDbCommand command = connection.CreateCommandWithOptions(commandDefinition, transaction))
             {

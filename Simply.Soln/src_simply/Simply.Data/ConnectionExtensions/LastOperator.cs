@@ -42,7 +42,7 @@ namespace Simply.Data
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
 
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
@@ -75,7 +75,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as object instance.</returns>
         public static IDbCommandResult<T> QueryLast<T>(this IDbConnection connection,
-            DbCommandDefinition commandDefinition,
+            SimpleDbCommand commandDefinition,
             IDbTransaction transaction = null) where T : class, new()
         {
             IDbCommandResult<T> result = new DbCommandResult<T>();
@@ -113,7 +113,7 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 })
                 .ToArray();
-            DbCommandDefinition commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
+            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<SimpleDbRow> dbCommandResult = connection.QueryLastAsDbRow(commandDefinition, transaction);
@@ -192,7 +192,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as dynamic object instance.</returns>
         public static IDbCommandResult<SimpleDbRow> QueryLastAsDbRow(this IDbConnection connection,
-            DbCommandDefinition commandDefinition,
+            SimpleDbCommand commandDefinition,
             IDbTransaction transaction = null)
         {
             IDbCommandResult<SimpleDbRow> result = new DbCommandResult<SimpleDbRow>();
@@ -262,7 +262,7 @@ namespace Simply.Data
             string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType

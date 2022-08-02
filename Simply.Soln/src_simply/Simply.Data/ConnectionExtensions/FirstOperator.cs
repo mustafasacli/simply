@@ -40,7 +40,7 @@ namespace Simply.Data
             string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sqlQuery,
                 CommandType = commandType
@@ -62,7 +62,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns first record as dynamic object instance.</returns>
         public static IDbCommandResult<T> QueryFirst<T>(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null) where T : class, new()
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null) where T : class, new()
         {
             IDbCommandResult<T> result = new DbCommandResult<T>();
 
@@ -92,7 +92,7 @@ namespace Simply.Data
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p, ParameterDbType = p.ToDbType() })
                 .ToArray() ?? new DbCommandParameter[0];
-            DbCommandDefinition commandDefinition = connection.BuildCommandDefinitionForTranslate(
+            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(
                 odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<SimpleDbRow> dbRow = QueryFirstAsDbRow(connection, commandDefinition, transaction);
@@ -173,11 +173,11 @@ namespace Simply.Data
         /// Get First Row of the Resultset as dynamic object instance.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition <see cref="DbCommandDefinition"/>.</param>
+        /// <param name="commandDefinition">Command Definition <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns first record as dynamic object instance.</returns>
         public static IDbCommandResult<SimpleDbRow> QueryFirstAsDbRow(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             IDbCommandResult<SimpleDbRow> result = new DbCommandResult<SimpleDbRow>();
 
@@ -236,7 +236,7 @@ namespace Simply.Data
             string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sqlQuery,
                 CommandType = commandType

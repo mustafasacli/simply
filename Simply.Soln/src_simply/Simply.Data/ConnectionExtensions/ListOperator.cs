@@ -39,7 +39,7 @@ namespace Simply.Data
                 })
                 .ToArray();
 
-            DbCommandDefinition commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
+            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<List<SimpleDbRow>> rowListResult =

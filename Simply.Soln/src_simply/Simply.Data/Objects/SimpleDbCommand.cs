@@ -9,23 +9,23 @@ namespace Simply.Data.Objects
     /// Command Definition.
     /// </summary>
     [DataContract]
-    public class DbCommandDefinition : BaseDbCommand
+    public class SimpleDbCommand : BaseDbCommand
     {
         /// <summary>
-        /// Creates new DbCommandDefinition instance.
+        /// Creates new SimpleDbCommand instance.
         /// </summary>
-        public DbCommandDefinition()
+        public SimpleDbCommand()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbCommandDefinition"/> class.
+        /// Initializes a new instance of the <see cref="SimpleDbCommand"/> class.
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="commandType">The command type.</param>
         /// <param name="oracleCommandBindByName">If true, oracle command bind by name.</param>
         /// <param name="commandTimeout">The command timeout.</param>
-        public DbCommandDefinition(
+        public SimpleDbCommand(
             string commandText, CommandType? commandType = null,
             bool oracleCommandBindByName = false, int? commandTimeout = null)
         {
@@ -36,14 +36,14 @@ namespace Simply.Data.Objects
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbCommandDefinition"/> class.
+        /// Initializes a new instance of the <see cref="SimpleDbCommand"/> class.
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="commandParameters">The command parameters.</param>
         /// <param name="commandType">The command type.</param>
         /// <param name="oracleCommandBindByName">If true, oracle command bind by name.</param>
         /// <param name="commandTimeout">The command timeout.</param>
-        public DbCommandDefinition(
+        public SimpleDbCommand(
             string commandText, IEnumerable<object> commandParameters, CommandType? commandType = null,
             bool oracleCommandBindByName = false, int? commandTimeout = null)
             : this(commandText, commandType, oracleCommandBindByName, commandTimeout)
@@ -53,14 +53,14 @@ namespace Simply.Data.Objects
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbCommandDefinition"/> class.
+        /// Initializes a new instance of the <see cref="SimpleDbCommand"/> class.
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="commandParameters">The command parameters.</param>
         /// <param name="commandType">The command type.</param>
         /// <param name="oracleCommandBindByName">If true, oracle command bind by name.</param>
         /// <param name="commandTimeout">The command timeout.</param>
-        public DbCommandDefinition(
+        public SimpleDbCommand(
             string commandText, IEnumerable<DbCommandParameter> commandParameters, CommandType? commandType = null,
             bool oracleCommandBindByName = false, int? commandTimeout = null)
             : this(commandText, commandType, oracleCommandBindByName, commandTimeout)
@@ -97,7 +97,7 @@ namespace Simply.Data.Objects
         /// Adds command parameter to list.
         /// </summary>
         /// <param name="dbCommandParameter"></param>
-        public DbCommandDefinition AddParameterAndReturn(DbCommandParameter dbCommandParameter)
+        public SimpleDbCommand AddParameterAndReturn(DbCommandParameter dbCommandParameter)
         {
             AddCommandParameter(dbCommandParameter);
             return this;
@@ -145,8 +145,8 @@ namespace Simply.Data.Objects
         /// Adds command parameter to list.
         /// </summary>
         /// <param name="dbCommandParameter">db command parameter</param>
-        /// <returns>Returns DbCommandDefinition instance.</returns>
-        public DbCommandDefinition AddDatabaseParameterReturn(object dbCommandParameter)
+        /// <returns>Returns SimpleDbCommand instance.</returns>
+        public SimpleDbCommand AddDatabaseParameterReturn(object dbCommandParameter)
         {
             AddCommandParameter(dbCommandParameter);
             return this;

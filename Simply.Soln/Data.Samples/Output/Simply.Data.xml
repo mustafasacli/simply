@@ -1074,9 +1074,11 @@
             <returns>
             The <see cref="!:string[]"/> Returns translated query and parameters in same array. First
             element of array is translated query and other elements are query parameters. Query :
-            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" For Sql Server Result; "SELECT T1.*
-            FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0" For Oracle Result; "SELECT T1.* FROM
-            TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0" .
+            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" 
+            For Sql Server Result;
+            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0"
+            For Oracle Result;
+            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0"
             </returns>
         </member>
         <member name="M:Simply.Data.DbQueryTranslator.TranslateOdbcQuery(Simply.Data.Enums.DbConnectionTypes,System.String)">
@@ -1088,9 +1090,11 @@
             <returns>
             The <see cref="!:string[]"/> Returns translated query and parameters in same array. First
             element of array is translated query and other elements are query parameters. Query :
-            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" For Sql Server Result; "SELECT T1.*
-            FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0" For Oracle Result; "SELECT T1.* FROM
-            TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0" .
+            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" 
+            For Sql Server Result;
+            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0"
+            For Oracle Result;
+            "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0"
             </returns>
         </member>
         <member name="M:Simply.Data.DbQueryTranslator.BuildCommandDefinitionForTranslate(System.Data.IDbConnection,System.String,Simply.Data.Objects.DbCommandParameter[],System.Nullable{System.Data.CommandType},System.Nullable{System.Int32},System.Boolean)">
@@ -1100,10 +1104,10 @@
             <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/>.</param>
             <param name="odbcSqlQuery">The query <see cref="T:System.String"/>.</param>
             <param name="commandParameters">The commandParameters <see cref="!:DbCommandParameter[]"/>.</param>
-            <param name="cmdType">The cmdType <see cref="T:System.Nullable`1"/>.</param>
+            <param name="commandType">The db command type <see cref="T:System.Nullable`1"/>.</param>
             <param name="commandTimeout">DbCommand timeout</param>
             <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
-            <returns>Returns Command Definition object instance <see cref="T:Simply.Data.Objects.DbCommandDefinition"/>.</returns>
+            <returns>Returns Command Definition object instance <see cref="T:Simply.Data.Objects.DbCommandDefinition" />.</returns>
         </member>
         <member name="M:Simply.Data.DbQueryTranslator.RebuildCommandDefinitionForTranslate(Simply.Data.Enums.DbConnectionTypes,Simply.Data.Objects.DbCommandDefinition,System.Boolean)">
              <summary>
@@ -1554,16 +1558,16 @@
             <summary>
             convert datatable To List.
             </summary>
-            <typeparam name="T">    T object type.</typeparam>
+            <typeparam name="T">T object type.</typeparam>
             <param name="datatable">Datatable object.</param>
             <param name="accordingToColumn">The accordingToColumn<see cref="T:System.Boolean"/>.</param>
-            <returns>   Returns A List of T object.</returns>
+            <returns>Returns A List of T object.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.ToList_V2``1(System.Data.DataTable,System.Boolean)">
             <summary>
             convert datatable To List.
             </summary>
-            <typeparam name="T">    T object type.</typeparam>
+            <typeparam name="T">T object type.</typeparam>
             <param name="datatable">Datatable object.</param>
             <param name="unForceNullValueBind"></param>
             <returns>   Returns A List of T object.</returns>
@@ -1583,51 +1587,51 @@
             <summary>
             Copies datatable to a new datatble.
             </summary>
-            <param name="datatable">   DataTable object.</param>
-            <returns>   A DataTable.</returns>
+            <param name="datatable">DataTable object.</param>
+            <returns>A DataTable.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.GetPageOfDataTable(System.Data.DataTable,System.Int32,System.Int32)">
             <summary>
             Gets Page Of DataTable.
             </summary>
-            <param name="datatable">           DataTable object.</param>
-            <param name="pageNumber">   The page number.</param>
-            <param name="rowCount">     Number of rows.</param>
-            <returns>   The page of data table.</returns>
+            <param name="datatable">DataTable object.</param>
+            <param name="pageNumber">The page number.</param>
+            <param name="rowCount">Number of rows.</param>
+            <returns>The page of data table.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.GetColumnsOfDataTable(System.Data.DataTable,System.String[])">
             <summary>
             Gets Columns Of DataTable.
             </summary>
-            <param name="datatable">           DataTable object.</param>
-            <param name="columnList">   column names array.</param>
-            <returns>   Returns a DataTable with Selected column names.</returns>
+            <param name="datatable">DataTable object.</param>
+            <param name="columnList">column names array.</param>
+            <returns>Returns a DataTable with Selected column names.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.GetColumnsOfDataTable(System.Data.DataTable,System.Int32[])">
             <summary>
             Gets Columns Of DataTable.
             </summary>
-            <param name="datatable">           DataTable object.</param>
-            <param name="columnList">   column numbers array.</param>
-            <returns>   Returns a DataTable with Selected column numbers.</returns>
+            <param name="datatable">DataTable object.</param>
+            <param name="columnList">column numbers array.</param>
+            <returns>Returns a DataTable with Selected column numbers.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.GetObjectWithSelectedColumn(System.Data.DataTable,System.String,System.Object,System.String)">
             <summary>
             Gets Object With Selected Column.
             </summary>
-            <param name="datatable">                   DataTable object.</param>
-            <param name="refColumn">            Name of Reference Column.</param>
-            <param name="refValue">             Value of Reference Column.</param>
-            <param name="destinationColumn">    Name of Destination Column.</param>
+            <param name="datatable">DataTable object.</param>
+            <param name="refColumn">Name of Reference Column.</param>
+            <param name="refValue">Value of Reference Column.</param>
+            <param name="destinationColumn">Name of Destination Column.</param>
             <returns>The <see cref="T:System.Object"/>.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.ExportAsExcelWithIncludeColumns(System.Data.DataTable,System.String,System.Object[])">
             <summary>
             A DataTable extension method that export as excel with ınclude columns.
             </summary>
-            <param name="datatable">               DataTable object.</param>
-            <param name="fileName">         Filename of the file.</param>
-            <param name="includeColumns">   A variable-length parameters list containing include columns.</param>
+            <param name="datatable">DataTable object.</param>
+            <param name="fileName">Filename of the file.</param>
+            <param name="includeColumns">A variable-length parameters list containing include columns.</param>
         </member>
         <member name="M:Simply.Data.DataExtensions.ExportAsExcelWithExcludeColumns(System.Data.DataTable,System.String,System.Object[])">
             <summary>
@@ -1649,34 +1653,34 @@
             <summary>
             Get Some Columns As DataTable.
             </summary>
-            <param name="datatable">           DataTable object.</param>
-            <param name="columnList">   column names array.</param>
-            <returns>   some columns as table.</returns>
+            <param name="datatable">DataTable object.</param>
+            <param name="columnList">column names array.</param>
+            <returns>some columns as table.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.RowToObject``1(System.Data.DataRow,System.Data.DataColumnCollection)">
             <summary>
             convert datarow to T object instance.
             </summary>
-            <typeparam name="T">    Generic type parameter.</typeparam>
-            <param name="row">      The row to act on.</param>
-            <param name="columns">  (Optional) The columns.</param>
-            <returns>   A T instance.</returns>
+            <typeparam name="T">Generic type parameter.</typeparam>
+            <param name="row">The row to act on.</param>
+            <param name="columns">(Optional) The columns.</param>
+            <returns>A T instance.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.GetColumnAsUniqueList``1(System.Data.DataTable,System.String)">
             <summary>
             Gets Column As Unique List.
             </summary>
-            <typeparam name="T">    Generic type parameter.</typeparam>
-            <param name="dataTable">    The dataTable to act on.</param>
-            <param name="columnName">   Name of the column.</param>
-            <returns>   The column as unique list.</returns>
+            <typeparam name="T">Generic type parameter.</typeparam>
+            <param name="dataTable">The dataTable to act on.</param>
+            <param name="columnName">Name of the column.</param>
+            <returns>The column as unique list.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.ToDynamicList(System.Data.DataTable)">
             <summary>
             convert datatable to expandoobject list.
             </summary>
-            <param name="table">    The table to act on.</param>
-            <returns>   Table as a List{dynamic}; .</returns>
+            <param name="table">The table to act on.</param>
+            <returns>Table as a List{dynamic}.</returns>
         </member>
         <member name="M:Simply.Data.DataExtensions.AsDynamicEnumerable(System.Data.DataTable)">
              <summary>
@@ -1690,98 +1694,39 @@
             Defines the <see cref="T:Simply.Data.DataReaderAsyncOperator" />.
             </summary>
         </member>
-        <member name="M:Simply.Data.DataReaderAsyncOperator.FirstDynamicRowAsync(System.Data.IDataReader)">
+        <member name="M:Simply.Data.DataReaderAsyncOperator.FirstDbRowAsync(System.Data.IDataReader)">
             <summary>
             Gets First Row Async.
             </summary>
-            <param name="reader">   The dataReader to act on.</param>
-            <returns>   An asynchronous result that yields the first row.</returns>
+            <param name="reader">The dataReader to act on.</param>
+            <returns>An asynchronous result that yields the first row.</returns>
         </member>
-        <member name="M:Simply.Data.DataReaderAsyncOperator.LastDynamicRowAsync(System.Data.IDataReader)">
+        <member name="M:Simply.Data.DataReaderAsyncOperator.LastDbRowAsync(System.Data.IDataReader)">
             <summary>
             Gets Last Row Async.
             </summary>
-            <param name="reader">   The dataReader to act on.</param>
-            <returns>   An asynchronous result that yields the last row.</returns>
+            <param name="reader">The dataReader to act on.</param>
+            <returns>An asynchronous result that yields the last row.</returns>
         </member>
-        <member name="M:Simply.Data.DataReaderAsyncOperator.GetDynamicListAsync(System.Data.IDataReader,System.Boolean)">
+        <member name="M:Simply.Data.DataReaderAsyncOperator.GetDbRowListAsync(System.Data.IDataReader,System.Boolean)">
             <summary> GetDynamicResultSetAsync
             Gets Dynamic ResultSet Async.
             </summary>
-            <param name="reader">       .</param>
-            <param name="closeAtFinal"> (Optional) .</param>
-            <returns>Returns dynamic object list.</returns>
+            <param name="reader"></param>
+            <param name="closeAtFinal">(Optional) .</param>
+            <returns>Returns SimpleDbRow object list.</returns>
         </member>
-        <member name="M:Simply.Data.DataReaderAsyncOperator.GetMultiDynamicListAsync(System.Data.IDataReader)">
+        <member name="M:Simply.Data.DataReaderAsyncOperator.GetMultiDbRowListAsync(System.Data.IDataReader)">
             <summary> GetMultiDynamicResultSetAsync
-            An IDataReader extension method that gets multi dynamic result set asynchronous.
+            An IDataReader extension method that gets multi SimpleDbRow result set asynchronous.
             </summary>
             <param name="reader">IDataReader object.</param>
-            <returns>   An asynchronous result that yields the multi dynamic result set.</returns>
+            <returns>An asynchronous result that yields the multi SimpleDbRow result set.</returns>
         </member>
         <member name="T:Simply.Data.DataReaderOperator">
             <summary>
             Defines the <see cref="T:Simply.Data.DataReaderOperator"/>.
             </summary>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.FirstDynamicRow(System.Data.IDataReader,System.Boolean)">
-            <summary>
-            Returns First Row as dynamic object.
-            </summary>
-            <param name="reader">The dataReader to act on.</param>
-            <param name="closeAtFinal">(Optional) .</param>
-            <returns>An dynamic object.</returns>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.LastDynamicRow(System.Data.IDataReader,System.Boolean)">
-            <summary>
-            Returns Last Row as dynamic object.
-            </summary>
-            <param name="reader">The dataReader to act on.</param>
-            <param name="closeAtFinal">(Optional) .</param>
-            <returns>An dynamic object.</returns>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.GetResultSetAsDynamic(System.Data.IDataReader,System.Boolean)">
-            <summary>
-            GetDynamicResultSet Gets ResultSet as dynamic object list.
-            </summary>
-            <param name="reader">.</param>
-            <param name="closeAtFinal">(Optional) .</param>
-            <returns>Returns dynamic object list.</returns>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.GetResultSetWithPagingAsDynamic(System.Data.IDataReader,System.UInt32,System.UInt32,System.Boolean)">
-            <summary>
-            GetDynamicResultSetWithPaging Gets IDataReader ResultSet as dynamic Object list with paging.
-            </summary>
-            <param name="reader">.</param>
-            <param name="pageNumber">(Optional) The page number.</param>
-            <param name="pageItemCount">(Optional) Number of page ıtems.</param>
-            <param name="closeAtFinal">(Optional) .</param>
-            <returns>The dynamic result set with paging.</returns>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.GetMultiDynamicList(System.Data.IDataReader,System.Boolean)">
-            <summary>
-            GetMultiDynamicResultSet The GetMultiDynamicResultSet.
-            </summary>
-            <param name="reader">.</param>
-            <param name="closeAtFinal">(Optional) .</param>
-            <returns>The multi dynamic result set.</returns>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.GetDynamicRow(System.Data.IDataReader)">
-            <summary>
-            Gets IDataReader record as dynamic.
-            </summary>
-            <param name="dataReader">The dataReader to act on.</param>
-            <returns>The dynamic object from data reader.</returns>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.GetDynamicReaderListSkipAndTake(System.Data.IDataReader,System.UInt32,System.UInt32,System.Boolean)">
-            <summary>
-            GetDynamicResultSetSkipAndTake Get dynamic object List with skip and take options.
-            </summary>
-            <param name="reader">Data reader object instance.</param>
-            <param name="skip">Count for Skip.</param>
-            <param name="take">Count for Take.</param>
-            <param name="closeAtFinal">if true datareader will be closed at final else not.</param>
-            <returns>Returns dynamic object list.</returns>
         </member>
         <member name="M:Simply.Data.DataReaderOperator.CloseIfNot(System.Data.IDataReader)">
             <summary>
@@ -1803,13 +1748,6 @@
             </summary>
             <param name="dataReader">Datareader instance.</param>
             <returns>Returns Dictionary{string, Type} object instance. </returns>
-        </member>
-        <member name="M:Simply.Data.DataReaderOperator.SingleDynamicRow(System.Data.IDataReader)">
-            <summary>
-            Returns Single Row as dynamic object.
-            </summary>
-            <param name="reader">The dataReader to act on.</param>
-            <returns>An dynamic object.</returns>
         </member>
         <member name="M:Simply.Data.DataReaderOperator.GetSimleRowListSkipAndTake(System.Data.IDataReader,System.UInt32,System.UInt32,System.Boolean)">
             <summary>
@@ -1951,13 +1889,6 @@
             <returns>Returns DbParameterinstance.</returns>
             <exception cref="T:System.ArgumentNullException">command</exception>
         </member>
-        <member name="M:Simply.Data.DbCommandExtensions.CommandExtensions.SetOracleCommandBindByName(System.Data.IDbCommand,System.Boolean)">
-            <summary>
-            Set OracleCommand BindByName with given value.
-            </summary>
-            <param name="dbCommand">Db command</param>
-            <param name="bindByName">BindByName property value.</param>
-        </member>
         <member name="M:Simply.Data.DbCommandExtensions.CommandExtensions.RegenerateDbParameter(System.Data.IDbCommand,Simply.Data.Objects.DbCommandParameter,System.String)">
             <summary>
             Creates DbDataParameter with given DbCommandParameter instance and parameterPrefix.
@@ -2063,9 +1994,13 @@
             <param name="transaction">IDbTransaction instance<see cref="T:System.Data.IDbTransaction"/>.</param>
         </member>
         <member name="T:Simply.Data.Enums.DbConnectionTypes">
-             <summary>   Values that represent Database connection types. </summary>
+             <summary>
+             Values that represent Database connection types.
+             </summary>
             
-             <remarks>   Mustafa SAÇLI, 4.05.2019. </remarks>
+             <remarks>
+             Mustafa SAÇLI, 4.05.2019.
+             </remarks>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.None">
              <summary>
@@ -2138,52 +2073,83 @@
              </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SqlOdbc">
-            <summary>   An enum constant representing the MsSql odbc option. </summary>
+            <summary>
+            An enum constant representing the MsSql odbc option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SqlOledb">
-            <summary>   An enum constant representing the MsSql oledb option. </summary>
+            <summary>
+            An enum constant representing the MsSql oledb option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.OracleOdbc">
-            <summary>   An enum constant representing the Oracle odbc option. </summary>
+            <summary>
+            An enum constant representing the Oracle odbc option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.OracleOledb">
-            <summary>   An enum constant representing the Oracle oledb option. </summary>
+            <summary>
+            An enum constant representing the Oracle oledb option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.PostgreSqlOdbc">
-            <summary>   An enum constant representing the PostgreSql odbc option. </summary>
+            <summary>
+            An enum constant representing the PostgreSql odbc option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.PostgreSqlOledb">
-            <summary>   An enum constant representing the PostgreSql oledb option. </summary>
+            <summary>
+            An enum constant representing the PostgreSql oledb option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.DB2Odbc">
-            <summary>   An enum constant representing the DB2 odbc option. </summary>
+            <summary>
+            An enum constant representing the DB2 odbc option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.DB2Oledb">
-            <summary>   An enum constant representing the DB2 oledb option. </summary>
+            <summary>
+            An enum constant representing the DB2 oledb option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.MySqlOdbc">
-            <summary>   An enum constant representing the MySql odbc option. </summary>
+            <summary>
+            An enum constant representing the MySql odbc option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.MySqlOledb">
-            <summary>   An enum constant representing the MySql oledb option. </summary>
+            <summary>
+            An enum constant representing the MySql oledb option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.FirebirdOdbc">
-            <summary>   An enum constant representing the Firebird odbc option. </summary>
+            <summary>
+            An enum constant representing the Firebird odbc option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.FirebirdOledb">
-            <summary>   An enum constant representing the Firebird oledb option. </summary>
+            <summary>
+            An enum constant representing the Firebird oledb option. </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SqlBaseOdbc">
-            <summary>   An enum constant representing the SQL base odbc option. </summary>
+            <summary>
+            An enum constant representing the SQL base odbc option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SqlBaseOledb">
-            <summary>   An enum constant representing the SQL base oledb option. </summary>
+            <summary>
+            An enum constant representing the SQL base oledb option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SynergyOdbc">
-            <summary>   An enum constant representing the synergy ODBC option. </summary>
+            <summary>
+            An enum constant representing the synergy ODBC option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SynergyOledb">
-            <summary>   An enum constant representing the synergy oledb option. </summary>
+            <summary>
+            An enum constant representing the synergy oledb option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.NuoDb">
             <summary>
@@ -2202,10 +2168,14 @@
             </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SybaseASAOdbc">
-            <summary>   An enum constant representing the Sybase ASA ODBC option. </summary>
+            <summary>
+            An enum constant representing the Sybase ASA ODBC option.
+            </summary>
         </member>
         <member name="F:Simply.Data.Enums.DbConnectionTypes.SybaseASAOledb">
-            <summary>   An enum constant representing the Sybase ASA oledb option. </summary>
+            <summary>
+            An enum constant representing the Sybase ASA oledb option.
+            </summary>
         </member>
         <member name="T:Simply.Data.Interfaces.IDbCommandResult`1">
             <summary>

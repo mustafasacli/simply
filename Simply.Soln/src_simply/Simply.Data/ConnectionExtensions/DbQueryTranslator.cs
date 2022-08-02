@@ -102,7 +102,7 @@ namespace Simply.Data
         }
 
         /// <summary>
-        /// Builds DbCommandDefinition instance for Translate of Odbc Sql Query.
+        /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
         /// </summary>
         /// <param name="connection">Database connection <see cref="IDbConnection"/>.</param>
         /// <param name="odbcSqlQuery">The query <see cref="string"/>.</param>
@@ -110,12 +110,12 @@ namespace Simply.Data
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <param name="commandTimeout">DbCommand timeout</param>
         /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
-        /// <returns>Returns Command Definition object instance <see cref="DbCommandDefinition" />.</returns>
-        public static DbCommandDefinition BuildCommandDefinitionForTranslate(
+        /// <returns>Returns Command Definition object instance <see cref="SimpleDbCommand" />.</returns>
+        public static SimpleDbCommand BuildCommandDefinitionForTranslate(
             this IDbConnection connection, string odbcSqlQuery, DbCommandParameter[] commandParameters, CommandType? commandType,
             int? commandTimeout = null, bool setOverratedParamsToOutput = false)
         {
-            DbCommandDefinition commandDefinition = new DbCommandDefinition();
+            SimpleDbCommand commandDefinition = new SimpleDbCommand();
 
             string[] queryAndParameters = connection.TranslateOdbcQuery(odbcSqlQuery);
             commandParameters = commandParameters ?? ArrayHelper.Empty<DbCommandParameter>();
@@ -168,10 +168,10 @@ namespace Simply.Data
         /// <param name="tempCommandDefinition">odbc command definition</param>
         /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns></returns>
-        public static DbCommandDefinition RebuildCommandDefinitionForTranslate(this DbConnectionTypes connectionType,
-            DbCommandDefinition tempCommandDefinition, bool setOverratedParamsToOutput = false)
+        public static SimpleDbCommand RebuildCommandDefinitionForTranslate(this DbConnectionTypes connectionType,
+            SimpleDbCommand tempCommandDefinition, bool setOverratedParamsToOutput = false)
         {
-            DbCommandDefinition commandDefinition = new DbCommandDefinition();
+            SimpleDbCommand commandDefinition = new SimpleDbCommand();
 
             string[] queryAndParameters = connectionType.TranslateOdbcQuery(tempCommandDefinition.CommandText);
 

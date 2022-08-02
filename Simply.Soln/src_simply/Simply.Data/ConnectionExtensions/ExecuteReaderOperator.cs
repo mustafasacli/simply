@@ -21,7 +21,7 @@ namespace Simply.Data
         /// <param name="commandBehavior">Db Command Behavior.</param>
         /// <returns>Returns an IDataReader instance.</returns>
         public static IDataReader ExecuteReaderQuery(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, out DbCommandParameter[] outputParameters,
+            SimpleDbCommand commandDefinition, out DbCommandParameter[] outputParameters,
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null)
         {
             IDataReader dataReader = null;
@@ -61,7 +61,7 @@ namespace Simply.Data
             IDataReader dataReader = null;
 
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType

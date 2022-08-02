@@ -34,7 +34,7 @@
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IDbCommandResult.cs" Link="Interfaces\IDbCommandResult.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IPageInfo.cs" Link="Interfaces\IPageInfo.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\BaseDbCommand.cs" Link="Objects\BaseDbCommand.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandDefinition.cs" Link="Objects\DbCommandDefinition.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleDbCommand.cs" Link="Objects\SimpleDbCommand.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandParameter.cs" Link="Objects\DbCommandParameter.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandResult.cs" Link="Objects\DbCommandResult.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs" Link="QuerySettings\Core\IQuerySetting.cs" />

@@ -49,7 +49,7 @@ namespace Simply.Data
             string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
@@ -72,7 +72,7 @@ namespace Simply.Data
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowList(
-            this IDbConnection connection, DbCommandDefinition commandDefinition,
+            this IDbConnection connection, SimpleDbCommand commandDefinition,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
             DbCommandResult<List<SimpleDbRow>> result = new DbCommandResult<List<SimpleDbRow>>();
@@ -149,7 +149,7 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
 
-            DbCommandDefinition commandDefinition =
+            SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 

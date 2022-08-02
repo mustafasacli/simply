@@ -17,11 +17,11 @@ namespace Simply.Data
         /// Create IDbCommand instance with command definition and db transaction for given db connection.
         /// </summary>
         /// <param name="connection">Database connection <see cref="IDbConnection"/>.</param>
-        /// <param name="commandDefinition">Command Definition <see cref="DbCommandDefinition"/>.</param>
+        /// <param name="commandDefinition">Command Definition <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/>.</param>
         /// <returns>The <see cref="IDbCommand"/>.</returns>
         public static IDbCommand CreateCommandWithOptions(this IDbConnection connection,
-            DbCommandDefinition commandDefinition,
+            SimpleDbCommand commandDefinition,
           IDbTransaction transaction = null)
         {
             if (commandDefinition == null || string.IsNullOrWhiteSpace(commandDefinition.CommandText))

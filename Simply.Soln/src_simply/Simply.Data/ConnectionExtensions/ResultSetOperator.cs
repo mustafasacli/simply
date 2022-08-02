@@ -23,7 +23,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static IDbCommandResult<DataSet> GetResultSetQuery(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
@@ -78,7 +78,7 @@ namespace Simply.Data
                 })
                 .ToArray();
 
-            DbCommandDefinition commandDefinition =
+            SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType);
             IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, commandDefinition, transaction);
 
@@ -94,7 +94,7 @@ namespace Simply.Data
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
         /// <returns>Returns dynamic object list.</returns>
         public static IDbCommandResult<DataTable> GetResultSet(
-            this IDbConnection connection, DbCommandDefinition commandDefinition,
+            this IDbConnection connection, SimpleDbCommand commandDefinition,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
             IDbCommandResult<DataTable> result = new DbCommandResult<DataTable>();

@@ -24,7 +24,7 @@ namespace Simply.Data
             IDbTransaction transaction = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            DbCommandDefinition commandDefinition = new DbCommandDefinition
+            SimpleDbCommand commandDefinition = new SimpleDbCommand
             {
                 CommandText = sqlText,
                 CommandType = commandType
@@ -40,11 +40,11 @@ namespace Simply.Data
         /// The Any.
         /// </summary>
         /// <param name="connection">The connection <see cref="IDbConnection"/>.</param>
-        /// <param name="commandDefinition">The commandDefinition <see cref="DbCommandDefinition"/>.</param>
+        /// <param name="commandDefinition">The commandDefinition <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             bool result;
             DbCommandParameter[] outputValues;
@@ -74,7 +74,7 @@ namespace Simply.Data
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p, ParameterDbType = p.ToDbType() })
                 .ToArray();
-            DbCommandDefinition commandDefinition = connection.BuildCommandDefinitionForTranslate(
+            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(
                 odbcSqlQuery, commandParameters, commandType, commandTimeout);
             bool result = connection.Any(commandDefinition, transaction);
 

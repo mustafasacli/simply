@@ -44,7 +44,7 @@ namespace Simply.Data
             string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
@@ -69,7 +69,7 @@ namespace Simply.Data
         /// <param name="pageInfo">page info for skip and take counts.</param>
         /// <returns>Returns as object list.</returns>
         public static IDbCommandResult<List<T>> GetList<T>(
-            this IDbConnection connection, DbCommandDefinition commandDefinition,
+            this IDbConnection connection, SimpleDbCommand commandDefinition,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
             where T : class, new()
         {
@@ -110,7 +110,7 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
 
-            DbCommandDefinition commandDefinition =
+            SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 

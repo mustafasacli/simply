@@ -140,8 +140,8 @@
     <Compile Include="..\..\src_simply\Simply.Data\Objects\BaseDbCommand.cs">
       <Link>Objects\BaseDbCommand.cs</Link>
     </Compile>
-    <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleDbCommand.cs">
-      <Link>Objects\SimpleDbCommand.cs</Link>
+    <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandDefinition.cs">
+      <Link>Objects\DbCommandDefinition.cs</Link>
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandParameter.cs">
       <Link>Objects\DbCommandParameter.cs</Link>

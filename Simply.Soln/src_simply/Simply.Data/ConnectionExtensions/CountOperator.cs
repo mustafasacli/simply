@@ -16,11 +16,11 @@ namespace Simply.Data.ConnectionExtensions
         /// counts rows for given sql query and command definition.
         /// </summary>
         /// <param name="connection">Database connection <see cref="IDbConnection"/></param>
-        /// <param name="commandDefinition">Command Definition <see cref="DbCommandDefinition"/></param>
+        /// <param name="commandDefinition">Command Definition <see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
         public static int Count(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
             IDbCommandResult<int> result = connection.ExecuteScalarQueryAs<int>(commandDefinition, transaction);
@@ -31,11 +31,11 @@ namespace Simply.Data.ConnectionExtensions
         /// counts rows as long for given sql query and command definition.
         /// </summary>
         /// <param name="connection">Database connection <see cref="IDbConnection"/></param>
-        /// <param name="commandDefinition">Command Definition <see cref="DbCommandDefinition"/></param>
+        /// <param name="commandDefinition">Command Definition <see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
         public static long CountLong(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
             IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(commandDefinition, transaction);
@@ -102,7 +102,7 @@ namespace Simply.Data.ConnectionExtensions
                 ParameterDbType = p.ToDbType()
             }).ToArray();
 
-            DbCommandDefinition commandDefinition =
+            SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
             commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
             IDbCommandResult<int> result = connection.ExecuteScalarQueryAs<int>(commandDefinition, transaction);
@@ -133,7 +133,7 @@ namespace Simply.Data.ConnectionExtensions
                 ParameterDbType = p.ToDbType()
             }).ToArray();
 
-            DbCommandDefinition commandDefinition =
+            SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
             commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
             IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(commandDefinition, transaction);

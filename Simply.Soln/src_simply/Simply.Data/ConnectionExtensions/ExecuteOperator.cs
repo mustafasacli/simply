@@ -30,7 +30,7 @@ namespace Simply.Data
             int result = -1;
 
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            DbCommandDefinition commandDefinition = new DbCommandDefinition()
+            SimpleDbCommand commandDefinition = new SimpleDbCommand()
             {
                 CommandText = sqlQuery,
                 CommandType = commandType
@@ -91,11 +91,11 @@ namespace Simply.Data
         /// Executes query and returns result as int.
         /// </summary>
         /// <param name="connection">Database connection <see cref="IDbConnection"/></param>
-        /// <param name="commandDefinition">Db Command Definition <see cref="DbCommandDefinition"/></param>
+        /// <param name="commandDefinition">Db Command Definition <see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
         /// <returns>Returns execution result as int. <see cref="IDbCommandResult{System.Int32}"/></returns>
         public static IDbCommandResult<int> ExecuteQuery(this IDbConnection connection,
-            DbCommandDefinition commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
             IDbCommandResult<int> result = new DbCommandResult<int>(-1);
 
@@ -145,7 +145,7 @@ namespace Simply.Data
                 })
                 .ToArray();
 
-            DbCommandDefinition commandDefinition =
+            SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             using (IDbCommand command = connection.CreateCommandWithOptions(commandDefinition, transaction))
