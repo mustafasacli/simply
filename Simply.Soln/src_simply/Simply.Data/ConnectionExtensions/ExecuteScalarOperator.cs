@@ -153,7 +153,7 @@ namespace Simply.Data
                 ExecuteScalarQuery(connection, commandDefinition, transaction)
                 ?? new DbCommandResult<object>();
 
-            T value = !result.Result.IsNullOrDbNull() ? (T)result : default;
+            T value = !result.Result.IsNullOrDbNull() ? (T)result.Result : default;
 
             return new DbCommandResult<T>()
             {
