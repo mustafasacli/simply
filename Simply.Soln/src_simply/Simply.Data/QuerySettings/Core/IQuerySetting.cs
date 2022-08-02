@@ -51,5 +51,10 @@ namespace Simply.Data.Interfaces
         /// Gets the string substring format.
         /// </summary>
         string SubstringFormat { get; }
+
+        /// <summary>
+        /// Gets the string count format.
+        /// </summary>
+        string CountFormat { get; }
     }
 }

@@ -24,6 +24,7 @@ namespace Simply.Data
             this.SkipAndTakeFormat = "SELECT * FROM (#SQL_SCRIPT#) LIMIT #TAKE#, #SKIP# ";
             this.LastFormat = "SELECT * FROM (#SQL_SCRIPT#) LIMIT #TAKE#, #SKIP# ";
             this.SubstringFormat = "SUBSTR(#0#, #1#, #2#)";
+            this.CountFormat = "SELECT COUNT(*) FROM ( #SQL_SCRIPT# ) AS CNT";
         }
 
         /// <summary>
@@ -79,6 +80,12 @@ namespace Simply.Data
         /// Gets the string substring format.
         /// </summary>
         public string SubstringFormat
+        { get; private set; }
+
+        /// <summary>
+        /// Gets the string count format.
+        /// </summary>
+        public string CountFormat
         { get; private set; }
     }
 }

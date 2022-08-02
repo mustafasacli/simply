@@ -22,7 +22,9 @@ namespace Simply.Data.ConnectionExtensions
         public static int Count(this IDbConnection connection,
             SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
-            commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            commandDefinition.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
             IDbCommandResult<int> result = connection.ExecuteScalarQueryAs<int>(commandDefinition, transaction);
             return result.Result;
         }
@@ -37,7 +39,9 @@ namespace Simply.Data.ConnectionExtensions
         public static long CountLong(this IDbConnection connection,
             SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
         {
-            commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            commandDefinition.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
             IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(commandDefinition, transaction);
             return result.Result;
         }
@@ -55,7 +59,9 @@ namespace Simply.Data.ConnectionExtensions
             string sql, object obj, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            string sqlText = string.Format(InternalAppValues.CountFormat, sql);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
             int result = connection.ExecuteScalarAs<int>(sqlText, obj, commandType, transaction);
             return result;
         }
@@ -73,7 +79,9 @@ namespace Simply.Data.ConnectionExtensions
             string sql, object obj, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            string sqlText = string.Format(InternalAppValues.CountFormat, sql);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
             long result = connection.ExecuteScalarAs<long>(sqlText, obj, commandType, transaction);
             return result;
         }
@@ -104,7 +112,9 @@ namespace Simply.Data.ConnectionExtensions
 
             SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
-            commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            commandDefinition.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
             IDbCommandResult<int> result = connection.ExecuteScalarQueryAs<int>(commandDefinition, transaction);
             return result.Result;
         }
@@ -135,7 +145,9 @@ namespace Simply.Data.ConnectionExtensions
 
             SimpleDbCommand commandDefinition =
                 connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
-            commandDefinition.CommandText = string.Format(InternalAppValues.CountFormat, commandDefinition.CommandText);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            commandDefinition.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
             IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(commandDefinition, transaction);
             return result.Result;
         }

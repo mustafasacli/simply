@@ -27,6 +27,7 @@ namespace Simply.Data
 
             this.LastFormat = "SELECT * FROM ( SELECT *, rownumber() over () AS rn2 FROM ( SELECT a.* , rownumber() over () AS rn FROM ( #SQL_SCRIPT# ) AS a) AS rs order by rs.rn desc) WHERE rn2 =< 1";
             this.SubstringFormat = "SUBSTR(#0#, #1#, #2#)";
+            this.CountFormat = "SELECT COUNT(1) AS CNT FROM ( #SQL_SCRIPT# )";
         }
 
         /// <summary>
@@ -84,6 +85,12 @@ namespace Simply.Data
         /// Gets the string substring format.
         /// </summary>
         public string SubstringFormat
+        { get; private set; }
+
+        /// <summary>
+        /// Gets the string count format.
+        /// </summary>
+        public string CountFormat 
         { get; private set; }
     }
 }
