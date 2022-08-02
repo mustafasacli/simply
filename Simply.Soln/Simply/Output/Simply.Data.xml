@@ -2289,6 +2289,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.Interfaces.IQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.Objects.BaseDbCommand">
             <summary>
             Base Db Command.
@@ -2739,6 +2744,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.DB2QuerySettings.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.QuerySettings.QuerySettingsFactory">
             <summary>
             Defines the <see cref="T:Simply.Data.QuerySettings.QuerySettingsFactory" />.
@@ -2817,6 +2827,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.FirebirdQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.MsSqlQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -2872,6 +2887,11 @@
         <member name="P:Simply.Data.MsSqlQuerySetting.SubstringFormat">
             <summary>
             Gets the string substring format.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.MsSqlQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
             </summary>
         </member>
         <member name="T:Simply.Data.MySqlQuerySetting">
@@ -2931,6 +2951,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.MySqlQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.NuodbQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -2986,6 +3011,11 @@
         <member name="P:Simply.Data.NuodbQuerySetting.SubstringFormat">
             <summary>
             Gets the string substring format.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.NuodbQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
             </summary>
         </member>
         <member name="T:Simply.Data.OdbcQuerySetting">
@@ -3045,6 +3075,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.OdbcQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.OledbQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -3100,6 +3135,11 @@
         <member name="P:Simply.Data.OledbQuerySetting.SubstringFormat">
             <summary>
             Gets the string substring format.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.OledbQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
             </summary>
         </member>
         <member name="T:Simply.Data.OracleQuerySetting">
@@ -3159,6 +3199,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.OracleQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.PgSqlQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -3214,6 +3259,11 @@
         <member name="P:Simply.Data.PgSqlQuerySetting.SubstringFormat">
             <summary>
             Gets the string substring format.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.PgSqlQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
             </summary>
         </member>
         <member name="T:Simply.Data.SqlBaseQuerySettings">
@@ -3273,6 +3323,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.SqlBaseQuerySettings.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.SqlCEQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -3328,6 +3383,11 @@
         <member name="P:Simply.Data.SqlCEQuerySetting.SubstringFormat">
             <summary>
             Gets the string substring format.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.SqlCEQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
             </summary>
         </member>
         <member name="T:Simply.Data.SqlDatabaseQuerySetting">
@@ -3387,6 +3447,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.SqlDatabaseQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.SQLiteQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -3442,6 +3507,11 @@
         <member name="P:Simply.Data.SQLiteQuerySetting.SubstringFormat">
             <summary>
             Gets the string substring format.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.SQLiteQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
             </summary>
         </member>
         <member name="T:Simply.Data.SybaseQuerySetting">
@@ -3501,6 +3571,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.SybaseQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.SynergyQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -3558,6 +3633,11 @@
             Gets the string substring format.
             </summary>
         </member>
+        <member name="P:Simply.Data.SynergyQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
+            </summary>
+        </member>
         <member name="T:Simply.Data.VistaDbQuerySetting">
             <summary>
             Represents Parameter Prefix, Column-Table Prefix And Suffix and last IdentityInsert Part.
@@ -3613,6 +3693,11 @@
         <member name="P:Simply.Data.VistaDbQuerySetting.SubstringFormat">
             <summary>
             Gets the string substring format.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.VistaDbQuerySetting.CountFormat">
+            <summary>
+            Gets the string count format.
             </summary>
         </member>
     </members>
