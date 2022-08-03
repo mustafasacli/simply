@@ -110,19 +110,19 @@ namespace Simply.Data
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <param name="commandTimeout">DbCommand timeout</param>
         /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
-        /// <returns>Returns Command Definition object instance <see cref="SimpleDbCommand" />.</returns>
-        public static SimpleDbCommand BuildCommandDefinitionForTranslate(
+        /// <returns>Returns database command object instance <see cref="SimpleDbCommand" />.</returns>
+        public static SimpleDbCommand BuildsimpleDbCommandForTranslate(
             this IDbConnection connection, string odbcSqlQuery, DbCommandParameter[] commandParameters, CommandType? commandType,
             int? commandTimeout = null, bool setOverratedParamsToOutput = false)
         {
-            SimpleDbCommand commandDefinition = new SimpleDbCommand();
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand();
 
             string[] queryAndParameters = connection.TranslateOdbcQuery(odbcSqlQuery);
             commandParameters = commandParameters ?? ArrayHelper.Empty<DbCommandParameter>();
 
-            commandDefinition.CommandText = queryAndParameters[0];
-            commandDefinition.CommandType = commandType;
-            commandDefinition.CommandTimeout = commandTimeout;
+            simpleDbCommand.CommandText = queryAndParameters[0];
+            simpleDbCommand.CommandType = commandType;
+            simpleDbCommand.CommandTimeout = commandTimeout;
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
             if ((!setOverratedParamsToOutput && paramStringArray.Count != commandParameters.Length) || paramStringArray.Count < commandParameters.Length)
@@ -130,7 +130,7 @@ namespace Simply.Data
 
             for (int counter = 0; counter < commandParameters.Length; counter++)
             {
-                commandDefinition.AddParameter(
+                simpleDbCommand.AddParameter(
                     new DbCommandParameter
                     {
                         ParameterDbType = commandParameters[counter].ParameterDbType,
@@ -149,7 +149,7 @@ namespace Simply.Data
                 int cnt = paramStringArray.Count - commandParameters.Length;
                 for (int counter = 0; counter < cnt; counter++)
                 {
-                    commandDefinition.AddParameter(
+                    simpleDbCommand.AddParameter(
                         new DbCommandParameter
                         {
                             Direction = ParameterDirection.Output,
@@ -158,34 +158,34 @@ namespace Simply.Data
                 }
             }
 
-            return commandDefinition;
+            return simpleDbCommand;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="connectionType">db connacteion type.</param>
-        /// <param name="tempCommandDefinition">odbc command definition</param>
+        /// <param name="tempsimpleDbCommand">odbc database command</param>
         /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns></returns>
-        public static SimpleDbCommand RebuildCommandDefinitionForTranslate(this DbConnectionTypes connectionType,
-            SimpleDbCommand tempCommandDefinition, bool setOverratedParamsToOutput = false)
+        public static SimpleDbCommand RebuildsimpleDbCommandForTranslate(this DbConnectionTypes connectionType,
+            SimpleDbCommand tempsimpleDbCommand, bool setOverratedParamsToOutput = false)
         {
-            SimpleDbCommand commandDefinition = new SimpleDbCommand();
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand();
 
-            string[] queryAndParameters = connectionType.TranslateOdbcQuery(tempCommandDefinition.CommandText);
+            string[] queryAndParameters = connectionType.TranslateOdbcQuery(tempsimpleDbCommand.CommandText);
 
-            commandDefinition.CommandText = queryAndParameters[0];
-            commandDefinition.CommandType = tempCommandDefinition.CommandType;
-            commandDefinition.CommandTimeout = tempCommandDefinition.CommandTimeout;
+            simpleDbCommand.CommandText = queryAndParameters[0];
+            simpleDbCommand.CommandType = tempsimpleDbCommand.CommandType;
+            simpleDbCommand.CommandTimeout = tempsimpleDbCommand.CommandTimeout;
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
-            if ((!setOverratedParamsToOutput && paramStringArray.Count != tempCommandDefinition.CommandParameters.Count) || paramStringArray.Count < tempCommandDefinition.CommandParameters.Count)
+            if ((!setOverratedParamsToOutput && paramStringArray.Count != tempsimpleDbCommand.CommandParameters.Count) || paramStringArray.Count < tempsimpleDbCommand.CommandParameters.Count)
                 throw new ArgumentException("compiled query parameters did not match with command parameters. Please check query and parameters.");
 
-            for (int counter = 0; counter < tempCommandDefinition.CommandParameters.Count; counter++)
+            for (int counter = 0; counter < tempsimpleDbCommand.CommandParameters.Count; counter++)
             {
-                DbCommandParameter parameter = tempCommandDefinition.CommandParameters[counter] as DbCommandParameter;
+                DbCommandParameter parameter = tempsimpleDbCommand.CommandParameters[counter] as DbCommandParameter;
                 object cmdParameter = new DbCommandParameter
                 {
                     DbType = parameter.DbType,
@@ -197,24 +197,24 @@ namespace Simply.Data
                     Size = parameter.Size,
                     Value = parameter.Value
                 };
-                commandDefinition.AddCommandParameter(cmdParameter);
+                simpleDbCommand.AddCommandParameter(cmdParameter);
             }
 
-            if (setOverratedParamsToOutput && paramStringArray.Count > tempCommandDefinition.CommandParameters.Count)
+            if (setOverratedParamsToOutput && paramStringArray.Count > tempsimpleDbCommand.CommandParameters.Count)
             {
-                int count = paramStringArray.Count - tempCommandDefinition.CommandParameters.Count;
+                int count = paramStringArray.Count - tempsimpleDbCommand.CommandParameters.Count;
                 for (int counter = 0; counter < count; counter++)
                 {
-                    commandDefinition.AddParameter(
+                    simpleDbCommand.AddParameter(
                         new DbCommandParameter
                         {
                             Direction = ParameterDirection.Output,
-                            ParameterName = paramStringArray[tempCommandDefinition.CommandParameters.Count + counter]
+                            ParameterName = paramStringArray[tempsimpleDbCommand.CommandParameters.Count + counter]
                         });
                 }
             }
 
-            return commandDefinition;
+            return simpleDbCommand;
         }
 
         /// <summary>

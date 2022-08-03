@@ -42,24 +42,24 @@ namespace Simply.Data
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
 
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(parameters);
+            simpleDbCommand.AddCommandParameters(parameters);
             SimpleDbRow row;
 
             if (setting.LastFormat.IsNullOrSpace())
             {
-                row = connection.QueryLastAsDbRow(commandDefinition, transaction).Result;
+                row = connection.QueryLastAsDbRow(simpleDbCommand, transaction).Result;
             }
             else
             {
                 string format = setting.LastFormat;
-                format = format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
-                commandDefinition.CommandText = format;
-                row = connection.QueryLastAsDbRow(commandDefinition, transaction).Result;
+                format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+                simpleDbCommand.CommandText = format;
+                row = connection.QueryLastAsDbRow(simpleDbCommand, transaction).Result;
             }
 
             T instance = row.ConvertRowTo<T>();
@@ -71,17 +71,17 @@ namespace Simply.Data
         /// </summary>
         /// <typeparam name="T">T class.</typeparam>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as object instance.</returns>
         public static IDbCommandResult<T> QueryLast<T>(this IDbConnection connection,
-            SimpleDbCommand commandDefinition,
+            SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null) where T : class, new()
         {
             IDbCommandResult<T> result = new DbCommandResult<T>();
 
             IDbCommandResult<SimpleDbRow> dbCommandResult =
-                connection.QueryLastAsDbRow(commandDefinition, transaction);
+                connection.QueryLastAsDbRow(simpleDbCommand, transaction);
 
             result.Result = dbCommandResult.Result.ConvertRowTo<T>();
             result.AdditionalValues = dbCommandResult.AdditionalValues;
@@ -113,10 +113,10 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 })
                 .ToArray();
-            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
+            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
-            IDbCommandResult<SimpleDbRow> dbCommandResult = connection.QueryLastAsDbRow(commandDefinition, transaction);
+            IDbCommandResult<SimpleDbRow> dbCommandResult = connection.QueryLastAsDbRow(simpleDbCommand, transaction);
 
             T result = dbCommandResult.Result.ConvertRowTo<T>();
 
@@ -188,11 +188,11 @@ namespace Simply.Data
         /// Get Last Row of the Resultset as SimpleDbRow object instance.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as dynamic object instance.</returns>
         public static IDbCommandResult<SimpleDbRow> QueryLastAsDbRow(this IDbConnection connection,
-            SimpleDbCommand commandDefinition,
+            SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null)
         {
             IDbCommandResult<SimpleDbRow> result = new DbCommandResult<SimpleDbRow>();
@@ -208,18 +208,18 @@ namespace Simply.Data
                     if (!setting.LastFormat.IsNullOrSpace())
                     {
                         string format = setting.LastFormat;
-                        commandDefinition.CommandText =
-                            format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
+                        simpleDbCommand.CommandText =
+                            format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
                         commandBehavior = CommandBehavior.SingleRow;
                     }
 
                     DbCommandParameter[] outputValues;
 
-                    if (transaction == null && commandDefinition.AutoOpen)
+                    if (transaction == null && simpleDbCommand.AutoOpen)
                         connection.OpenIfNot();
 
                     reader =
-                        connection.ExecuteReaderQuery(commandDefinition, out outputValues, transaction, commandBehavior);
+                        connection.ExecuteReaderQuery(simpleDbCommand, out outputValues, transaction, commandBehavior);
 
                     result.Result = reader.LastDbRow();
                     result.OutputParameters = outputValues;
@@ -229,7 +229,7 @@ namespace Simply.Data
             }
             finally
             {
-                if (transaction == null && commandDefinition.CloseAtFinal)
+                if (transaction == null && simpleDbCommand.CloseAtFinal)
                     connection.CloseIfNot();
             }
 
@@ -262,14 +262,14 @@ namespace Simply.Data
             string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(commandParameters);
+            simpleDbCommand.AddCommandParameters(commandParameters);
             IDbCommandResult<SimpleDbRow> instance =
-                connection.QueryLastAsDbRow(commandDefinition, transaction);
+                connection.QueryLastAsDbRow(simpleDbCommand, transaction);
 
             return instance.Result;
         }

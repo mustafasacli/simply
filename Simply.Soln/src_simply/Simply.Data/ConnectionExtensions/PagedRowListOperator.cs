@@ -49,15 +49,15 @@ namespace Simply.Data
             string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(commandParameters);
+            simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
-                GetDbRowList(connection, commandDefinition, transaction, pageInfo);
+                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
             result = dynamicResultSet.Result;
 
             return result;
@@ -67,12 +67,12 @@ namespace Simply.Data
         /// GetDbRowList Gets query resultset as SimpleDbRow object list with skip and take.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowList(
-            this IDbConnection connection, SimpleDbCommand commandDefinition,
+            this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
             DbCommandResult<List<SimpleDbRow>> result = new DbCommandResult<List<SimpleDbRow>>();
@@ -91,17 +91,17 @@ namespace Simply.Data
                     string format = setting.SkipAndTakeFormat.CopyValue();
                     format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
                     format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
-                    format = format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
-                    commandDefinition.CommandText = format.CopyValue();
+                    format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+                    simpleDbCommand.CommandText = format.CopyValue();
                 }
             }
 
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 try
                 {
-                    if (transaction == null && commandDefinition.AutoOpen)
+                    if (transaction == null && simpleDbCommand.AutoOpen)
                         connection.OpenIfNot();
 
                     using (IDataReader reader = command.ExecuteReader())
@@ -117,7 +117,7 @@ namespace Simply.Data
                 }
                 finally
                 {
-                    if (transaction == null && commandDefinition.CloseAtFinal)
+                    if (transaction == null && simpleDbCommand.CloseAtFinal)
                         connection.CloseIfNot();
                 }
             }
@@ -149,12 +149,12 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
 
-            SimpleDbCommand commandDefinition =
-                connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
-                GetDbRowList(connection, commandDefinition, transaction, pageInfo);
+                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
             List<SimpleDbRow> result = dynamicResultSet.Result;
             return result;

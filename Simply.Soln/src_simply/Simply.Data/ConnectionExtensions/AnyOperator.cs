@@ -24,14 +24,14 @@ namespace Simply.Data
             IDbTransaction transaction = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            SimpleDbCommand commandDefinition = new SimpleDbCommand
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand
             {
                 CommandText = sqlText,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(parameters);
+            simpleDbCommand.AddCommandParameters(parameters);
 
-            bool result = connection.Any(commandDefinition, transaction);
+            bool result = connection.Any(simpleDbCommand, transaction);
 
             return result;
         }
@@ -40,16 +40,16 @@ namespace Simply.Data
         /// The Any.
         /// </summary>
         /// <param name="connection">The connection <see cref="IDbConnection"/>.</param>
-        /// <param name="commandDefinition">The commandDefinition <see cref="SimpleDbCommand"/>.</param>
+        /// <param name="simpleDbCommand">The simpleDbCommand <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             bool result;
             DbCommandParameter[] outputValues;
 
-            IDataReader reader = connection.ExecuteReaderQuery(commandDefinition, out outputValues,
+            IDataReader reader = connection.ExecuteReaderQuery(simpleDbCommand, out outputValues,
                 transaction, commandBehavior: CommandBehavior.SingleRow);
 
             result = reader.Any(closeAtFinal: true);
@@ -74,9 +74,9 @@ namespace Simply.Data
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p, ParameterDbType = p.ToDbType() })
                 .ToArray();
-            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(
+            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(
                 odbcSqlQuery, commandParameters, commandType, commandTimeout);
-            bool result = connection.Any(commandDefinition, transaction);
+            bool result = connection.Any(simpleDbCommand, transaction);
 
             return result;
         }

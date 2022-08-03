@@ -14,28 +14,28 @@ namespace Simply.Data
     public static class DbCommandBuilder
     {
         /// <summary>
-        /// Create IDbCommand instance with command definition and db transaction for given db connection.
+        /// Create IDbCommand instance with database command and db transaction for given db connection.
         /// </summary>
         /// <param name="connection">Database connection <see cref="IDbConnection"/>.</param>
-        /// <param name="commandDefinition">Command Definition <see cref="SimpleDbCommand"/>.</param>
+        /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/>.</param>
         /// <returns>The <see cref="IDbCommand"/>.</returns>
         public static IDbCommand CreateCommandWithOptions(this IDbConnection connection,
-            SimpleDbCommand commandDefinition,
+            SimpleDbCommand simpleDbCommand,
           IDbTransaction transaction = null)
         {
-            if (commandDefinition == null || string.IsNullOrWhiteSpace(commandDefinition.CommandText))
-                throw new ArgumentNullException(nameof(commandDefinition));
+            if (simpleDbCommand == null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
+                throw new ArgumentNullException(nameof(simpleDbCommand));
 
             // TODO : WILL BE CHECKED AND TESTED.
             // LIST AND BULK INSERT TEST OK.
 
             IDbCommand command = connection.CreateCommand()
-                .SetCommandType(commandDefinition.CommandType)
-                .SetCommandText(commandDefinition.CommandText)
-                .SetCommandTimeout(commandDefinition.CommandTimeout)
+                .SetCommandType(simpleDbCommand.CommandType)
+                .SetCommandText(simpleDbCommand.CommandText)
+                .SetCommandTimeout(simpleDbCommand.CommandTimeout)
                 .SetTransaction(transaction)
-                .IncludeCommandParameters(commandDefinition.CommandParameters)
+                .IncludeCommandParameters(simpleDbCommand.CommandParameters)
                 ;
 
             return command;

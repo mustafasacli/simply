@@ -30,15 +30,15 @@ namespace Simply.Data
             int result = -1;
 
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sqlQuery,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(parameters);
+            simpleDbCommand.AddCommandParameters(parameters);
 
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 if (transaction == null)
                     connection.OpenIfNot();
@@ -91,20 +91,20 @@ namespace Simply.Data
         /// Executes query and returns result as int.
         /// </summary>
         /// <param name="connection">Database connection <see cref="IDbConnection"/></param>
-        /// <param name="commandDefinition">Db Command Definition <see cref="SimpleDbCommand"/></param>
+        /// <param name="simpleDbCommand">Db database command <see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
         /// <returns>Returns execution result as int. <see cref="IDbCommandResult{System.Int32}"/></returns>
         public static IDbCommandResult<int> ExecuteQuery(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             IDbCommandResult<int> result = new DbCommandResult<int>(-1);
 
             try
             {
                 using (IDbCommand command =
-                    connection.CreateCommandWithOptions(commandDefinition, transaction))
+                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
                 {
-                    if (transaction == null && commandDefinition.AutoOpen)
+                    if (transaction == null && simpleDbCommand.AutoOpen)
                         connection.OpenIfNot();
 
                     result.ExecutionResult = command.ExecuteNonQuery();
@@ -114,7 +114,7 @@ namespace Simply.Data
             }
             finally
             {
-                if (transaction == null && commandDefinition.CloseAtFinal)
+                if (transaction == null && simpleDbCommand.CloseAtFinal)
                     connection.CloseIfNot();
             }
 
@@ -145,10 +145,10 @@ namespace Simply.Data
                 })
                 .ToArray();
 
-            SimpleDbCommand commandDefinition =
-                connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
-            using (IDbCommand command = connection.CreateCommandWithOptions(commandDefinition, transaction))
+            using (IDbCommand command = connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 if (transaction == null)
                     connection.OpenIfNot();

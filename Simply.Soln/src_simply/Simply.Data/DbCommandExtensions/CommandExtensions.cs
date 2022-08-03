@@ -92,8 +92,8 @@ namespace Simply.Data.DbCommandExtensions
         /// <summary>
         /// Adds Command Parameters.
         /// </summary>
-        /// <param name="command">The command <see cref="IDbCommand"/>.</param>
-        /// <param name="commandParameters">Command Definition parameters<see cref="List{DbCommandParameter}"/>.</param>
+        /// <param name="command">Db command <see cref="IDbCommand"/>.</param>
+        /// <param name="commandParameters">Database command parameters<see cref="List{DbCommandParameter}"/>.</param>
         internal static void AddCommandParameters(this IDbCommand command,
             List<DbCommandParameter> commandParameters)
         {
@@ -301,7 +301,7 @@ namespace Simply.Data.DbCommandExtensions
         /// Includes Command Parameters.
         /// </summary>
         /// <param name="command">The command <see cref="IDbCommand"/>.</param>
-        /// <param name="commandParameters">Command Definition parameters<see cref="List{DbCommandParameter}"/>.</param>
+        /// <param name="commandParameters">database command parameters<see cref="List{DbCommandParameter}"/>.</param>
         /// <returns>Returns IDbCommand object instance.</returns>
         [Obsolete("Method is depreated. it will be removed later versions.")]
         internal static IDbCommand IncludeCommandParameters(this IDbCommand command,
@@ -326,7 +326,7 @@ namespace Simply.Data.DbCommandExtensions
         /// Includes Command Parameters.
         /// </summary>
         /// <param name="command">The command <see cref="IDbCommand"/>.</param>
-        /// <param name="commandParameters">Command Definition parameters<see cref="List{System.Object}"/>.</param>
+        /// <param name="commandParameters">database command parameters<see cref="List{System.Object}"/>.</param>
         /// <returns>Returns IDbCommand object instance.</returns>
         internal static IDbCommand IncludeCommandParameters(
             this IDbCommand command, List<object> commandParameters)

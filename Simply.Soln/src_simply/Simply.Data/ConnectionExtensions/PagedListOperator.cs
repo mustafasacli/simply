@@ -44,16 +44,16 @@ namespace Simply.Data
             string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
             };
 
-            commandDefinition.AddCommandParameters(commandParameters);
+            simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                PagedRowListOperator.GetDbRowList(connection, commandDefinition, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
             List<T> result = rowListResult.Result.ConvertRowsToList<T>();
             return result;
@@ -64,19 +64,19 @@ namespace Simply.Data
         /// </summary>
         /// <typeparam name="T">T class.</typeparam>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
         /// <returns>Returns as object list.</returns>
         public static IDbCommandResult<List<T>> GetList<T>(
-            this IDbConnection connection, SimpleDbCommand commandDefinition,
+            this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
             where T : class, new()
         {
             IDbCommandResult<List<T>> result = new DbCommandResult<List<T>>();
 
             IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                PagedRowListOperator.GetDbRowList(connection, commandDefinition, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
             result.Result =
                 rowListResult.Result.ConvertRowsToList<T>()
@@ -110,12 +110,12 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
 
-            SimpleDbCommand commandDefinition =
-                connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                PagedRowListOperator.GetDbRowList(connection, commandDefinition, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
             List<T> result = rowListResult.Result.ConvertRowsToList<T>();
             return result;

@@ -39,11 +39,11 @@ namespace Simply.Data
                 })
                 .ToArray();
 
-            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
+            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                PagedRowListOperator.GetDbRowList(connection, commandDefinition, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
             List<T> resultSet = rowListResult.Result.ConvertRowsToList<T>();
             return resultSet;

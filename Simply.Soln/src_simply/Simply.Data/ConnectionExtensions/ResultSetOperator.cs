@@ -19,11 +19,11 @@ namespace Simply.Data
         /// Get Resultset of the Command definition.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static IDbCommandResult<DataSet> GetResultSetQuery(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
@@ -35,11 +35,11 @@ namespace Simply.Data
             try
             {
                 using (IDbCommand command =
-                    connection.CreateCommandWithOptions(commandDefinition, transaction))
+                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
                 {
                     dataAdapter.SelectCommand = (DbCommand)command;
                     dataSet = new DataSet();
-                    if (transaction == null && commandDefinition.AutoOpen)
+                    if (transaction == null && simpleDbCommand.AutoOpen)
                         connection.OpenIfNot();
                     int executionResult = dataAdapter.Fill(dataSet);
                     result.ExecutionResult = executionResult;
@@ -49,7 +49,7 @@ namespace Simply.Data
             }
             finally
             {
-                if (transaction == null && commandDefinition.CloseAtFinal)
+                if (transaction == null && simpleDbCommand.CloseAtFinal)
                     connection.CloseIfNot();
             }
 
@@ -78,9 +78,9 @@ namespace Simply.Data
                 })
                 .ToArray();
 
-            SimpleDbCommand commandDefinition =
-                connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType);
-            IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, commandDefinition, transaction);
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType);
+            IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
 
             return resultSet.Result;
         }
@@ -89,12 +89,12 @@ namespace Simply.Data
         /// GetDynamicResultSetSkipAndTake Gets query resultset as dynamic object list with skip and take.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
         /// <returns>Returns dynamic object list.</returns>
         public static IDbCommandResult<DataTable> GetResultSet(
-            this IDbConnection connection, SimpleDbCommand commandDefinition,
+            this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
             IDbCommandResult<DataTable> result = new DbCommandResult<DataTable>();
@@ -113,12 +113,12 @@ namespace Simply.Data
                     string format = setting.SkipAndTakeFormat.CopyValue();
                     format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
                     format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
-                    format = format.Replace(InternalAppValues.SqlScriptFormat, commandDefinition.CommandText);
-                    commandDefinition.CommandText = format.CopyValue();
+                    format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+                    simpleDbCommand.CommandText = format.CopyValue();
                 }
             }
 
-            IDbCommandResult<DataSet> tempResultSet = GetResultSetQuery(connection, commandDefinition, transaction);
+            IDbCommandResult<DataSet> tempResultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
             result = new DbCommandResult<DataTable>
             {
                 ExecutionResult = tempResultSet.ExecutionResult,

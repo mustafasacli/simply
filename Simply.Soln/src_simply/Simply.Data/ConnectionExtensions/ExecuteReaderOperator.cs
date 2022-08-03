@@ -15,20 +15,20 @@ namespace Simply.Data
         /// Executes query with parameters and returns DataReader object.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="outputParameters"></param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">Db Command Behavior.</param>
         /// <returns>Returns an IDataReader instance.</returns>
         public static IDataReader ExecuteReaderQuery(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, out DbCommandParameter[] outputParameters,
+            SimpleDbCommand simpleDbCommand, out DbCommandParameter[] outputParameters,
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null)
         {
             IDataReader dataReader = null;
             outputParameters = ArrayHelper.Empty<DbCommandParameter>();
 
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 if (transaction == null)
                     connection.OpenIfNot();
@@ -61,15 +61,15 @@ namespace Simply.Data
             IDataReader dataReader = null;
 
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(parameters);
+            simpleDbCommand.AddCommandParameters(parameters);
 
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 if (!commandBehavior.HasValue)
                     dataReader = command.ExecuteReader();

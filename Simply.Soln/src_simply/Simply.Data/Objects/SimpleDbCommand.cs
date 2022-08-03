@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Simply.Data.Objects
 {
     /// <summary>
-    /// Command Definition.
+    /// database command.
     /// </summary>
     [DataContract]
     public class SimpleDbCommand : BaseDbCommand

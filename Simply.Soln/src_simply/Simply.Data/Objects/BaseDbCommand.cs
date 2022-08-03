@@ -39,7 +39,7 @@ namespace Simply.Data.Objects
         { get; set; }
 
         /// <summary>
-        /// Gets, sets command text is odbc query. if it is true command definition will be recompile.
+        /// Gets, sets command text is odbc query. if it is true database command will be recompile.
         /// as query, else not.
         /// </summary>
         [DataMember]

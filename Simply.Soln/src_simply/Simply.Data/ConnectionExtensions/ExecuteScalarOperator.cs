@@ -28,18 +28,18 @@ namespace Simply.Data
             IDbTransaction transaction = null, int? commandTimeout = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType,
                 CommandTimeout = commandTimeout
             };
 
-            commandDefinition.AddCommandParameters(parameters);
+            simpleDbCommand.AddCommandParameters(parameters);
 
             object result = null;
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 if (transaction == null)
                     connection.OpenIfNot();
@@ -86,15 +86,15 @@ namespace Simply.Data
             object result = null;
 
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(parameters);
+            simpleDbCommand.AddCommandParameters(parameters);
 
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 if (transaction == null)
                     connection.OpenIfNot();
@@ -109,20 +109,20 @@ namespace Simply.Data
         /// ExecuteScalar query with parameters and returns result object.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns execute scalar result as object.</returns>
         public static IDbCommandResult<object> ExecuteScalarQuery(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             IDbCommandResult<object> result = new DbCommandResult<object>(-1);
 
             try
             {
                 using (IDbCommand command =
-                    connection.CreateCommandWithOptions(commandDefinition, transaction))
+                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
                 {
-                    if (transaction == null && commandDefinition.AutoOpen)
+                    if (transaction == null && simpleDbCommand.AutoOpen)
                         connection.OpenIfNot();
 
                     result.Result = command.ExecuteScalar();
@@ -131,7 +131,7 @@ namespace Simply.Data
             }
             finally
             {
-                if (transaction == null && commandDefinition.CloseAtFinal)
+                if (transaction == null && simpleDbCommand.CloseAtFinal)
                     connection.CloseIfNot();
             }
 
@@ -143,14 +143,14 @@ namespace Simply.Data
         /// </summary>
         /// <typeparam name="T">T class.</typeparam>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
         public static IDbCommandResult<T> ExecuteScalarQueryAs<T>(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             IDbCommandResult<object> result =
-                ExecuteScalarQuery(connection, commandDefinition, transaction)
+                ExecuteScalarQuery(connection, simpleDbCommand, transaction)
                 ?? new DbCommandResult<object>();
 
             T value = !result.Result.IsNullOrDbNull() ? (T)result.Result : default;
@@ -186,12 +186,12 @@ namespace Simply.Data
                     Value = p,
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
-            SimpleDbCommand commandDefinition =
-                connection.BuildCommandDefinitionForTranslate(odbcSqlQuery,
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
-            commandDefinition.CommandTimeout = commandTimeout;
+            simpleDbCommand.CommandTimeout = commandTimeout;
 
-            using (IDbCommand command = connection.CreateCommandWithOptions(commandDefinition, transaction))
+            using (IDbCommand command = connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 result = command.ExecuteScalar();
             }
@@ -221,9 +221,9 @@ namespace Simply.Data
                     Value = p,
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
-            SimpleDbCommand commandDefinition = connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
-            using (IDbCommand command = connection.CreateCommandWithOptions(commandDefinition, transaction))
+            using (IDbCommand command = connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 result = command.ExecuteScalar();
             }

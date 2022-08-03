@@ -39,14 +39,14 @@ namespace Simply.Data
             IQuerySetting setting = connection.GetQuerySetting();
             string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
                 commandParameters, setting.ParameterPrefix, parameterNamePrefix);
-            SimpleDbCommand commandDefinition = new SimpleDbCommand()
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
                 CommandType = commandType
             };
-            commandDefinition.AddCommandParameters(commandParameters);
+            simpleDbCommand.AddCommandParameters(commandParameters);
             IDbCommandResult<List<List<SimpleDbRow>>> dynamicList =
-                connection.GetMultiDbRowListQuery(commandDefinition, transaction);
+                connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
             return dynamicList.Result;
         }
 
@@ -54,18 +54,18 @@ namespace Simply.Data
         /// GetDbRowListQuery Gets query result set as SimpleDbRow object list.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowListQuery(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, IDbTransaction transaction = null,
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
         {
             IDbCommandResult<List<SimpleDbRow>> result = new DbCommandResult<List<SimpleDbRow>>();
 
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
@@ -82,18 +82,18 @@ namespace Simply.Data
         /// GetMultiDbRowListQuery Gets query multi result set as multi SimpleDbRow list.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="commandDefinition">Command Definition.</param>
+        /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns multi SimpleDbRow list.</returns>
         public static IDbCommandResult<List<List<SimpleDbRow>>> GetMultiDbRowListQuery(this IDbConnection connection,
-            SimpleDbCommand commandDefinition, IDbTransaction transaction = null,
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
         {
             IDbCommandResult<List<List<SimpleDbRow>>> result = new DbCommandResult<List<List<SimpleDbRow>>>();
 
             using (IDbCommand command =
-                connection.CreateCommandWithOptions(commandDefinition, transaction))
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
@@ -127,11 +127,11 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 }).ToArray() ?? ArrayHelper.Empty<DbCommandParameter>();
 
-            SimpleDbCommand commandDefinition =
-                connection.BuildCommandDefinitionForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<List<SimpleDbRow>> dynamicResult =
-                connection.GetDbRowListQuery(commandDefinition, transaction);
+                connection.GetDbRowListQuery(simpleDbCommand, transaction);
 
             List<SimpleDbRow> resultSet = dynamicResult.Result;
 
