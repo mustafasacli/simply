@@ -11,10 +11,10 @@
         </member>
         <member name="M:Simply.Data.DbCommandBuilder.CreateCommandWithOptions(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
             <summary>
-            Create IDbCommand instance with command definition and db transaction for given db connection.
+            Create IDbCommand instance with database command and db transaction for given db connection.
             </summary>
             <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/>.</param>
-            <param name="commandDefinition">Command Definition <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
+            <param name="simpleDbCommand">database command <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
             <returns>The <see cref="T:System.Data.IDbCommand"/>.</returns>
         </member>
@@ -49,7 +49,7 @@
             The Any.
             </summary>
             <param name="connection">The connection <see cref="T:System.Data.IDbConnection"/>.</param>
-            <param name="commandDefinition">The commandDefinition <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
+            <param name="simpleDbCommand">The simpleDbCommand <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
             <param name="transaction">The transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
             <returns>The <see cref="T:System.Boolean"/>.</returns>
         </member>
@@ -72,19 +72,19 @@
         </member>
         <member name="M:Simply.Data.ConnectionExtensions.CountOperator.Count(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
             <summary>
-            counts rows for given sql query and command definition.
+            counts rows for given database command.
             </summary>
             <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/></param>
-            <param name="commandDefinition">Command Definition <see cref="T:Simply.Data.Objects.SimpleDbCommand"/></param>
+            <param name="simpleDbCommand">database command<see cref="T:Simply.Data.Objects.SimpleDbCommand"/></param>
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/></param>
             <returns>Returns row count as int value <see cref="T:System.Int32"/>.</returns>
         </member>
         <member name="M:Simply.Data.ConnectionExtensions.CountOperator.CountLong(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
             <summary>
-            counts rows as long for given sql query and command definition.
+            counts rows as long for given database command.
             </summary>
             <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/></param>
-            <param name="commandDefinition">Command Definition <see cref="T:Simply.Data.Objects.SimpleDbCommand"/></param>
+            <param name="simpleDbCommand">database command <see cref="T:Simply.Data.Objects.SimpleDbCommand"/></param>
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/></param>
             <returns>Returns row count as long value <see cref="T:System.Int64"/>.</returns>
         </member>
@@ -280,7 +280,7 @@
             GetDbRowListQuery Gets query result set as SimpleDbRow object list.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="behavior">The behavior <see cref="T:System.Nullable`1"/>.</param>
             <returns>Returns SimpleDbRow object list.</returns>
@@ -290,7 +290,7 @@
             GetMultiDbRowListQuery Gets query multi result set as multi SimpleDbRow list.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="behavior">The behavior <see cref="T:System.Nullable`1"/>.</param>
             <returns>Returns multi SimpleDbRow list.</returns>
@@ -350,7 +350,7 @@
             Executes query and returns result as int.
             </summary>
             <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/></param>
-            <param name="commandDefinition">Db Command Definition <see cref="T:Simply.Data.Objects.SimpleDbCommand"/></param>
+            <param name="simpleDbCommand">Db database command <see cref="T:Simply.Data.Objects.SimpleDbCommand"/></param>
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/></param>
             <returns>Returns execution result as int. <see cref="!:IDbCommandResult&lt;System.Int32&gt;"/></returns>
         </member>
@@ -411,7 +411,7 @@
             Executes query with parameters and returns DataReader object.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="outputParameters"></param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandBehavior">Db Command Behavior.</param>
@@ -486,7 +486,7 @@
             ExecuteScalar query with parameters and returns result object.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns execute scalar result as object.</returns>
         </member>
@@ -496,7 +496,7 @@
             </summary>
             <typeparam name="T">T class.</typeparam>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns execute scalar result as object instance.</returns>
         </member>
@@ -578,7 +578,7 @@
             </summary>
             <typeparam name="T">T class.</typeparam>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns first record as dynamic object instance.</returns>
         </member>
@@ -638,7 +638,7 @@
             Get First Row of the Resultset as dynamic object instance.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
+            <param name="simpleDbCommand">database command <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns first record as dynamic object instance.</returns>
         </member>
@@ -692,7 +692,7 @@
             </summary>
             <typeparam name="T">T class.</typeparam>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns last record as object instance.</returns>
         </member>
@@ -750,7 +750,7 @@
             Get Last Row of the Resultset as SimpleDbRow object instance.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns last record as dynamic object instance.</returns>
         </member>
@@ -843,7 +843,7 @@
             </summary>
             <typeparam name="T">T class.</typeparam>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="pageInfo">page info for skip and take counts.</param>
             <returns>Returns as object list.</returns>
@@ -893,7 +893,7 @@
             GetDbRowList Gets query resultset as SimpleDbRow object list with skip and take.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
             <returns>Returns SimpleDbRow object list.</returns>
@@ -922,7 +922,7 @@
             Get Resultset of the Command definition.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns result set in a dataset instance.</returns>
         </member>
@@ -942,7 +942,7 @@
             GetDynamicResultSetSkipAndTake Gets query resultset as dynamic object list with skip and take.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
             <returns>Returns dynamic object list.</returns>
@@ -1097,7 +1097,7 @@
             "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0"
             </returns>
         </member>
-        <member name="M:Simply.Data.DbQueryTranslator.BuildCommandDefinitionForTranslate(System.Data.IDbConnection,System.String,Simply.Data.Objects.DbCommandParameter[],System.Nullable{System.Data.CommandType},System.Nullable{System.Int32},System.Boolean)">
+        <member name="M:Simply.Data.DbQueryTranslator.BuildsimpleDbCommandForTranslate(System.Data.IDbConnection,System.String,Simply.Data.Objects.DbCommandParameter[],System.Nullable{System.Data.CommandType},System.Nullable{System.Int32},System.Boolean)">
             <summary>
             Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
             </summary>
@@ -1107,14 +1107,14 @@
             <param name="commandType">The db command type <see cref="T:System.Nullable`1"/>.</param>
             <param name="commandTimeout">DbCommand timeout</param>
             <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
-            <returns>Returns Command Definition object instance <see cref="T:Simply.Data.Objects.SimpleDbCommand" />.</returns>
+            <returns>Returns database command object instance <see cref="T:Simply.Data.Objects.SimpleDbCommand" />.</returns>
         </member>
-        <member name="M:Simply.Data.DbQueryTranslator.RebuildCommandDefinitionForTranslate(Simply.Data.Enums.DbConnectionTypes,Simply.Data.Objects.SimpleDbCommand,System.Boolean)">
+        <member name="M:Simply.Data.DbQueryTranslator.RebuildsimpleDbCommandForTranslate(Simply.Data.Enums.DbConnectionTypes,Simply.Data.Objects.SimpleDbCommand,System.Boolean)">
              <summary>
             
              </summary>
              <param name="connectionType">db connacteion type.</param>
-             <param name="tempCommandDefinition">odbc command definition</param>
+             <param name="tempsimpleDbCommand">odbc database command</param>
              <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
              <returns></returns>
         </member>
@@ -1170,7 +1170,7 @@
             </summary>
             <typeparam name="T">T class.</typeparam>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition.</param>
+            <param name="simpleDbCommand">database command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns single record as dynamic object instance.</returns>
         </member>
@@ -1245,7 +1245,7 @@
             Get Single Row of the Resultset as dynamic object instance.
             </summary>
             <param name="connection">Database connection.</param>
-            <param name="commandDefinition">Command Definition <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
+            <param name="simpleDbCommand">database command <see cref="T:Simply.Data.Objects.SimpleDbCommand"/>.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns single record as dynamic object instance.</returns>
         </member>
@@ -1860,8 +1860,8 @@
             <summary>
             Adds Command Parameters.
             </summary>
-            <param name="command">The command <see cref="T:System.Data.IDbCommand"/>.</param>
-            <param name="commandParameters">Command Definition parameters<see cref="T:System.Collections.Generic.List`1"/>.</param>
+            <param name="command">Db command <see cref="T:System.Data.IDbCommand"/>.</param>
+            <param name="commandParameters">Database command parameters<see cref="T:System.Collections.Generic.List`1"/>.</param>
         </member>
         <member name="M:Simply.Data.DbCommandExtensions.CommandExtensions.AddCommandParameters(System.Data.IDbCommand,System.Object[])">
             <summary>
@@ -1943,7 +1943,7 @@
             Includes Command Parameters.
             </summary>
             <param name="command">The command <see cref="T:System.Data.IDbCommand"/>.</param>
-            <param name="commandParameters">Command Definition parameters<see cref="T:System.Collections.Generic.List`1"/>.</param>
+            <param name="commandParameters">database command parameters<see cref="T:System.Collections.Generic.List`1"/>.</param>
             <returns>Returns IDbCommand object instance.</returns>
         </member>
         <member name="M:Simply.Data.DbCommandExtensions.CommandExtensions.IncludeCommandParameters(System.Data.IDbCommand,System.Collections.Generic.List{System.Object})">
@@ -1951,7 +1951,7 @@
             Includes Command Parameters.
             </summary>
             <param name="command">The command <see cref="T:System.Data.IDbCommand"/>.</param>
-            <param name="commandParameters">Command Definition parameters<see cref="!:List&lt;System.Object&gt;"/>.</param>
+            <param name="commandParameters">database command parameters<see cref="!:List&lt;System.Object&gt;"/>.</param>
             <returns>Returns IDbCommand object instance.</returns>
         </member>
         <member name="M:Simply.Data.DbCommandExtensions.CommandExtensions.IncludeCommandParameters(System.Data.IDbCommand,System.Object[])">
@@ -2318,7 +2318,7 @@
         </member>
         <member name="P:Simply.Data.Objects.BaseDbCommand.IsOdbc">
             <summary>
-            Gets, sets command text is odbc query. if it is true command definition will be recompile.
+            Gets, sets command text is odbc query. if it is true database command will be recompile.
             as query, else not.
             </summary>
         </member>
@@ -2370,7 +2370,7 @@
         </member>
         <member name="T:Simply.Data.Objects.SimpleDbCommand">
             <summary>
-            Command Definition.
+            database command.
             </summary>
         </member>
         <member name="M:Simply.Data.Objects.SimpleDbCommand.#ctor">

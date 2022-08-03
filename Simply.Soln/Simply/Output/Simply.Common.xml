@@ -1084,13 +1084,6 @@
             <param name="value">The value.</param>
             <returns>A bool.</returns>
         </member>
-        <member name="M:Simply.Common.Objects.SimpleDbRow.GetCellValues(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Gets the cell values.
-            </summary>
-            <param name="cellNames">The cell names.</param>
-            <returns>An array of object.</returns>
-        </member>
         <member name="M:Simply.Common.Objects.SimpleDbRow.CheckColumnNameIsNull(System.String)">
             <summary>
             Checks the column name ıs null.
