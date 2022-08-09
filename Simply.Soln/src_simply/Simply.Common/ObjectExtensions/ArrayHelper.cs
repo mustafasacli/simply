@@ -50,7 +50,7 @@ namespace Simply.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="array">T instance array</param>
         /// <returns>if array is null or empty returns true else return false.</returns>
-        public static bool IsNullOrEmpty<T>(T[] array) where T : class
+        public static bool IsNullOrEmpty<T>(this T[] array) where T : class
         {
             bool isEmpty = array == null || array.Length < 1;
             return isEmpty;
@@ -62,7 +62,7 @@ namespace Simply.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="list">T instance array</param>
         /// <returns>if list is null or empty returns true else return false.</returns>
-        public static bool IsNullOrEmpty<T>(List<T> list) where T : class
+        public static bool IsNullOrEmpty<T>(this List<T> list) where T : class
         {
             bool isEmpty = list == null || list.Count < 1;
             return isEmpty;
