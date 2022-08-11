@@ -48,19 +48,7 @@ namespace Simply.Data
                 CommandType = commandType
             };
             simpleDbCommand.AddCommandParameters(parameters);
-            SimpleDbRow row;
-
-            if (setting.LastFormat.IsNullOrSpace())
-            {
-                row = connection.QueryLastAsDbRow(simpleDbCommand, transaction).Result;
-            }
-            else
-            {
-                string format = setting.LastFormat;
-                format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-                simpleDbCommand.CommandText = format;
-                row = connection.QueryLastAsDbRow(simpleDbCommand, transaction).Result;
-            }
+            SimpleDbRow row = connection.QueryLastAsDbRow(simpleDbCommand, transaction).Result;
 
             T instance = row.ConvertRowTo<T>();
             return instance;

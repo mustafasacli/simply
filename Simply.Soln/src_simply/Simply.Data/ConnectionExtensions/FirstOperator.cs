@@ -121,7 +121,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>An asynchronous result that yields the first as dynamic.</returns>
-        public static async Task<SimpleDbRow> QueryFirstDynamicAsync(this IDbConnection connection,
+        public static async Task<SimpleDbRow> QueryFirstAsDbRowAsync(this IDbConnection connection,
             string sqlText, object obj, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null, char? parameterNamePrefix = null)
         {

@@ -18,8 +18,8 @@ namespace Simply.Data
             this.ConnectionType = connectionType;
             this.ParameterPrefix = AtChar.ToString();
             this.ParameterSuffix = ParameterPrefix;
-            this.Prefix = BackquoteString;// "`";
-            this.Suffix = BackquoteString;// "`";
+            this.Prefix = BackquoteString;
+            this.Suffix = BackquoteString;
             this.StringConcatOperation = "CONCAT( #params# )";
             this.SkipAndTakeFormat = "SELECT EXT1.* FROM (#SQL_SCRIPT#) AS EXT1 LIMIT #SKIP#, #TAKE#";
             this.LastFormat = "SELECT EXT2.* FROM (SELECT EXT1.*, ROW_NUMBER() OVER() AS RN1 FROM ( #SQL_SCRIPT# ) AS EXT1) AS EXT2 ORDER BY EXT2.RN1 DESC LIMIT 0, 1 ";
