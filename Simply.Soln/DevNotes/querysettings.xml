@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings>
+	<setting connection-type="mysql">
+		<add name="parameterPrefix" value="@" />
+		<add name="parameterSuffix" value="" />
+		<add name="prefix" value="`" />
+		<add name="suffix" value="`" />
+		<add name="stringConcatOperation" value="CONCAT( #params# )" />
+		<add name="skipAndTakeFormat" value="SELECT EXT1.* FROM (#SQL_SCRIPT#) AS EXT1 LIMIT #SKIP#, #TAKE#" />
+		<add name="lastFormat" value="SELECT EXT2.* FROM (SELECT EXT1.*, ROW_NUMBER() OVER() AS RN1 FROM ( #SQL_SCRIPT# ) AS EXT1) AS EXT2 ORDER BY EXT2.RN1 DESC LIMIT 0, 1" />
+		<add name="SubstringFormat" value="SUBSTR(#0#, #1#, #2#)" />
+		<add name="CountFormat" value="SELECT COUNT(1) FROM ( #SQL_SCRIPT# ) AS CNT" />
+		<add name="CountFormat2" value="SELECT COUNT(*) FROM ( #SQL_SCRIPT# ) AS CNT" />
+		<add name="" value="" />
+	</setting>
+</settings>

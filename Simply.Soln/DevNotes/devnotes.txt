@@ -1,0 +1,3 @@
+12-08-2022 Notlar;
+- IQuerySettings için external inject mekanizmasý kurulacak.
+Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
