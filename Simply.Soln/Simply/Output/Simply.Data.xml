@@ -594,7 +594,7 @@
             <param name="commandTimeout">DbCommand timeout</param>
             <returns>Returns first record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.QueryFirstDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRowAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
             <summary>
             Get First Row of the Resultset as dynamic object instance with async operation.
             </summary>
