@@ -98,6 +98,17 @@ namespace Simply.Data
         }
 
         /// <summary>
+        /// Opens the database connection if not opened and return this instance.
+        /// </summary>
+        /// <param name="connection">The database connection instance.</param>
+        /// <returns>A IDbConnection instance.</returns>
+        public static IDbConnection OpenAnd(this IDbConnection connection)
+        {
+            OpenIfNot(connection);
+            return connection;
+        }
+
+        /// <summary>
         /// Opens connection and Begins a DbTransaction.
         /// </summary>
         /// <param name="connection">Database Connection.</param>
@@ -189,7 +200,7 @@ namespace Simply.Data
             });
 
             if (commandParameterType == null)
-                throw new Exception("DbParameter not found for given database connection.");
+                throw new Exception(DbAppMessages.AdapterNotContainsDbParameterType);
 
             DbParameter parameter = Activator.CreateInstance(commandParameterType) as DbParameter;
 
