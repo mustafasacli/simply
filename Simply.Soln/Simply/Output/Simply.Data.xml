@@ -175,6 +175,13 @@
             <param name="connection">Database Connection.</param>
             <exception cref="T:System.ArgumentNullException">if connection parameter is null, throws exception, else not.</exception>
         </member>
+        <member name="M:Simply.Data.DbConnectionExtension.OpenAnd(System.Data.IDbConnection)">
+            <summary>
+            Opens the database connection if not opened and return this instance.
+            </summary>
+            <param name="connection">The database connection instance.</param>
+            <returns>A IDbConnection instance.</returns>
+        </member>
         <member name="M:Simply.Data.DbConnectionExtension.OpenAndBeginTransaction(System.Data.IDbConnection,System.Nullable{System.Data.IsolationLevel})">
             <summary>
             Opens connection and Begins a DbTransaction.
