@@ -126,7 +126,7 @@ namespace Simply.Data
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
             if ((!setOverratedParamsToOutput && paramStringArray.Count != commandParameters.Length) || paramStringArray.Count < commandParameters.Length)
-                throw new ArgumentException("compiled query parameters did not match with command parameters. Please check query and parameters.");
+                throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
 
             for (int counter = 0; counter < commandParameters.Length; counter++)
             {
@@ -181,7 +181,7 @@ namespace Simply.Data
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
             if ((!setOverratedParamsToOutput && paramStringArray.Count != tempsimpleDbCommand.CommandParameters.Count) || paramStringArray.Count < tempsimpleDbCommand.CommandParameters.Count)
-                throw new ArgumentException("compiled query parameters did not match with command parameters. Please check query and parameters.");
+                throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
 
             for (int counter = 0; counter < tempsimpleDbCommand.CommandParameters.Count; counter++)
             {
@@ -248,7 +248,7 @@ namespace Simply.Data
 
             if ((!setOverratedParametersToOutput && paramStringArray.Count != parameterValues.Length)
                 || paramStringArray.Count < parameterValues.Length)
-                throw new ArgumentException("compiled query parameters did not match with command parameters. Please check query and parameters.");
+                throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
 
             // method for create db parameter.
             for (int counter = 0; counter < parameterValues.Length; counter++)

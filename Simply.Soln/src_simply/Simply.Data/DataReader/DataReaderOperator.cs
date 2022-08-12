@@ -1,4 +1,5 @@
 ﻿using Simply.Common.Objects;
+using Simply.Data.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -285,7 +286,7 @@ namespace Simply.Data
                     expando = reader.GetSimpleDbRow();
 
                     if (reader.Read())
-                        throw new Exception("Sequence should not contains more than one element.");
+                        throw new Exception(DbAppMessages.SingleRowError);
                 }
             }
             finally

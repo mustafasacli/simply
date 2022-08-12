@@ -1,4 +1,5 @@
-﻿using Simply.Data.Enums;
+﻿using Simply.Data.Constants;
+using Simply.Data.Enums;
 using Simply.Data.Interfaces;
 using System;
 using System.Collections.Concurrent;
@@ -184,7 +185,7 @@ namespace Simply.Data.QuerySettings
             }
 
             if (setting == null)
-                throw new Exception("No Query Setting found for with connection type: " + connectionType.ToString());
+                throw new Exception(DbAppMessages.InvalidConnectionType + connectionType.ToString());
 
             return setting;
         }

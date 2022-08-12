@@ -222,7 +222,7 @@ namespace Simply.Data
                 DbCommandParameter[] outputValues;
 
                 reader = connection.ExecuteReaderQuery(
-                    simpleDbCommand, out outputValues, transaction, commandBehavior: CommandBehavior.SingleRow);
+                    simpleDbCommand, out outputValues, transaction, commandBehavior: null);
 
                 result.OutputParameters = outputValues;
                 result.Result = reader.SingleDbRow();

@@ -29,7 +29,7 @@ namespace Simply.Data
 
             DbDataAdapter dataAdapter = connection.CreateAdapter();
             if (dataAdapter == null)
-                throw new Exception("DataAdapter class not found in .NET Provider.");
+                throw new Exception(DbAppMessages.DataAdapterNotFound);
 
             DataSet dataSet;
             try

@@ -1,4 +1,5 @@
 ﻿using Simply.Common;
+using Simply.Data.Constants;
 using Simply.Data.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -137,13 +138,13 @@ namespace Simply.Data
         public static DataTable GetPageOfDataTable(this DataTable datatable, int pageNumber, int rowCount)
         {
             if (datatable == null)
-                throw new System.NullReferenceException("DataTable object can not be null.");
+                throw new System.NullReferenceException(DbAppMessages.DatatableIsNull);
 
             if (pageNumber < 0)
-                throw new Exception("Page Number cannot be less than 0.");
+                throw new Exception(DbAppMessages.PageNumberNegative);
 
             if (rowCount < 1)
-                throw new Exception("Row Count of Page cannot be less than 1.");
+                throw new Exception(DbAppMessages.RowCountZero);
 
             DataTable data = datatable.CopyColumnsAsDatatable();
 
@@ -471,7 +472,7 @@ namespace Simply.Data
                 throw new ArgumentNullException(nameof(columnName));
 
             if (!dataTable.Columns.Contains(columnName))
-                throw new ArgumentException("There is no column with given name in datatable.");
+                throw new ArgumentException(DbAppMessages.InvalidColumnName);
 
             List<T> result = (from row in dataTable.AsEnumerable()
                               select row.Field<T>(columnName))

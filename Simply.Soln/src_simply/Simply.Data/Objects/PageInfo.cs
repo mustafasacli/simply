@@ -1,4 +1,5 @@
-﻿using Simply.Data.Interfaces;
+﻿using Simply.Data.Constants;
+using Simply.Data.Interfaces;
 using System;
 
 namespace Simply.Data.Objects
@@ -40,7 +41,7 @@ namespace Simply.Data.Objects
         public static IPageInfo GetPageWithPageNumber(uint pageNumber, uint pageItemLength)
         {
             if (pageNumber < 1)
-                throw new ArgumentOutOfRangeException("page number can not be less than 1.");
+                throw new ArgumentOutOfRangeException(DbAppMessages.PageNumberLessThanOne);
 
             return new PageInfo((pageNumber - 1) * pageItemLength, pageItemLength);
         }
