@@ -17,7 +17,7 @@
 
         internal static readonly string OracleCommandNoBindByNameProperty = "Oracle Command has no BindByName property.";
 
-        public static readonly string SingleRowError = "Sequence should not contain more than one element.";
+        public static readonly string SingleRowError = "Sequence contains more than one element.";
 
         public static readonly string AdapterNotContainsDbParameterType = "DbParameter not found for given database connection.";
 
