@@ -36,5 +36,7 @@
         public static readonly string PageNumberLessThanOne = "Page number can not be less than 1.";
 
         public static readonly string InvalidConnectionType = "No Query Setting found for with connection type: ";
+
+        public static readonly string ParameterCanNotBeNullFormat = "{0} can not be null.";
     }
 }

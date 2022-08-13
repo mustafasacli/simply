@@ -79,7 +79,7 @@ namespace Simply.Data
                 .ToArray();
 
             SimpleDbCommand simpleDbCommand =
-                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType);
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType);
             IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
 
             return resultSet.Result;

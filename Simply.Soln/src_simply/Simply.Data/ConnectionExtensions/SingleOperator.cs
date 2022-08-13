@@ -92,7 +92,7 @@ namespace Simply.Data
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p })
                 .ToArray() ?? new DbCommandParameter[0];
-            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(
+            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
                 odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<SimpleDbRow> expando = QuerySingleAsDbRow(connection, simpleDbCommand, transaction);

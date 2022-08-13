@@ -128,7 +128,7 @@ namespace Simply.Data
                 }).ToArray() ?? ArrayHelper.Empty<DbCommandParameter>();
 
             SimpleDbCommand simpleDbCommand =
-                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<List<SimpleDbRow>> dynamicResult =
                 connection.GetDbRowListQuery(simpleDbCommand, transaction);

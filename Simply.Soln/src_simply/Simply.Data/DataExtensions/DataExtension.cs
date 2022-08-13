@@ -138,7 +138,7 @@ namespace Simply.Data
         public static DataTable GetPageOfDataTable(this DataTable datatable, int pageNumber, int rowCount)
         {
             if (datatable == null)
-                throw new System.NullReferenceException(DbAppMessages.DatatableIsNull);
+                throw new NullReferenceException(DbAppMessages.DatatableIsNull);
 
             if (pageNumber < 0)
                 throw new Exception(DbAppMessages.PageNumberNegative);

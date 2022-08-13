@@ -1104,7 +1104,7 @@
             "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = :p0", ":p0"
             </returns>
         </member>
-        <member name="M:Simply.Data.DbQueryTranslator.BuildsimpleDbCommandForTranslate(System.Data.IDbConnection,System.String,Simply.Data.Objects.DbCommandParameter[],System.Nullable{System.Data.CommandType},System.Nullable{System.Int32},System.Boolean)">
+        <member name="M:Simply.Data.DbQueryTranslator.BuildSimpleDbCommandForTranslate(System.Data.IDbConnection,System.String,Simply.Data.Objects.DbCommandParameter[],System.Nullable{System.Data.CommandType},System.Nullable{System.Int32},System.Boolean)">
             <summary>
             Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
             </summary>
@@ -1113,10 +1113,10 @@
             <param name="commandParameters">The commandParameters <see cref="!:DbCommandParameter[]"/>.</param>
             <param name="commandType">The db command type <see cref="T:System.Nullable`1"/>.</param>
             <param name="commandTimeout">DbCommand timeout</param>
-            <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
+            <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
             <returns>Returns database command object instance <see cref="T:Simply.Data.Objects.SimpleDbCommand" />.</returns>
         </member>
-        <member name="M:Simply.Data.DbQueryTranslator.RebuildsimpleDbCommandForTranslate(Simply.Data.Enums.DbConnectionTypes,Simply.Data.Objects.SimpleDbCommand,System.Boolean)">
+        <member name="M:Simply.Data.DbQueryTranslator.RebuildSimpleDbCommandForTranslate(Simply.Data.Enums.DbConnectionTypes,Simply.Data.Objects.SimpleDbCommand,System.Boolean)">
              <summary>
             
              </summary>

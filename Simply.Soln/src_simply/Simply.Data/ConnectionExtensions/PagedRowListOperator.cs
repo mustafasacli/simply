@@ -150,7 +150,7 @@ namespace Simply.Data
                 }).ToArray();
 
             SimpleDbCommand simpleDbCommand =
-                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =

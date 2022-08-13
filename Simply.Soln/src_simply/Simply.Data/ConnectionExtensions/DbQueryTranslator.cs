@@ -109,11 +109,11 @@ namespace Simply.Data
         /// <param name="commandParameters">The commandParameters <see cref="DbCommandParameter[]"/>.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <param name="commandTimeout">DbCommand timeout</param>
-        /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
+        /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns>Returns database command object instance <see cref="SimpleDbCommand" />.</returns>
-        public static SimpleDbCommand BuildsimpleDbCommandForTranslate(
+        public static SimpleDbCommand BuildSimpleDbCommandForTranslate(
             this IDbConnection connection, string odbcSqlQuery, DbCommandParameter[] commandParameters, CommandType? commandType,
-            int? commandTimeout = null, bool setOverratedParamsToOutput = false)
+            int? commandTimeout = null, bool setOverratedParametersToOutput = false)
         {
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand();
 
@@ -125,7 +125,7 @@ namespace Simply.Data
             simpleDbCommand.CommandTimeout = commandTimeout;
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
-            if ((!setOverratedParamsToOutput && paramStringArray.Count != commandParameters.Length) || paramStringArray.Count < commandParameters.Length)
+            if ((!setOverratedParametersToOutput && paramStringArray.Count != commandParameters.Length) || paramStringArray.Count < commandParameters.Length)
                 throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
 
             for (int counter = 0; counter < commandParameters.Length; counter++)
@@ -144,7 +144,7 @@ namespace Simply.Data
                     });
             }
 
-            if (setOverratedParamsToOutput && paramStringArray.Count > commandParameters.Length)
+            if (setOverratedParametersToOutput && paramStringArray.Count > commandParameters.Length)
             {
                 int cnt = paramStringArray.Count - commandParameters.Length;
                 for (int counter = 0; counter < cnt; counter++)
@@ -168,7 +168,7 @@ namespace Simply.Data
         /// <param name="tempsimpleDbCommand">odbc database command</param>
         /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns></returns>
-        public static SimpleDbCommand RebuildsimpleDbCommandForTranslate(this DbConnectionTypes connectionType,
+        public static SimpleDbCommand RebuildSimpleDbCommandForTranslate(this DbConnectionTypes connectionType,
             SimpleDbCommand tempsimpleDbCommand, bool setOverratedParamsToOutput = false)
         {
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand();
@@ -180,7 +180,8 @@ namespace Simply.Data
             simpleDbCommand.CommandTimeout = tempsimpleDbCommand.CommandTimeout;
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
-            if ((!setOverratedParamsToOutput && paramStringArray.Count != tempsimpleDbCommand.CommandParameters.Count) || paramStringArray.Count < tempsimpleDbCommand.CommandParameters.Count)
+            if ((!setOverratedParamsToOutput && paramStringArray.Count != tempsimpleDbCommand.CommandParameters.Count)
+                || paramStringArray.Count < tempsimpleDbCommand.CommandParameters.Count)
                 throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
 
             for (int counter = 0; counter < tempsimpleDbCommand.CommandParameters.Count; counter++)
@@ -250,7 +251,6 @@ namespace Simply.Data
                 || paramStringArray.Count < parameterValues.Length)
                 throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
 
-            // method for create db parameter.
             for (int counter = 0; counter < parameterValues.Length; counter++)
             {
                 DbParameter parameter = command.CreateDbParameter(paramStringArray[counter],

@@ -111,7 +111,7 @@ namespace Simply.Data.ConnectionExtensions
             }).ToArray();
 
             SimpleDbCommand simpleDbCommand =
-                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
             IQuerySetting querySetting = connection.GetQuerySetting();
             string format = querySetting.CountFormat;
             simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
@@ -144,7 +144,7 @@ namespace Simply.Data.ConnectionExtensions
             }).ToArray();
 
             SimpleDbCommand simpleDbCommand =
-                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
             IQuerySetting querySetting = connection.GetQuerySetting();
             string format = querySetting.CountFormat;
             simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);

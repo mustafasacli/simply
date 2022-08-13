@@ -101,7 +101,7 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 })
                 .ToArray();
-            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
+            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<SimpleDbRow> dbCommandResult = connection.QueryLastAsDbRow(simpleDbCommand, transaction);

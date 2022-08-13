@@ -187,7 +187,7 @@ namespace Simply.Data
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
             SimpleDbCommand simpleDbCommand =
-                connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery,
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandType, commandTimeout);
             simpleDbCommand.CommandTimeout = commandTimeout;
 
@@ -221,7 +221,7 @@ namespace Simply.Data
                     Value = p,
                     ParameterDbType = p.ToDbType()
                 }).ToArray();
-            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
+            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             using (IDbCommand command = connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {

@@ -1,6 +1,5 @@
 ﻿using Simply.Common;
 using Simply.Data.Constants;
-using Simply.Data.Enums;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -340,11 +339,11 @@ namespace Simply.Data.DbCommandExtensions
             foreach (object parameter in commandParameters)
             {
                 if (parameter == null)
-                    throw new ArgumentNullException($"{nameof(parameter)} can not be null.");
+                    throw new ArgumentNullException(string.Format(DbAppMessages.ParameterCanNotBeNullFormat, nameof(parameter)));
 
                 DbParameter dbParameter = null;
 
-                if (parameter == null && parameter.GetRealType().IsSimpleTypeV2())
+                if (/*parameter == null && */parameter.GetRealType().IsSimpleTypeV2())
                 {
                     dbParameter = command.CreateDbParameter();
                     dbParameter.Value = parameter ?? (object)DBNull.Value;
@@ -372,7 +371,9 @@ namespace Simply.Data.DbCommandExtensions
                 }
 
                 if (dbParameter == null)
-                    throw new ArgumentNullException($"{nameof(dbParameter)} can not be null." + parameter.ToString());
+                    throw new ArgumentNullException(
+                        string.Format(DbAppMessages.ParameterCanNotBeNullFormat, nameof(dbParameter))
+                         + parameter.ToString());
 
                 if (dbParameter.ParameterName.IsValid() && !dbParameter.ParameterName.StartsWith(parameterPrefix))
                 {

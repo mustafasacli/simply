@@ -92,7 +92,7 @@ namespace Simply.Data
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p, ParameterDbType = p.ToDbType() })
                 .ToArray() ?? new DbCommandParameter[0];
-            SimpleDbCommand simpleDbCommand = connection.BuildsimpleDbCommandForTranslate(
+            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
                 odbcSqlQuery, commandParameters, commandType, commandTimeout);
 
             IDbCommandResult<SimpleDbRow> dbRow = QueryFirstAsDbRow(connection, simpleDbCommand, transaction);
