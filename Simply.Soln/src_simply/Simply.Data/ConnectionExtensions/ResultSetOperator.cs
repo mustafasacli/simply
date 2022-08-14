@@ -39,7 +39,7 @@ namespace Simply.Data
                 {
                     dataAdapter.SelectCommand = (DbCommand)command;
                     dataSet = new DataSet();
-                    if (transaction == null && simpleDbCommand.AutoOpen)
+                    if (transaction == null)
                         connection.OpenIfNot();
                     int executionResult = dataAdapter.Fill(dataSet);
                     result.ExecutionResult = executionResult;
@@ -49,7 +49,7 @@ namespace Simply.Data
             }
             finally
             {
-                if (transaction == null && simpleDbCommand.CloseAtFinal)
+                if (transaction == null)
                     connection.CloseIfNot();
             }
 

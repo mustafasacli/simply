@@ -128,20 +128,6 @@ namespace Simply.Data.Objects
         { get; set; }
 
         /// <summary>
-        /// Auto Opens DbConnection before db operations.
-        /// </summary>
-        [DataMember]
-        public bool AutoOpen
-        { get; set; }
-
-        /// <summary>
-        /// Closes Connection after db operation.
-        /// </summary>
-        [DataMember]
-        public bool CloseAtFinal
-        { get; set; }
-
-        /// <summary>
         /// Adds command parameter to list.
         /// </summary>
         /// <param name="dbCommandParameter">db command parameter</param>

@@ -2453,16 +2453,6 @@
             Gets Sets OracleCommand BindByName value.
             </summary>
         </member>
-        <member name="P:Simply.Data.Objects.SimpleDbCommand.AutoOpen">
-            <summary>
-            Auto Opens DbConnection before db operations.
-            </summary>
-        </member>
-        <member name="P:Simply.Data.Objects.SimpleDbCommand.CloseAtFinal">
-            <summary>
-            Closes Connection after db operation.
-            </summary>
-        </member>
         <member name="M:Simply.Data.Objects.SimpleDbCommand.AddDatabaseParameterReturn(System.Object)">
             <summary>
             Adds command parameter to list.

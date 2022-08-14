@@ -1,3 +1,15 @@
 12-08-2022 Notlar;
 - IQuerySettings için external inject mekanizmasý kurulacak.
 Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
+-----------------------------------------------------------------------------------------------------------------------
+
+14-08-2022 Notlar;
+- simply.data paketinde her metoda IExecutionSetting parametresi eklenecek.
+IExecutionSetting : interface SimpleExecutionSetting sýnýfý eklenip bunun üzerinden hareket edilecek.
+(Bu sýnýfta, AutoOpen, AutoClose, CommandTimeout özellikleri olacak ve bu istekler buradan inject edilecek.)
+(Kesin deðil.)(Emin olunup sonra eklenecek.)
+
+- IQuerySettings için external inject mekanizmasý kurulacak.
+Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
+
+

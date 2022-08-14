@@ -122,7 +122,7 @@ namespace Simply.Data
                 using (IDbCommand command =
                     connection.CreateCommandWithOptions(simpleDbCommand, transaction))
                 {
-                    if (transaction == null && simpleDbCommand.AutoOpen)
+                    if (transaction == null)
                         connection.OpenIfNot();
 
                     result.Result = command.ExecuteScalar();
@@ -131,7 +131,7 @@ namespace Simply.Data
             }
             finally
             {
-                if (transaction == null && simpleDbCommand.CloseAtFinal)
+                if (transaction == null)
                     connection.CloseIfNot();
             }
 

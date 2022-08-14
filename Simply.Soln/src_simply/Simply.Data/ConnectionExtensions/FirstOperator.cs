@@ -189,7 +189,7 @@ namespace Simply.Data
                 {
                     DbCommandParameter[] outputValues;
 
-                    if (transaction == null && simpleDbCommand.AutoOpen)
+                    if (transaction == null)
                         connection.OpenIfNot();
 
                     reader = connection.ExecuteReaderQuery(
@@ -203,7 +203,7 @@ namespace Simply.Data
             }
             finally
             {
-                if (transaction == null && simpleDbCommand.CloseAtFinal)
+                if (transaction == null)
                     connection.CloseIfNot();
             }
 

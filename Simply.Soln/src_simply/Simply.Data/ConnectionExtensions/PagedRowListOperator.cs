@@ -101,7 +101,7 @@ namespace Simply.Data
             {
                 try
                 {
-                    if (transaction == null && simpleDbCommand.AutoOpen)
+                    if (transaction == null)
                         connection.OpenIfNot();
 
                     using (IDataReader reader = command.ExecuteReader())
@@ -117,7 +117,7 @@ namespace Simply.Data
                 }
                 finally
                 {
-                    if (transaction == null && simpleDbCommand.CloseAtFinal)
+                    if (transaction == null)
                         connection.CloseIfNot();
                 }
             }
