@@ -15,7 +15,7 @@
         /// </summary>
         public static readonly string UndefinedKey = "Key column(s) must be defined.";
 
-        internal static readonly string OracleCommandNoBindByNameProperty = "Oracle Command has no BindByName property.";
+        public static readonly string OracleCommandNoBindByNameProperty = "Oracle Command has no BindByName property.";
 
         public static readonly string SingleRowError = "Sequence contains more than one element.";
 
