@@ -32,14 +32,14 @@
         <Compile Include="..\..\src_simply\Simply.Data\DbTransactionExtensions\TransactionExtensions.cs" Link="DbTransactionExtensions\TransactionExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Enums\DbConnectionTypes.cs" Link="Enums\DbConnectionTypes.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IDbCommandResult.cs" Link="Interfaces\IDbCommandResult.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IExecutionSetting.cs" Link="Interfaces\IExecutionSetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ICommandSetting.cs" Link="Interfaces\ICommandSetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IPageInfo.cs" Link="Interfaces\IPageInfo.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\BaseDbCommand.cs" Link="Objects\BaseDbCommand.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleDbCommand.cs" Link="Objects\SimpleDbCommand.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandParameter.cs" Link="Objects\DbCommandParameter.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandResult.cs" Link="Objects\DbCommandResult.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\PageInfo.cs" Link="Objects\PageInfo.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleExecutionSetting.cs" Link="Objects\SimpleExecutionSetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleCommandSetting.cs" Link="Objects\SimpleCommandSetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs" Link="QuerySettings\Core\IQuerySetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\DB2QuerySetting.cs" Link="QuerySettings\DB2QuerySetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Factory\QuerySettingsFactory.cs" Link="QuerySettings\Factory\QuerySettingsFactory.cs" />

@@ -33,7 +33,7 @@
             Defines the <see cref="T:Simply.Data.AnyOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.AnyOperator.Any(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.AnyOperator.Any(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             The Any.
             </summary>
@@ -42,6 +42,8 @@
             <param name="obj">The obj <see cref="T:System.Object"/>.</param>
             <param name="commandType">The commandType <see cref="T:System.Data.CommandType"/>.</param>
             <param name="transaction">The transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
+            <param name="commandTimeout">db command timeout(optional).</param>
+            <param name="commandSetting">Command setting</param>
             <returns>The <see cref="T:System.Boolean"/>.</returns>
         </member>
         <member name="M:Simply.Data.AnyOperator.Any(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -53,16 +55,15 @@
             <param name="transaction">The transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
             <returns>The <see cref="T:System.Boolean"/>.</returns>
         </member>
-        <member name="M:Simply.Data.AnyOperator.Any(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.AnyOperator.Any(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             The Any.
             </summary>
             <param name="connection">The connection <see cref="T:System.Data.IDbConnection"/>.</param>
             <param name="odbcSqlQuery">The odbcSqlQuery <see cref="T:System.String"/>.</param>
             <param name="parameterValues">The parameterValues <see cref="!:object[]"/>.</param>
-            <param name="commandType">The commandType <see cref="T:System.Data.CommandType"/>.</param>
             <param name="transaction">The transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
-            <param name="commandTimeout">The commandTimeout <see cref="!:System.Nullable&lt;int&gt;"/>.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>The <see cref="T:System.Boolean"/>.</returns>
         </member>
         <member name="T:Simply.Data.ConnectionExtensions.CountOperator">
@@ -88,29 +89,29 @@
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/></param>
             <returns>Returns row count as long value <see cref="T:System.Int64"/>.</returns>
         </member>
-        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.Count(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.Count(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             counts rows for given sql query and parameters.
             </summary>
             <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/>.</param>
             <param name="sql">Sql query <see cref="T:System.String"/>.</param>
             <param name="obj">object which has parameters as property <see cref="T:System.Object"/>.</param>
-            <param name="commandType">Command Type <see cref="T:System.Data.CommandType"/>.</param>
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns row count as int value <see cref="T:System.Int32"/>.</returns>
         </member>
-        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.CountLong(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.CountLong(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             counts rows as long for given sql query and parameters.
             </summary>
             <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/>.</param>
             <param name="sql">Sql query <see cref="T:System.String"/>.</param>
             <param name="obj">object which has parameters as property <see cref="T:System.Object"/>.</param>
-            <param name="commandType">Command Type <see cref="T:System.Data.CommandType"/>.</param>
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns row count as long value <see cref="T:System.Int64"/>.</returns>
         </member>
-        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.Count(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.Count(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             counts rows for given odbc sql query and parameters.
             </summary>
@@ -119,12 +120,11 @@
             The ODBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ? AND COLUMN3 = TRUNC(?)
             </param>
             <param name="parameterValues">Sql command parameter values.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns row count as int value <see cref="T:System.Int32"/>.</returns>
         </member>
-        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.CountLong(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.ConnectionExtensions.CountOperator.CountLong(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             counts rows as long value for given odbc sql query and parameters.
             </summary>
@@ -133,9 +133,8 @@
             The ODBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ? AND COLUMN3 = TRUNC(?)
             </param>
             <param name="parameterValues">Sql command parameter values.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">Database transaction(optional).</param>
-            <param name="commandTimeout">command timeout(optional).</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns count value as long.</returns>
         </member>
         <member name="T:Simply.Data.DbConnectionExtension">
@@ -263,7 +262,7 @@
             Defines the <see cref="T:Simply.Data.DbRowListOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.DbRowListOperator.QueryMultiDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.DbRowListOperator.QueryMultiDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             QueryMultiDbRowList Gets query multi result set as multi expando object list.
             </summary>
@@ -277,8 +276,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns list of SimpleDbRow object list.</returns>
         </member>
@@ -302,16 +301,15 @@
             <param name="behavior">The behavior <see cref="T:System.Nullable`1"/>.</param>
             <returns>Returns multi SimpleDbRow list.</returns>
         </member>
-        <member name="M:Simply.Data.DbRowListOperator.GetListAsDbRow(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.DbRowListOperator.GetListAsDbRow(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             GetListAsDbRow Gets odbc sql query result set as SimpleDbRow object list.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query.</param>
             <param name="parameterValues">Sql command parameter values.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns SimpleDbRow object list.</returns>
         </member>
         <member name="T:Simply.Data.ExecuteOperator">
@@ -319,37 +317,37 @@
             Defines the <see cref="T:Simply.Data.ExecuteOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.ExecuteOperator.Execute(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteOperator.Execute(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Executes query and returns result as int.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sqlQuery">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns exection result as int.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsLong(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsLong(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Executes query and returns result as long.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sqlQuery">The SQL text.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execution result as long.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsDecimal(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsDecimal(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Executes query and returns result as decimal.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sqlQuery">The SQL text.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execution result as decimal.</returns>
         </member>
         <member name="M:Simply.Data.ExecuteOperator.ExecuteQuery(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -361,30 +359,29 @@
             <param name="transaction">Database transaction <see cref="T:System.Data.IDbTransaction"/></param>
             <returns>Returns execution result as int. <see cref="!:IDbCommandResult&lt;System.Int32&gt;"/></returns>
         </member>
-        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsOdbc(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsOdbc(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Executes the specified ODBC SQL query.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query.</param>
             <param name="parameterValues">Sql command parameters.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">command timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execution result as int.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             An IDbConnection extension method that executes the asynchronous operation.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sqlQuery">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Type of the command.</param>
             <param name="transaction">(Optional) The transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>An asynchronous result that yields the execute.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsLongAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsLongAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             An IDbConnection extension method that executes the asynchronous operation result
             returns as long.
@@ -392,11 +389,11 @@
             <param name="connection">Database connection.</param>
             <param name="sqlQuery">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsDecimalAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteOperator.ExecuteAsDecimalAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             An IDbConnection extension method that executes the asynchronous operation result
             returns as decimal.
@@ -404,8 +401,8 @@
             <param name="connection">Database connection.</param>
             <param name="sqlQuery">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>An asynchronous result that yields the execute.</returns>
         </member>
         <member name="T:Simply.Data.ExecuteReaderOperator">
@@ -424,7 +421,7 @@
             <param name="commandBehavior">Db Command Behavior.</param>
             <returns>Returns an IDataReader instance.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteReaderOperator.ExecuteReader(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Data.CommandBehavior})">
+        <member name="M:Simply.Data.ExecuteReaderOperator.ExecuteReader(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Data.CommandBehavior},System.Nullable{System.Int32})">
             <summary>
             Executes query with parameters and returns DataReader object.
             </summary>
@@ -434,18 +431,31 @@
             <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandBehavior">CommandBehaviour for DataReader.</param>
+            <param name="commandTimeout">db command timeout(optional).</param>
             <returns>Returns an IDataReader instance.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteReaderOperator.ExecuteReaderAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Data.CommandBehavior})">
+        <member name="M:Simply.Data.ExecuteReaderOperator.ExecuteReader(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Data.CommandBehavior})">
+            <summary>
+            Executes query with parameters and returns DataReader object.
+            </summary>
+            <param name="connection">Database connection.</param>
+            <param name="sql">Sql query.</param>
+            <param name="obj">object contains db parameters as property.</param>
+            <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandBehavior">CommandBehaviour for DataReader.</param>
+            <param name="commandSetting">Command setting</param>
+            <returns>Returns an IDataReader instance.</returns>
+        </member>
+        <member name="M:Simply.Data.ExecuteReaderOperator.ExecuteReaderAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Data.CommandBehavior})">
             <summary>
             An IDbConnection extension method that executes the reader asynchronous operation.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sql">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandBehavior">Db Command Behavior</param>
+            <param name="commandSetting">Command setting</param>
             <returns>An asynchronous result that yields the execute reader.</returns>
         </member>
         <member name="T:Simply.Data.ExecuteScalarOperator">
@@ -453,19 +463,18 @@
             Defines the <see cref="T:Simply.Data.ExecuteScalarOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalar(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalar(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             ExecuteScalar query with parameters and returns result object.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sql">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
-            <param name="commandTimeout">Db Command timeout.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execute scalar result as object.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarAs``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarAs``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             An IDbConnection extension method that executes the scalar as operation.
             </summary>
@@ -473,19 +482,19 @@
             <param name="connection">Database connection.</param>
             <param name="sqlText">The SQL text.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execute scalar result as T instance.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteScalarOperator.QueryExecuteScalar(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteScalarOperator.QueryExecuteScalar(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             ExecuteScalar query with parameters and returns result object.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sql">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execute scalar result as object.</returns>
         </member>
         <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarQuery(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -507,31 +516,29 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns execute scalar result as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarOdbc(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarOdbc(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Execute Scalar the specified ODBC SQL query.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query.</param>
             <param name="parameterValues">Sql command parameters.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execute scalar result as object.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarOdbcAs``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarOdbcAs``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Execute Scalar the specified ODBC SQL query.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query.</param>
             <param name="parameterValues">Sql command parameters.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execute scalar result as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarAsAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarAsAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             ExecuteScalar query with parameters and returns result object as async operation.
             </summary>
@@ -539,19 +546,19 @@
             <param name="connection">Database connection.</param>
             <param name="sqlText">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns execute scalar result as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ExecuteScalarOperator.ExecuteScalarAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             An IDbConnection extension method that executes the scalar asynchronous operation.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sql">Sql query.</param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>An asynchronous result that yields the execute scalar.</returns>
         </member>
         <member name="T:Simply.Data.FirstOperator">
@@ -559,7 +566,7 @@
             Defines the <see cref="T:Simply.Data.FirstOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.FirstOperator.QueryFirst``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.QueryFirst``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get First Row of the Resultset as object instance.
             </summary>
@@ -574,8 +581,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns first record as object instance.</returns>
         </member>
@@ -589,19 +596,18 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns first record as dynamic object instance.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.GetFirst``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.FirstOperator.GetFirst``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get First Row of the Odbc Sql Query Resultset as object instance.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).</param>
             <param name="parameterValues">Sql command parameter values.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns first record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRowAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRowAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get First Row of the Resultset as dynamic object instance with async operation.
             </summary>
@@ -615,12 +621,12 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
-            <param name="transaction">(Optional) Database transaction.</param>
+            <param name="transaction">(Optional) Database transaction.</param>>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields the first as dynamic.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.FirstAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.FirstAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get First Row of the Resultset as object instance with async operation.
             </summary>
@@ -635,8 +641,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields a T.</returns>
         </member>
@@ -649,7 +655,7 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns first record as dynamic object instance.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get First Row of the Resultset as SimpleDbRow object instance.
             </summary>
@@ -663,8 +669,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns first record as dynamic object.</returns>
         </member>
@@ -673,7 +679,7 @@
             Defines the <see cref="T:Simply.Data.LastOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.LastOperator.QueryLast``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.LastOperator.QueryLast``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get Last Row of the Resultset as object instance.
             </summary>
@@ -688,8 +694,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns last record as object instance.</returns>
         </member>
@@ -717,7 +723,7 @@
             <param name="commandTimeout">DbCommand timeout</param>
             <returns>Returns last record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.LastOperator.LastAsDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Char)">
+        <member name="M:Simply.Data.LastOperator.LastAsDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
             <summary>
             Get Last Row of the Resultset as dynamic object instance with async operation.
             </summary>
@@ -729,12 +735,12 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields the last as dynamic.</returns>
         </member>
-        <member name="M:Simply.Data.LastOperator.LastAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Char)">
+        <member name="M:Simply.Data.LastOperator.LastAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
             <summary>
             Get Last Row of the Resultset as object instance with async operation.
             </summary>
@@ -747,8 +753,8 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields a T.</returns>
         </member>
@@ -761,7 +767,7 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns last record as dynamic object instance.</returns>
         </member>
-        <member name="M:Simply.Data.LastOperator.QueryLastDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.LastOperator.QueryLastDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get Last Row of the Resultset as SimpleDbRow object instance.
             </summary>
@@ -775,8 +781,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns last record as dynamic object instance.</returns>
         </member>
@@ -785,21 +791,20 @@
             Defines the <see cref="T:Simply.Data.ListOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.ListOperator.GetList``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32},Simply.Data.Interfaces.IPageInfo)">
+        <member name="M:Simply.Data.ListOperator.GetList``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo)">
             <summary>
             Get List the specified ODBC SQL query with skip and take.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query.</param>
             <param name="parameterValues">Db Command parameter values.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <param name="pageInfo">page info for skip and take counts. it is optional.
             if it is null then paging will be disabled.</param>
             <returns>Returns as object list.</returns>
         </member>
-        <member name="M:Simply.Data.ListOperator.QueryListAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,Simply.Data.Interfaces.IPageInfo,System.Char)">
+        <member name="M:Simply.Data.ListOperator.QueryListAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo,System.Char)">
             <summary>
             Gets Resultset of query as object instance list with async operation.
             </summary>
@@ -812,8 +817,8 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="pageInfo">page info for skip and take counts.</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns as object list.</returns>
@@ -823,7 +828,7 @@
             Defines the <see cref="T:Simply.Data.PagedListOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.PagedListOperator.QueryList``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,Simply.Data.Interfaces.IPageInfo,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.PagedListOperator.QueryList``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo,System.Nullable{System.Char})">
             <summary>
             Gets query resultset as object list with paging option.
             </summary>
@@ -838,8 +843,8 @@
             no conversion occured.
             </param>
             <param name="obj">object which has contains parameters as properties.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="pageInfo">page info for skip and take counts.</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns as object list.</returns>
@@ -855,7 +860,7 @@
             <param name="pageInfo">page info for skip and take counts.</param>
             <returns>Returns as object list.</returns>
         </member>
-        <member name="M:Simply.Data.PagedListOperator.SelectList``1(System.Data.IDbConnection,System.String,System.Object[],Simply.Data.Interfaces.IPageInfo,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.PagedListOperator.SelectList``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo)">
             <summary>
             Get List the specified ODBC SQL query with paging option.
             </summary>
@@ -863,9 +868,8 @@
             <param name="odbcSqlQuery">The ODBC SQL query.</param>
             <param name="values">The parameters.</param>
             <param name="pageInfo">page info for skip and take counts.</param>
-            <param name="commandType">Type of the command.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
             <returns>Returns as object list.</returns>
         </member>
         <member name="T:Simply.Data.PagedRowListOperator">
@@ -873,7 +877,7 @@
             Defines the <see cref="T:Simply.Data.PagedRowListOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.PagedRowListOperator.QueryDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,Simply.Data.Interfaces.IPageInfo,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.PagedRowListOperator.QueryDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo,System.Nullable{System.Char})">
             <summary>
             QueryDbRowList Gets query resultset as expando object list with paging option.
             </summary>
@@ -887,8 +891,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="pageInfo">page info for skip and take counts. it is optional.
             if it is null then paging will be disabled.
             </param>
@@ -905,7 +909,7 @@
             <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
             <returns>Returns SimpleDbRow object list.</returns>
         </member>
-        <member name="M:Simply.Data.PagedRowListOperator.SelectDbRowList(System.Data.IDbConnection,System.String,System.Object[],Simply.Data.Interfaces.IPageInfo,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.PagedRowListOperator.SelectDbRowList(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo)">
             <summary>
             Get List the specified ODBC SQL query.
             </summary>
@@ -914,9 +918,8 @@
             <param name="values">The parameters.</param>
             <param name="pageInfo">page info for skip and take counts. it is optional.
             if it is null then paging will be disabled.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns as SimpleDbRow object list.</returns>
         </member>
         <member name="T:Simply.Data.ResultSetOperator">
@@ -933,15 +936,15 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns result set in a dataset instance.</returns>
         </member>
-        <member name="M:Simply.Data.ResultSetOperator.GetOdbcResultSet(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Simply.Data.ResultSetOperator.GetOdbcResultSet(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Resultset of the specified ODBC SQL query.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query.</param>
             <param name="parameterValues">Sql command parameters.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns result set in a dataset instance.</returns>
         </member>
         <member name="M:Simply.Data.ResultSetOperator.GetResultSet(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction,Simply.Data.Interfaces.IPageInfo)">
@@ -1116,6 +1119,17 @@
             <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
             <returns>Returns database command object instance <see cref="T:Simply.Data.Objects.SimpleDbCommand" />.</returns>
         </member>
+        <member name="M:Simply.Data.DbQueryTranslator.BuildSimpleDbCommandForTranslate(System.Data.IDbConnection,System.String,Simply.Data.Objects.DbCommandParameter[],Simply.Data.Interfaces.ICommandSetting,System.Boolean)">
+            <summary>
+            Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
+            </summary>
+            <param name="connection">Database connection <see cref="T:System.Data.IDbConnection"/>.</param>
+            <param name="odbcSqlQuery">The query <see cref="T:System.String"/>.</param>
+            <param name="commandParameters">The commandParameters <see cref="!:DbCommandParameter[]"/>.</param>
+            <param name="commandSetting">Command setting</param>
+            <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
+            <returns>Returns database command object instance <see cref="T:Simply.Data.Objects.SimpleDbCommand" />.</returns>
+        </member>
         <member name="M:Simply.Data.DbQueryTranslator.RebuildSimpleDbCommandForTranslate(Simply.Data.Enums.DbConnectionTypes,Simply.Data.Objects.SimpleDbCommand,System.Boolean)">
              <summary>
             
@@ -1151,7 +1165,7 @@
             Defines the <see cref="T:Simply.Data.SingleOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.SingleOperator.QuerySingle``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.SingleOperator.QuerySingle``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get Single Row of the Resultset as object instance.
             </summary>
@@ -1166,8 +1180,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns single record as object instance.</returns>
         </member>
@@ -1181,19 +1195,18 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns single record as dynamic object instance.</returns>
         </member>
-        <member name="M:Simply.Data.SingleOperator.GetSingle``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.SingleOperator.GetSingle``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Single Row of the Odbc Sql Query Resultset as object instance.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="odbcSqlQuery">The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).</param>
             <param name="parameterValues">Sql command parameter values.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns single record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.SingleOperator.QuerySingleDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Char)">
+        <member name="M:Simply.Data.SingleOperator.QuerySingleDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
             <summary>
             Get Single Row of the Resultset as simple db row object instance with async operation.
             </summary>
@@ -1205,12 +1218,12 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields the single as dynamic.</returns>
         </member>
-        <member name="M:Simply.Data.SingleOperator.SingleAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Char)">
+        <member name="M:Simply.Data.SingleOperator.SingleAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
             <summary>
             Get Single Row of the Resultset as object instance with async operation.
             </summary>
@@ -1223,12 +1236,12 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">(Optional) Command type.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields a T.</returns>
         </member>
-        <member name="M:Simply.Data.SingleOperator.QuerySingleAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.SingleOperator.QuerySingleAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
             <summary>
             Get Single Row of the Resultset as dynamic object instance.
             </summary>
@@ -1242,8 +1255,8 @@
             no conversion occured.
             </param>
             <param name="obj">object contains db parameters as property.</param>
-            <param name="commandType">Command type.</param>
             <param name="transaction">(Optional) Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns single record as dynamic object.</returns>
         </member>
@@ -2212,53 +2225,41 @@
             Execution Result.
             </summary>
         </member>
-        <member name="T:Simply.Data.Interfaces.IExecutionSetting">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="P:Simply.Data.Interfaces.IExecutionSetting.AutoOpen">
+        <member name="T:Simply.Data.Interfaces.ICommandSetting">
             <summary>
-            Gets auto open. if it is true connection will be opened before operation.
+            Command Settings for execution.
             </summary>
         </member>
-        <member name="P:Simply.Data.Interfaces.IExecutionSetting.CloseAtFinal">
+        <member name="P:Simply.Data.Interfaces.ICommandSetting.CloseAtFinal">
             <summary>
             Gets close at final. if it is true connection will be closed after operation.
             </summary>
         </member>
-        <member name="P:Simply.Data.Interfaces.IExecutionSetting.CommandType">
+        <member name="P:Simply.Data.Interfaces.ICommandSetting.CommandType">
             <summary>
             Gets Command Type.
             </summary>
         </member>
-        <member name="P:Simply.Data.Interfaces.IExecutionSetting.CommandTimeout">
+        <member name="P:Simply.Data.Interfaces.ICommandSetting.CommandTimeout">
             <summary>
             Gets Command Timeout.
             </summary>
         </member>
-        <member name="M:Simply.Data.Interfaces.IExecutionSetting.SetAutoOpen(System.Nullable{System.Boolean})">
-             <summary>
-            
-             </summary>
-             <param name="autoOpen">connection auto open setting.</param>
-             <returns>Returns object instance</returns>
-        </member>
-        <member name="M:Simply.Data.Interfaces.IExecutionSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
+        <member name="M:Simply.Data.Interfaces.ICommandSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
              <summary>
             
              </summary>
              <param name="closeAtFinal">connection auto close setting.</param>
              <returns>Returns object instance</returns>
         </member>
-        <member name="M:Simply.Data.Interfaces.IExecutionSetting.SetCommandType(System.Nullable{System.Data.CommandType})">
+        <member name="M:Simply.Data.Interfaces.ICommandSetting.SetCommandType(System.Data.CommandType)">
              <summary>
             
              </summary>
              <param name="commandType">command type.</param>
              <returns>Returns object instance</returns>
         </member>
-        <member name="M:Simply.Data.Interfaces.IExecutionSetting.SetCommandTimeout(System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.Interfaces.ICommandSetting.SetCommandTimeout(System.Nullable{System.Int32})">
              <summary>
             
              </summary>
@@ -2735,82 +2736,73 @@
              <param name="take">item count for take.</param>
              <returns>Returns object instance</returns>
         </member>
-        <member name="T:Simply.Data.Objects.SimpleExecutionSetting">
+        <member name="T:Simply.Data.Objects.SimpleCommandSetting">
             <summary>
             Execution Settings for Database Operations.
             </summary>
         </member>
-        <member name="F:Simply.Data.Objects.SimpleExecutionSetting.DefaultInstance">
+        <member name="F:Simply.Data.Objects.SimpleCommandSetting.DefaultInstance">
             <summary>
             Default instance for IExecutionSetting.
             </summary>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleExecutionSetting.#ctor">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.#ctor">
             <summary>
             Default instance
             </summary>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleExecutionSetting.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Data.CommandType})">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType)">
             <summary>
-            Prevents a default instance of the <see cref="T:Simply.Data.Objects.SimpleExecutionSetting"/> class from being created.
+            Prevents a default instance of the <see cref="T:Simply.Data.Objects.SimpleCommandSetting"/> class from being created.
             </summary>
-            <param name="autoOpen">If true, auto open.</param>
             <param name="closeAtFinal">If true, close at final.</param>
             <param name="commandTimeout">The command timeout.</param>
             <param name="commandType">The command type.</param>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleExecutionSetting.Create(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Nullable{System.Data.CommandType})">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.Create(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType)">
             <summary>
             Default instance for IExecutionSetting with given parameters.
             </summary>
-            <param name="autoOpen">If true, auto open.</param>
             <param name="closeAtFinal">If true, close at final.</param>
             <param name="commandTimeout">The command timeout.</param>
             <param name="commandType">The command type.</param>
             <returns>Returns IExecutionSetting object instance.</returns>
         </member>
-        <member name="P:Simply.Data.Objects.SimpleExecutionSetting.AutoOpen">
+        <member name="P:Simply.Data.Objects.SimpleCommandSetting.AutoOpen">
             <summary>
             Gets auto open. if it is true connection will be opened before operation.
             </summary>
         </member>
-        <member name="P:Simply.Data.Objects.SimpleExecutionSetting.CloseAtFinal">
+        <member name="P:Simply.Data.Objects.SimpleCommandSetting.CloseAtFinal">
             <summary>
             Gets close at final. if it is true connection will be closed after operation.
             </summary>
         </member>
-        <member name="P:Simply.Data.Objects.SimpleExecutionSetting.CommandType">
+        <member name="P:Simply.Data.Objects.SimpleCommandSetting.CommandType">
             <summary>
             Gets Command Type.
             </summary>
         </member>
-        <member name="P:Simply.Data.Objects.SimpleExecutionSetting.CommandTimeout">
+        <member name="P:Simply.Data.Objects.SimpleCommandSetting.CommandTimeout">
             <summary>
             Gets Command Timeout.
             </summary>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleExecutionSetting.SetAutoOpen(System.Nullable{System.Boolean})">
-             <summary>
-            
-             </summary>
-             <param name="autoOpen">connection auto open setting.</param>
-             <returns>Returns object instance</returns>
-        </member>
-        <member name="M:Simply.Data.Objects.SimpleExecutionSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
              <summary>
             
              </summary>
              <param name="closeAtFinal">connection auto close setting.</param>
              <returns>Returns object instance</returns>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleExecutionSetting.SetCommandType(System.Nullable{System.Data.CommandType})">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCommandType(System.Data.CommandType)">
              <summary>
             
              </summary>
              <param name="commandType">command type.</param>
              <returns>Returns object instance</returns>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleExecutionSetting.SetCommandTimeout(System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCommandTimeout(System.Nullable{System.Int32})">
              <summary>
             
              </summary>

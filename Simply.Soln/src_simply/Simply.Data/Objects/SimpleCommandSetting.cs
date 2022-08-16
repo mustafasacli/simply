@@ -6,31 +6,28 @@ namespace Simply.Data.Objects
     /// <summary>
     /// Execution Settings for Database Operations.
     /// </summary>
-    public class SimpleExecutionSetting : IExecutionSetting
+    public class SimpleCommandSetting : ICommandSetting
     {
         /// <summary>
         /// Default instance for IExecutionSetting.
         /// </summary>
-        public static readonly IExecutionSetting DefaultInstance = new SimpleExecutionSetting();
+        public static readonly ICommandSetting DefaultInstance = new SimpleCommandSetting();
 
         /// <summary>
         /// Default instance
         /// </summary>
-        private SimpleExecutionSetting()
+        private SimpleCommandSetting()
         { }
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="SimpleExecutionSetting"/> class from being created.
+        /// Prevents a default instance of the <see cref="SimpleCommandSetting"/> class from being created.
         /// </summary>
-        /// <param name="autoOpen">If true, auto open.</param>
         /// <param name="closeAtFinal">If true, close at final.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         /// <param name="commandType">The command type.</param>
-        private SimpleExecutionSetting(
-            bool? autoOpen, bool? closeAtFinal,
-            int? commandTimeout, CommandType? commandType)
+        private SimpleCommandSetting(bool? closeAtFinal, int? commandTimeout,
+            CommandType commandType = System.Data.CommandType.Text)
         {
-            AutoOpen = autoOpen;
             CloseAtFinal = closeAtFinal;
             CommandTimeout = commandTimeout;
             CommandType = commandType;
@@ -39,15 +36,14 @@ namespace Simply.Data.Objects
         /// <summary>
         /// Default instance for IExecutionSetting with given parameters.
         /// </summary>
-        /// <param name="autoOpen">If true, auto open.</param>
         /// <param name="closeAtFinal">If true, close at final.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         /// <param name="commandType">The command type.</param>
         /// <returns>Returns IExecutionSetting object instance.</returns>
-        public static IExecutionSetting Create(bool? autoOpen = null, bool? closeAtFinal = null,
-            int? commandTimeout = null, CommandType? commandType = null)
+        public static ICommandSetting Create(bool? closeAtFinal = null,
+            int? commandTimeout = null, CommandType commandType = System.Data.CommandType.Text)
         {
-            return new SimpleExecutionSetting(autoOpen, closeAtFinal, commandTimeout, commandType);
+            return new SimpleCommandSetting(closeAtFinal, commandTimeout, commandType);
         }
 
         /// <summary>
@@ -65,7 +61,7 @@ namespace Simply.Data.Objects
         /// <summary>
         /// Gets Command Type.
         /// </summary>
-        public CommandType? CommandType
+        public CommandType CommandType
         { get; private set; }
 
         /// <summary>
@@ -77,20 +73,9 @@ namespace Simply.Data.Objects
         /// <summary>
         ///
         /// </summary>
-        /// <param name="autoOpen">connection auto open setting.</param>
-        /// <returns>Returns object instance</returns>
-        public IExecutionSetting SetAutoOpen(bool? autoOpen = null)
-        {
-            AutoOpen = autoOpen;
-            return this;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="closeAtFinal">connection auto close setting.</param>
         /// <returns>Returns object instance</returns>
-        public IExecutionSetting SetCloseAtFinal(bool? closeAtFinal = null)
+        public ICommandSetting SetCloseAtFinal(bool? closeAtFinal = null)
         {
             CloseAtFinal = closeAtFinal;
             return this;
@@ -101,7 +86,7 @@ namespace Simply.Data.Objects
         /// </summary>
         /// <param name="commandType">command type.</param>
         /// <returns>Returns object instance</returns>
-        public IExecutionSetting SetCommandType(CommandType? commandType = null)
+        public ICommandSetting SetCommandType(CommandType commandType)
         {
             CommandType = commandType;
             return this;
@@ -112,7 +97,7 @@ namespace Simply.Data.Objects
         /// </summary>
         /// <param name="commandTimeout">command timeout.</param>
         /// <returns>Returns object instance</returns>
-        public IExecutionSetting SetCommandTimeout(int? commandTimeout = null)
+        public ICommandSetting SetCommandTimeout(int? commandTimeout = null)
         {
             CommandTimeout = commandTimeout;
             return this;

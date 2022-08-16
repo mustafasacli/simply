@@ -8,8 +8,15 @@ Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþt
 IExecutionSetting : interface SimpleExecutionSetting sýnýfý eklenip bunun üzerinden hareket edilecek.
 (Bu sýnýfta, AutoOpen, AutoClose, CommandTimeout özellikleri olacak ve bu istekler buradan inject edilecek.)
 (Kesin deðil.)(Emin olunup sonra eklenecek.)
-
 - IQuerySettings için external inject mekanizmasý kurulacak.
 Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
 
 
+16-08-2022 Notlar;
+- SimpleDbCommand sýnýfýnda IsOdbc yapýsý kesin hale getirilecek.
+- simply.data paketinde her metoda ICommandSetting parametresi eklenecek. OK
+ICommandSetting : interface SimpleCommandSetting sýnýfý eklenip bunun üzerinden hareket edilecek.
+(Bu sýnýfta, AutoClose, CommandTimeout özellikleri olacak ve bu istekler buradan inject edilecek.)
+(Kesin deðil.)(Emin olunup sonra eklenecek.)
+- IQuerySettings için external inject mekanizmasý kurulacak.
+Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.

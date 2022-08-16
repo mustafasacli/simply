@@ -62,13 +62,12 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameters.</param>
-        /// <param name="commandType">Type of the command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static DataSet GetOdbcResultSet(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
-           CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null)
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -79,7 +78,7 @@ namespace Simply.Data
                 .ToArray();
 
             SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType);
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
             IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
 
             return resultSet.Result;

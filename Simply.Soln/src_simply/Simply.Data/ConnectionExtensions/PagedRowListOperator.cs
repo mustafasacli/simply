@@ -30,17 +30,16 @@ namespace Simply.Data
         /// no conversion occured.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.
         /// </param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static List<SimpleDbRow> QueryDbRowList(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null,
-            IPageInfo pageInfo = null, char? parameterNamePrefix = null)
+            string sqlText, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, char? parameterNamePrefix = null)
         {
             List<SimpleDbRow> result;
 
@@ -52,7 +51,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
-                CommandType = commandType
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
 
@@ -133,14 +133,12 @@ namespace Simply.Data
         /// <param name="values">The parameters.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
-        /// <param name="commandType">Type of the command.</param>
         /// <param name="transaction">Database transaction.</param>
-        /// <param name="commandTimeout">DbCommand timeout</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns as SimpleDbRow object list.</returns>
         public static List<SimpleDbRow> SelectDbRowList(this IDbConnection connection,
-           string odbcSqlQuery, object[] values,
-           IPageInfo pageInfo = null, CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null, int? commandTimeout = null)
+           string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
         {
             DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -151,7 +149,7 @@ namespace Simply.Data
 
             SimpleDbCommand simpleDbCommand =
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                commandParameters, commandType, commandTimeout);
+                commandParameters, commandSetting);
 
             IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
                 GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);

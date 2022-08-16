@@ -72,7 +72,9 @@ namespace Simply.Data
             if (!odbcSqlQuery.Contains(InternalAppValues.QuestionMark) || connectionType.IsOdbcConn())
             { queryAndParameters.Add(odbcSqlQuery); return queryAndParameters.ToArray(); }
 
-            List<string> queryParts = odbcSqlQuery.Split(new char[] { InternalAppValues.QuestionMark }, StringSplitOptions.None).ToList() ?? ArrayHelper.EmptyList<string>();
+            List<string> queryParts = odbcSqlQuery
+                .Split(new char[] { InternalAppValues.QuestionMark }, StringSplitOptions.None)
+                .ToList() ?? ArrayHelper.EmptyList<string>();
             IQuerySetting setting = QuerySettingsFactory.GetQuerySetting(connectionType);
 
             StringBuilder sqlBuilder = new StringBuilder();
@@ -115,14 +117,75 @@ namespace Simply.Data
             this IDbConnection connection, string odbcSqlQuery, DbCommandParameter[] commandParameters, CommandType? commandType,
             int? commandTimeout = null, bool setOverratedParametersToOutput = false)
         {
-            SimpleDbCommand simpleDbCommand = new SimpleDbCommand();
-
             string[] queryAndParameters = connection.TranslateOdbcQuery(odbcSqlQuery);
             commandParameters = commandParameters ?? ArrayHelper.Empty<DbCommandParameter>();
 
-            simpleDbCommand.CommandText = queryAndParameters[0];
-            simpleDbCommand.CommandType = commandType;
-            simpleDbCommand.CommandTimeout = commandTimeout;
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand
+            {
+                CommandText = queryAndParameters[0],
+                CommandType = commandType,
+                CommandTimeout = commandTimeout
+            };
+            List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
+
+            if ((!setOverratedParametersToOutput && paramStringArray.Count != commandParameters.Length) || paramStringArray.Count < commandParameters.Length)
+                throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
+
+            for (int counter = 0; counter < commandParameters.Length; counter++)
+            {
+                simpleDbCommand.AddParameter(
+                    new DbCommandParameter
+                    {
+                        ParameterDbType = commandParameters[counter].ParameterDbType,
+                        ParameterColumnName = commandParameters[counter].ParameterColumnName,
+                        Direction = commandParameters[counter].Direction,
+                        ParameterName = paramStringArray[counter],
+                        ParameterPrecision = commandParameters[counter].ParameterPrecision,
+                        ParameterScale = commandParameters[counter].ParameterScale,
+                        ParameterSize = commandParameters[counter].ParameterSize,
+                        Value = commandParameters[counter].Value
+                    });
+            }
+
+            if (setOverratedParametersToOutput && paramStringArray.Count > commandParameters.Length)
+            {
+                int cnt = paramStringArray.Count - commandParameters.Length;
+                for (int counter = 0; counter < cnt; counter++)
+                {
+                    simpleDbCommand.AddParameter(
+                        new DbCommandParameter
+                        {
+                            Direction = ParameterDirection.Output,
+                            ParameterName = paramStringArray[commandParameters.Length + counter]
+                        });
+                }
+            }
+
+            return simpleDbCommand;
+        }
+
+        /// <summary>
+        /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
+        /// </summary>
+        /// <param name="connection">Database connection <see cref="IDbConnection"/>.</param>
+        /// <param name="odbcSqlQuery">The query <see cref="string"/>.</param>
+        /// <param name="commandParameters">The commandParameters <see cref="DbCommandParameter[]"/>.</param>
+        /// <param name="commandSetting">Command setting</param>
+        /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
+        /// <returns>Returns database command object instance <see cref="SimpleDbCommand" />.</returns>
+        public static SimpleDbCommand BuildSimpleDbCommandForTranslate(
+            this IDbConnection connection, string odbcSqlQuery, DbCommandParameter[] commandParameters,
+            ICommandSetting commandSetting = null, bool setOverratedParametersToOutput = false)
+        {
+            string[] queryAndParameters = connection.TranslateOdbcQuery(odbcSqlQuery);
+            commandParameters = commandParameters ?? ArrayHelper.Empty<DbCommandParameter>();
+
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand
+            {
+                CommandText = queryAndParameters[0],
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout
+            };
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
             if ((!setOverratedParametersToOutput && paramStringArray.Count != commandParameters.Length) || paramStringArray.Count < commandParameters.Length)

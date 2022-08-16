@@ -27,13 +27,13 @@ namespace Simply.Data
         /// no conversion occured.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns single record as object instance.</returns>
         public static T QuerySingle<T>(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null, char? parameterNamePrefix = null) where T : class, new()
+            string sqlText, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null, char? parameterNamePrefix = null) where T : class, new()
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting setting = connection.GetQuerySetting();
@@ -43,7 +43,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sqlQuery,
-                CommandType = commandType
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
 
@@ -80,20 +81,18 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">Type of the command.</param>
         /// <param name="transaction">Database transaction.</param>
-        /// <param name="commandTimeout">DbCommand timeout</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns single record as object instance.</returns>
         public static T GetSingle<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
-           CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null) where T : class
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p })
                 .ToArray() ?? new DbCommandParameter[0];
             SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
-                odbcSqlQuery, commandParameters, commandType, commandTimeout);
+                odbcSqlQuery, commandParameters, commandSetting);
 
             IDbCommandResult<SimpleDbRow> expando = QuerySingleAsDbRow(connection, simpleDbCommand, transaction);
 
@@ -115,18 +114,18 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">(Optional) Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>An asynchronous result that yields the single as dynamic.</returns>
         public static async Task<SimpleDbRow> QuerySingleDynamicAsync(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null, char parameterNamePrefix = '?')
+            string sqlText, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null, char parameterNamePrefix = '?')
         {
             Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                connection.QuerySingleAsDbRow(sqlText, obj, commandType, transaction, parameterNamePrefix);
+                connection.QuerySingleAsDbRow(sqlText, obj, transaction, commandSetting, parameterNamePrefix);
             });
 
             return await resultTask;
@@ -144,18 +143,18 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">(Optional) Command type.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>An asynchronous result that yields a T.</returns>
         public static async Task<T> SingleAsync<T>(this IDbConnection connection,
-           string sqlText, object obj, CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null, char parameterNamePrefix = '?') where T : class, new()
+           string sqlText, object obj, IDbTransaction transaction = null,
+           ICommandSetting commandSetting = null, char parameterNamePrefix = '?') where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                connection.QuerySingle<T>(sqlText, obj, commandType, transaction, parameterNamePrefix);
+                connection.QuerySingle<T>(sqlText, obj, transaction, commandSetting, parameterNamePrefix);
             });
 
             return await resultTask;
@@ -178,13 +177,13 @@ namespace Simply.Data
         /// no conversion occured.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns single record as dynamic object.</returns>
         public static SimpleDbRow QuerySingleAsDbRow(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null, char? parameterNamePrefix = null)
+            string sqlText, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null, char? parameterNamePrefix = null)
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting setting = connection.GetQuerySetting();
@@ -194,7 +193,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
-                CommandType = commandType
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
             SimpleDbRow instance = connection.QuerySingleAsDbRow(simpleDbCommand, transaction).Result;
@@ -210,8 +210,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns single record as dynamic object instance.</returns>
         public static IDbCommandResult<SimpleDbRow> QuerySingleAsDbRow(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             IDbCommandResult<SimpleDbRow> result = new DbCommandResult<SimpleDbRow>();
 

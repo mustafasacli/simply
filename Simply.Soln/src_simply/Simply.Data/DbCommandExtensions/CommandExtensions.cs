@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 
 namespace Simply.Data.DbCommandExtensions
 {
@@ -290,9 +291,7 @@ namespace Simply.Data.DbCommandExtensions
         /// <returns>Returns IDbCommand object instance.</returns>
         internal static IDbCommand SetCommandType(this IDbCommand command, CommandType? commandType)
         {
-            if (commandType != null)
-                command.CommandType = commandType.Value;
-
+            command.CommandType = commandType ?? CommandType.Text;
             return command;
         }
 
@@ -330,7 +329,7 @@ namespace Simply.Data.DbCommandExtensions
         internal static IDbCommand IncludeCommandParameters(
             this IDbCommand command, List<object> commandParameters)
         {
-            if (commandParameters == null || commandParameters.Count < 1)
+            if (!(commandParameters?.Any() ?? false))
                 return command;
 
             IQuerySetting setting = command.Connection.GetQuerySetting();

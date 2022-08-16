@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Simply.Common, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c03dc30a9850669f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Simply.Common.1.2.0\lib\net451\Simply.Common.dll</HintPath>
+      <HintPath>..\..\..\..\Simply.TestApps\Simply.TestApps.Soln\packages\Simply.Common.1.2.0\lib\net451\Simply.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -134,8 +134,8 @@
     <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IDbCommandResult.cs">
       <Link>Interfaces\IDbCommandResult.cs</Link>
     </Compile>
-    <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IExecutionSetting.cs">
-      <Link>Interfaces\IExecutionSetting.cs</Link>
+    <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ICommandSetting.cs">
+      <Link>Interfaces\ICommandSetting.cs</Link>
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IPageInfo.cs">
       <Link>Interfaces\IPageInfo.cs</Link>
@@ -155,8 +155,8 @@
     <Compile Include="..\..\src_simply\Simply.Data\Objects\PageInfo.cs">
       <Link>Objects\PageInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleExecutionSetting.cs">
-      <Link>Objects\SimpleExecutionSetting.cs</Link>
+    <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleCommandSetting.cs">
+      <Link>Objects\SimpleCommandSetting.cs</Link>
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs">
       <Link>QuerySettings\Core\IQuerySetting.cs</Link>

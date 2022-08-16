@@ -3,15 +3,10 @@
 namespace Simply.Data.Interfaces
 {
     /// <summary>
-    ///
+    /// Command Settings for execution.
     /// </summary>
-    public interface IExecutionSetting
+    public interface ICommandSetting
     {
-        /// <summary>
-        /// Gets auto open. if it is true connection will be opened before operation.
-        /// </summary>
-        bool? AutoOpen { get; }
-
         /// <summary>
         /// Gets close at final. if it is true connection will be closed after operation.
         /// </summary>
@@ -20,8 +15,8 @@ namespace Simply.Data.Interfaces
         /// <summary>
         /// Gets Command Type.
         /// </summary>
-        CommandType? CommandType { get; }
-        
+        CommandType CommandType { get; }
+
         /// <summary>
         /// Gets Command Timeout.
         /// </summary>
@@ -30,29 +25,22 @@ namespace Simply.Data.Interfaces
         /// <summary>
         ///
         /// </summary>
-        /// <param name="autoOpen">connection auto open setting.</param>
-        /// <returns>Returns object instance</returns>
-        IExecutionSetting SetAutoOpen(bool?  autoOpen = null);
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="closeAtFinal">connection auto close setting.</param>
         /// <returns>Returns object instance</returns>
-        IExecutionSetting SetCloseAtFinal(bool? closeAtFinal = null);
+        ICommandSetting SetCloseAtFinal(bool? closeAtFinal = null);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="commandType">command type.</param>
         /// <returns>Returns object instance</returns>
-        IExecutionSetting SetCommandType(CommandType? commandType = null);
+        ICommandSetting SetCommandType(CommandType commandType);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="commandTimeout">command timeout.</param>
         /// <returns>Returns object instance</returns>
-        IExecutionSetting SetCommandTimeout(int? commandTimeout = null);
+        ICommandSetting SetCommandTimeout(int? commandTimeout = null);
     }
 }

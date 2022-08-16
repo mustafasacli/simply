@@ -1,4 +1,5 @@
 ﻿using Simply.Common;
+using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
 using System.Linq;
@@ -18,22 +19,32 @@ namespace Simply.Data
         /// <param name="obj">The obj <see cref="object"/>.</param>
         /// <param name="commandType">The commandType <see cref="CommandType"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
+        /// <param name="commandTimeout">db command timeout(optional).</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        public static bool Any(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null)
+        public static bool Any(this IDbConnection connection, string sqlText, object obj,
+            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            SimpleDbCommand simpleDbCommand = new SimpleDbCommand
+            bool any;
+            try
             {
-                CommandText = sqlText,
-                CommandType = commandType
-            };
-            simpleDbCommand.AddCommandParameters(parameters);
+                DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
+                SimpleDbCommand simpleDbCommand = new SimpleDbCommand
+                {
+                    CommandText = sqlText,
+                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                    CommandTimeout = commandSetting?.CommandTimeout,
+                };
+                simpleDbCommand.AddCommandParameters(parameters);
 
-            bool result = connection.Any(simpleDbCommand, transaction);
-
-            return result;
+                any = connection.Any(simpleDbCommand, transaction);
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
+            return any;
         }
 
         /// <summary>
@@ -46,15 +57,13 @@ namespace Simply.Data
         public static bool Any(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            bool result;
             DbCommandParameter[] outputValues;
 
             IDataReader reader = connection.ExecuteReaderQuery(simpleDbCommand, out outputValues,
                 transaction, commandBehavior: CommandBehavior.SingleRow);
 
-            result = reader.Any(closeAtFinal: true);
-
-            return result;
+            bool any = reader.Any(closeAtFinal: true);
+            return any;
         }
 
         /// <summary>
@@ -63,22 +72,30 @@ namespace Simply.Data
         /// <param name="connection">The connection <see cref="IDbConnection"/>.</param>
         /// <param name="odbcSqlQuery">The odbcSqlQuery <see cref="string"/>.</param>
         /// <param name="parameterValues">The parameterValues <see cref="object[]"/>.</param>
-        /// <param name="commandType">The commandType <see cref="CommandType"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
-        /// <param name="commandTimeout">The commandTimeout <see cref="System.Nullable{int}"/>.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        public static bool Any(this IDbConnection connection, string odbcSqlQuery,
-            object[] parameterValues, CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null, int? commandTimeout = null)
+        public static bool Any(this IDbConnection connection,
+            string odbcSqlQuery, object[] parameterValues,
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter { Value = p, ParameterDbType = p.ToDbType() })
-                .ToArray();
-            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
-                odbcSqlQuery, commandParameters, commandType, commandTimeout);
-            bool result = connection.Any(simpleDbCommand, transaction);
+            bool any;
+            try
+            {
+                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                    .Select(p => new DbCommandParameter { Value = p, ParameterDbType = p.ToDbType() })
+                    .ToArray();
+                SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
+                    odbcSqlQuery, commandParameters, commandSetting);
 
-            return result;
+                any = connection.Any(simpleDbCommand, transaction);
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
+            return any;
         }
     }
 }

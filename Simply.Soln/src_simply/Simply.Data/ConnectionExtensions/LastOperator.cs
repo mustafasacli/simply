@@ -28,13 +28,13 @@ namespace Simply.Data
         /// no conversion occured.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns last record as object instance.</returns>
         public static T QueryLast<T>(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null, char? parameterNamePrefix = null) where T : class, new()
+            string sqlText, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null, char? parameterNamePrefix = null) where T : class, new()
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting setting = connection.GetQuerySetting();
@@ -45,7 +45,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
-                CommandType = commandType
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
             };
             simpleDbCommand.AddCommandParameters(parameters);
             SimpleDbRow row = connection.QueryLastAsDbRow(simpleDbCommand, transaction).Result;
@@ -63,8 +64,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as object instance.</returns>
         public static IDbCommandResult<T> QueryLast<T>(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null) where T : class, new()
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null) where T : class, new()
         {
             IDbCommandResult<T> result = new DbCommandResult<T>();
 
@@ -124,18 +124,18 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">(Optional) Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>An asynchronous result that yields the last as dynamic.</returns>
         public static async Task<SimpleDbRow> LastAsDynamicAsync(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null, char parameterNamePrefix = '?')
+            string sqlText, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null, char parameterNamePrefix = '?')
         {
             Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                connection.QueryLastDbRow(sqlText, obj, commandType, transaction, parameterNamePrefix);
+                connection.QueryLastDbRow(sqlText, obj, transaction, commandSetting, parameterNamePrefix);
             });
 
             return await resultTask;
@@ -153,18 +153,18 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">(Optional) Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>An asynchronous result that yields a T.</returns>
         public static async Task<T> LastAsync<T>(this IDbConnection connection,
-           string sqlText, object obj, CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null, char parameterNamePrefix = '?') where T : class, new()
+           string sqlText, object obj, IDbTransaction transaction = null,
+           ICommandSetting commandSetting = null, char parameterNamePrefix = '?') where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                connection.QueryLast<T>(sqlText, obj, commandType, transaction, parameterNamePrefix);
+                connection.QueryLast<T>(sqlText, obj, transaction, commandSetting, parameterNamePrefix);
             });
 
             return await resultTask;
@@ -180,8 +180,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as dynamic object instance.</returns>
         public static IDbCommandResult<SimpleDbRow> QueryLastAsDbRow(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             IDbCommandResult<SimpleDbRow> result = new DbCommandResult<SimpleDbRow>();
             IDataReader reader = null;
@@ -237,13 +236,13 @@ namespace Simply.Data
         /// no conversion occured.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns last record as dynamic object instance.</returns>
         public static SimpleDbRow QueryLastDbRow(this IDbConnection connection,
-            string sqlText, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null, char? parameterNamePrefix = null)
+            string sqlText, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null, char? parameterNamePrefix = null)
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting setting = connection.GetQuerySetting();
@@ -253,7 +252,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sql,
-                CommandType = commandType
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
             IDbCommandResult<SimpleDbRow> instance =

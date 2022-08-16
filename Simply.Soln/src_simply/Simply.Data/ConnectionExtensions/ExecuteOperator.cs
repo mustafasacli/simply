@@ -19,31 +19,35 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="sqlQuery">Sql query.</param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns exection result as int.</returns>
-        public static int Execute(this IDbConnection connection,
-           string sqlQuery, object obj,
-           CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null)
+        public static int Execute(this IDbConnection connection, string sqlQuery,
+            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             int result = -1;
 
-            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+            try
             {
-                CommandText = sqlQuery,
-                CommandType = commandType
-            };
-            simpleDbCommand.AddCommandParameters(parameters);
+                DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
+                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+                {
+                    CommandText = sqlQuery,
+                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                    CommandTimeout = commandSetting?.CommandTimeout,
+                };
+                simpleDbCommand.AddCommandParameters(parameters);
 
-            using (IDbCommand command =
-                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+                using (IDbCommand command =
+                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+                {
+                    result = command.ExecuteNonQuery();
+                }
+            }
+            finally
             {
-                if (transaction == null)
-                    connection.OpenIfNot();
-
-                result = command.ExecuteNonQuery();
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
             }
 
             return result;
@@ -55,15 +59,14 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="sqlQuery">The SQL text.</param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">(Optional) Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execution result as long.</returns>
-        public static long ExecuteAsLong(this IDbConnection connection,
-           string sqlQuery, object obj, CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null)
+        public static long ExecuteAsLong(this IDbConnection connection, string sqlQuery,
+            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             long value =
-                Execute(connection, sqlQuery, obj, commandType, transaction);
+                Execute(connection, sqlQuery, obj, transaction, commandSetting);
 
             return value;
         }
@@ -74,15 +77,15 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="sqlQuery">The SQL text.</param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">(Optional) Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execution result as decimal.</returns>
         public static decimal ExecuteAsDecimal(this IDbConnection connection,
-           string sqlQuery, object obj, CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null)
+           string sqlQuery, object obj, IDbTransaction transaction = null,
+           ICommandSetting commandSetting = null)
         {
             decimal value =
-                Execute(connection, sqlQuery, obj, commandType, transaction);
+                Execute(connection, sqlQuery, obj, transaction, commandSetting);
 
             return value;
         }
@@ -99,23 +102,12 @@ namespace Simply.Data
         {
             IDbCommandResult<int> result = new DbCommandResult<int>(-1);
 
-            try
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
-                {
-                    if (transaction == null)
-                        connection.OpenIfNot();
-
-                    result.ExecutionResult = command.ExecuteNonQuery();
-                    result.Result = result.ExecutionResult;
-                    result.OutputParameters = command.GetOutParameters();
-                }
-            }
-            finally
-            {
-                if (transaction == null)
-                    connection.CloseIfNot();
+                result.ExecutionResult = command.ExecuteNonQuery();
+                result.Result = result.ExecutionResult;
+                result.OutputParameters = command.GetOutParameters();
             }
 
             return result;
@@ -127,33 +119,38 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameters.</param>
-        /// <param name="commandType">Type of the command.</param>
         /// <param name="transaction">Database transaction.</param>
-        /// <param name="commandTimeout">command timeout</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execution result as int.</returns>
         public static int ExecuteAsOdbc(this IDbConnection connection,
-           string odbcSqlQuery, object[] parameterValues,
-           CommandType commandType = CommandType.Text,
-           IDbTransaction transaction = null, int? commandTimeout = null)
+            string odbcSqlQuery, object[] parameterValues,
+            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             int result = -1;
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                })
-                .ToArray();
-
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType, commandTimeout);
-
-            using (IDbCommand command = connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            try
             {
-                if (transaction == null)
-                    connection.OpenIfNot();
+                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                    .Select(p => new DbCommandParameter
+                    {
+                        Value = p,
+                        ParameterDbType = p.ToDbType()
+                    })
+                    .ToArray();
 
-                result = command.ExecuteNonQuery();
+                SimpleDbCommand simpleDbCommand =
+                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                    commandParameters, commandSetting);
+
+                using (IDbCommand command =
+                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+                {
+                    result = command.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
             }
 
             return result;
@@ -167,16 +164,17 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="sqlQuery">Sql query.</param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">(Optional) Type of the command.</param>
         /// <param name="transaction">(Optional) The transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>An asynchronous result that yields the execute.</returns>
         public static async Task<int> ExecuteAsync(this IDbConnection connection,
-            string sqlQuery, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null)
+            string sqlQuery, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
-                return Execute(connection, sqlQuery, obj, commandType, transaction);
+                return Execute(connection,
+                    sqlQuery, obj, transaction, commandSetting);
             });
         }
 
@@ -187,17 +185,17 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="sqlQuery">Sql query.</param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>.</returns>
         public static async Task<long> ExecuteAsLongAsync(this IDbConnection connection,
-            string sqlQuery, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null)
+            string sqlQuery, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteAsLong(connection, sqlQuery, obj, commandType, transaction);
+                ExecuteAsLong(connection, sqlQuery, obj, transaction, commandSetting);
             });
         }
 
@@ -208,17 +206,17 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="sqlQuery">Sql query.</param>
         /// <param name="obj">object contains db parameters as property.</param>
-        /// <param name="commandType">Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
         /// <returns>An asynchronous result that yields the execute.</returns>
         public static async Task<decimal> ExecuteAsDecimalAsync(this IDbConnection connection,
-            string sqlQuery, object obj, CommandType commandType = CommandType.Text,
-            IDbTransaction transaction = null)
+            string sqlQuery, object obj, IDbTransaction transaction = null,
+            ICommandSetting commandSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteAsDecimal(connection, sqlQuery, obj, commandType, transaction);
+                ExecuteAsDecimal(connection, sqlQuery, obj, transaction, commandSetting);
             });
         }
 
