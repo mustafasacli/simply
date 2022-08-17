@@ -29,22 +29,30 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
         {
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                })
-                .ToArray();
+            try
+            {
+                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                    .Select(p => new DbCommandParameter
+                    {
+                        Value = p,
+                        ParameterDbType = p.ToDbType()
+                    })
+                    .ToArray();
 
-            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                commandParameters, commandSetting);
+                SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                    commandParameters, commandSetting);
 
-            IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                IDbCommandResult<List<SimpleDbRow>> rowListResult =
+                    PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-            List<T> resultSet = rowListResult.Result.ConvertRowsToList<T>();
-            return resultSet;
+                List<T> resultSet = rowListResult.Result.ConvertRowsToList<T>();
+                return resultSet;
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
         }
 
         #region [ Task methods ]
@@ -67,7 +75,7 @@ namespace Simply.Data
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns as object list.</returns>
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection connection,
-            string sqlText, object obj, IDbTransaction transaction = null, 
+            string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
             char parameterNamePrefix = '?') where T : class, new()
         {

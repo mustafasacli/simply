@@ -69,19 +69,27 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                })
-                .ToArray();
+            try
+            {
+                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                    .Select(p => new DbCommandParameter
+                    {
+                        Value = p,
+                        ParameterDbType = p.ToDbType()
+                    })
+                    .ToArray();
 
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
-            IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
+                SimpleDbCommand simpleDbCommand =
+                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
 
-            return resultSet.Result;
+                IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
+                return resultSet.Result;
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
         }
 
         /// <summary>

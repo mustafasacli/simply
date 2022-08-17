@@ -127,6 +127,7 @@ namespace Simply.Data
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             int result = -1;
+
             try
             {
                 DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())

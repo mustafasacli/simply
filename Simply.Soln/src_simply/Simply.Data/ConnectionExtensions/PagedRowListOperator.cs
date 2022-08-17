@@ -43,22 +43,30 @@ namespace Simply.Data
         {
             List<SimpleDbRow> result;
 
-            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-            IQuerySetting setting = connection.GetQuerySetting();
-            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                commandParameters, setting.ParameterPrefix, parameterNamePrefix);
-
-            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+            try
             {
-                CommandText = sql,
-                CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                CommandTimeout = commandSetting?.CommandTimeout,
-            };
-            simpleDbCommand.AddCommandParameters(commandParameters);
+                DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
+                IQuerySetting setting = connection.GetQuerySetting();
+                string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
+                    commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
-                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
-            result = dynamicResultSet.Result;
+                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+                {
+                    CommandText = sql,
+                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                    CommandTimeout = commandSetting?.CommandTimeout,
+                };
+                simpleDbCommand.AddCommandParameters(commandParameters);
+
+                IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
+                    GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                result = dynamicResultSet.Result;
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
 
             return result;
         }
@@ -140,22 +148,30 @@ namespace Simply.Data
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
         {
-            DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                }).ToArray();
+            try
+            {
+                DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
+                    .Select(p => new DbCommandParameter
+                    {
+                        Value = p,
+                        ParameterDbType = p.ToDbType()
+                    }).ToArray();
 
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                commandParameters, commandSetting);
+                SimpleDbCommand simpleDbCommand =
+                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                    commandParameters, commandSetting);
 
-            IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
-                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
+                    GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-            List<SimpleDbRow> result = dynamicResultSet.Result;
-            return result;
+                List<SimpleDbRow> result = dynamicResultSet.Result;
+                return result;
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
         }
 
         #endregion [ Page Info methods ]

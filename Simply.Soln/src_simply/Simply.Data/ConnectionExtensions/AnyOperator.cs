@@ -24,6 +24,7 @@ namespace Simply.Data
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             bool any;
+
             try
             {
                 DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
@@ -42,6 +43,7 @@ namespace Simply.Data
                 if (commandSetting?.CloseAtFinal ?? false)
                     connection.CloseIfNot();
             }
+
             return any;
         }
 
@@ -78,6 +80,7 @@ namespace Simply.Data
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             bool any;
+
             try
             {
                 DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
@@ -93,6 +96,7 @@ namespace Simply.Data
                 if (commandSetting?.CloseAtFinal ?? false)
                     connection.CloseIfNot();
             }
+
             return any;
         }
     }

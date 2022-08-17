@@ -39,25 +39,33 @@ namespace Simply.Data
             ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
             char? parameterNamePrefix = null) where T : class, new()
         {
-            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-            IQuerySetting setting = connection.GetQuerySetting();
-            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                commandParameters, setting.ParameterPrefix, parameterNamePrefix);
-
-            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+            try
             {
-                CommandText = sql,
-                CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                CommandTimeout = commandSetting?.CommandTimeout,
-            };
+                DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
+                IQuerySetting setting = connection.GetQuerySetting();
+                string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
+                    commandParameters, setting.ParameterPrefix, parameterNamePrefix);
 
-            simpleDbCommand.AddCommandParameters(commandParameters);
+                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+                {
+                    CommandText = sql,
+                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                    CommandTimeout = commandSetting?.CommandTimeout,
+                };
 
-            IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                simpleDbCommand.AddCommandParameters(commandParameters);
 
-            List<T> result = rowListResult.Result.ConvertRowsToList<T>();
-            return result;
+                IDbCommandResult<List<SimpleDbRow>> rowListResult =
+                    PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+
+                List<T> result = rowListResult.Result.ConvertRowsToList<T>();
+                return result;
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
         }
 
         /// <summary>
@@ -98,26 +106,33 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <returns>Returns as object list.</returns>
         public static List<T> SelectList<T>(this IDbConnection connection,
-           string odbcSqlQuery, object[] values,
-           IDbTransaction transaction = null,
+           string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
         {
-            DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                }).ToArray();
+            try
+            {
+                DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
+                    .Select(p => new DbCommandParameter
+                    {
+                        Value = p,
+                        ParameterDbType = p.ToDbType()
+                    }).ToArray();
 
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                commandParameters, commandSetting);
+                SimpleDbCommand simpleDbCommand =
+                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                    commandParameters, commandSetting);
 
-            IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                IDbCommandResult<List<SimpleDbRow>> rowListResult =
+                    PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-            List<T> result = rowListResult.Result.ConvertRowsToList<T>();
-            return result;
+                List<T> result = rowListResult.Result.ConvertRowsToList<T>();
+                return result;
+            }
+            finally
+            {
+                if (commandSetting?.CloseAtFinal ?? false)
+                    connection.CloseIfNot();
+            }
         }
 
         #endregion [ Page Info methods ]

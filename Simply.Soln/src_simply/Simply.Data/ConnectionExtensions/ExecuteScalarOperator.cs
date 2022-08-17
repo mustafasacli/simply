@@ -27,6 +27,7 @@ namespace Simply.Data
             ICommandSetting commandSetting = null)
         {
             object result;
+
             try
             {
                 DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);

@@ -718,7 +718,7 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns last record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.LastOperator.GetLast``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.CommandType,System.Data.IDbTransaction,System.Nullable{System.Int32})">
+        <member name="M:Simply.Data.LastOperator.GetLast``1(System.Data.IDbConnection,System.String,System.Object[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Last Row of the Odbc Sql query Resultset as object instance.
             </summary>
@@ -727,9 +727,8 @@
             The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).
             </param>
             <param name="parameterValues">Sql command parameter values.</param>
-            <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
-            <param name="commandTimeout">DbCommand timeout</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns last record as object instance.</returns>
         </member>
         <member name="M:Simply.Data.LastOperator.LastAsDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
