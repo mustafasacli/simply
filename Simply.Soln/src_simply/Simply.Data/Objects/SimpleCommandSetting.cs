@@ -65,7 +65,7 @@ namespace Simply.Data.Objects
         { get; private set; }
 
         /// <summary>
-        /// Gets Command Timeout.
+        /// Gets Command Timeout. Value as second.
         /// </summary>
         public int? CommandTimeout
         { get; private set; }
@@ -95,7 +95,7 @@ namespace Simply.Data.Objects
         /// <summary>
         ///
         /// </summary>
-        /// <param name="commandTimeout">command timeout.</param>
+        /// <param name="commandTimeout">command timeout. Value as second.</param>
         /// <returns>Returns object instance</returns>
         public ICommandSetting SetCommandTimeout(int? commandTimeout = null)
         {

@@ -264,7 +264,7 @@ namespace Simply.Common.Objects
             List<string> cellNameList = cellNames?.Where(q => q.IsValid())?.ToList() ?? ArrayHelper.EmptyList<string>();
             if (cellNameList.Any())
             {
-                var notContainedCells = cells.Select(q => q.CellName).Where(q => !cellNameList.Contains(q)).ToList() ?? ArrayHelper.EmptyList<string>();
+                List<string> notContainedCells = cells.Select(q => q.CellName).Where(q => !cellNameList.Contains(q)).ToList() ?? ArrayHelper.EmptyList<string>();
                 if (notContainedCells.Any())
                     throw new Exception($"{string.Join(",", notContainedCells)} cell names not contained to cell.");
 

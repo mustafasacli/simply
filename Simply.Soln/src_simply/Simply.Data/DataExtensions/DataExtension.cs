@@ -539,14 +539,14 @@ namespace Simply.Data
         // contained DataRow.
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            var returnValue = _row.Table.Columns.Contains(binder.Name);
+            bool returnValue = _row.Table.Columns.Contains(binder.Name);
             result = returnValue ? _row[binder.Name] : null;
             return returnValue;
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            var returnValue = _row.Table.Columns.Contains(binder.Name);
+            bool returnValue = _row.Table.Columns.Contains(binder.Name);
             if (returnValue)
             {
                 _row[binder.Name] = value;

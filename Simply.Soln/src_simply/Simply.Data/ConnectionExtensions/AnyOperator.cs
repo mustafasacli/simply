@@ -17,9 +17,7 @@ namespace Simply.Data
         /// <param name="connection">The connection <see cref="IDbConnection"/>.</param>
         /// <param name="sqlText">The sqlText <see cref="string"/>.</param>
         /// <param name="obj">The obj <see cref="object"/>.</param>
-        /// <param name="commandType">The commandType <see cref="CommandType"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
-        /// <param name="commandTimeout">db command timeout(optional).</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this IDbConnection connection, string sqlText, object obj,

@@ -293,7 +293,46 @@ namespace Simply.Data
             }
 
             command.SetCommandTransaction(transaction);
+            return command;
+        }
 
+        /// <summary>
+        /// Builds the database command.
+        /// </summary>
+        /// <param name="connection">Database connection.</param>
+        /// <param name="sql">Sql Query.</param>
+        /// <param name="parameters">Command parameters.</param>
+        /// <param name="transaction">Database transaction.</param>
+        /// <param name="commandSetting">Command setting</param>
+        /// <returns>Returns DbCommand instance.</returns>
+        public static DbCommand BuildDbCommand(this IDbConnection connection,
+            string sql, DbParameter[] parameters = null,
+            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
+        {
+            DbCommand command = (DbCommand)connection.CreateCommand();
+
+            command.CommandText = sql;
+            command.CommandType = commandSetting?.CommandType ?? CommandType.Text;
+
+            if (commandSetting?.CommandTimeout != null) command.CommandTimeout = (commandSetting?.CommandTimeout).Value;
+
+            if (parameters != null && parameters.Length > 0)
+            {
+                IQuerySetting setting = connection.GetQuerySetting();
+
+                for (int counter = 0; counter < parameters.Length; counter++)
+                {
+                    if (!parameters[counter].ParameterName.StartsWith(setting.ParameterPrefix))
+                    {
+                        parameters[counter].ParameterName =
+                            setting.ParameterPrefix + parameters[counter].ParameterName.TrimStart();
+                    }
+
+                    command.Parameters.Add(parameters[counter]);
+                }
+            }
+
+            command.SetCommandTransaction(transaction);
             return command;
         }
 
@@ -306,7 +345,6 @@ namespace Simply.Data
         public static bool IsOpen(this IDbConnection connection)
         {
             CheckConnectionIsNull(connection);
-
             bool isOpen = connection.State == ConnectionState.Open;
             return isOpen;
         }
@@ -320,7 +358,6 @@ namespace Simply.Data
         public static bool IsClosed(this IDbConnection connection)
         {
             CheckConnectionIsNull(connection);
-
             bool isClosed = connection.State == ConnectionState.Closed;
             return isClosed;
         }
