@@ -40,9 +40,7 @@
             <param name="connection">The connection <see cref="T:System.Data.IDbConnection"/>.</param>
             <param name="sqlText">The sqlText <see cref="T:System.String"/>.</param>
             <param name="obj">The obj <see cref="T:System.Object"/>.</param>
-            <param name="commandType">The commandType <see cref="T:System.Data.CommandType"/>.</param>
             <param name="transaction">The transaction <see cref="T:System.Data.IDbTransaction"/>.</param>
-            <param name="commandTimeout">db command timeout(optional).</param>
             <param name="commandSetting">Command setting</param>
             <returns>The <see cref="T:System.Boolean"/>.</returns>
         </member>
@@ -232,6 +230,17 @@
             <param name="commandType">Type of the command.</param>
             <param name="transaction">Database transaction.</param>
             <param name="commandTimeout">command Timeout (value as second)</param>
+            <returns>Returns DbCommand instance.</returns>
+        </member>
+        <member name="M:Simply.Data.DbConnectionExtension.BuildDbCommand(System.Data.IDbConnection,System.String,System.Data.Common.DbParameter[],System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
+            <summary>
+            Builds the database command.
+            </summary>
+            <param name="connection">Database connection.</param>
+            <param name="sql">Sql Query.</param>
+            <param name="parameters">Command parameters.</param>
+            <param name="transaction">Database transaction.</param>
+            <param name="commandSetting">Command setting</param>
             <returns>Returns DbCommand instance.</returns>
         </member>
         <member name="M:Simply.Data.DbConnectionExtension.IsOpen(System.Data.IDbConnection)">
@@ -2785,7 +2794,7 @@
         </member>
         <member name="P:Simply.Data.Objects.SimpleCommandSetting.CommandTimeout">
             <summary>
-            Gets Command Timeout.
+            Gets Command Timeout. Value as second.
             </summary>
         </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
@@ -2806,7 +2815,7 @@
              <summary>
             
              </summary>
-             <param name="commandTimeout">command timeout.</param>
+             <param name="commandTimeout">command timeout. Value as second.</param>
              <returns>Returns object instance</returns>
         </member>
         <member name="T:Simply.Data.DB2QuerySettings">
