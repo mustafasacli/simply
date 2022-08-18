@@ -25,15 +25,15 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
         /// no conversion occured.
+        /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
         public static List<List<SimpleDbRow>> QueryMultiDbRowList(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, char? parameterNamePrefix = null)
+            ICommandSetting commandSetting = null)
         {
             IDbCommandResult<List<List<SimpleDbRow>>> dynamicList;
 
@@ -42,7 +42,7 @@ namespace Simply.Data
                 DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
                 IQuerySetting setting = connection.GetQuerySetting();
                 string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, parameterNamePrefix);
+                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
                 SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
                 {
                     CommandText = sql,

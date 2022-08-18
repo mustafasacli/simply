@@ -67,23 +67,22 @@ namespace Simply.Data
         /// parameterNamePrefix : ?
         /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
+        /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
-        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns as object list.</returns>
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
-            char parameterNamePrefix = '?') where T : class, new()
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {
                 return
                 connection.QueryList<T>(sqlText, obj,
-                transaction, commandSetting, pageInfo, parameterNamePrefix);
+                transaction, commandSetting, pageInfo);
             });
 
             return await resultTask;

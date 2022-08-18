@@ -25,22 +25,22 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
         /// no conversion occured.
+        /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns first record as object instance.</returns>
         public static T QueryFirst<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, char? parameterNamePrefix = null) where T : class, new()
+            ICommandSetting commandSetting = null) where T : class, new()
         {
             try
             {
                 DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
                 IQuerySetting setting = connection.GetQuerySetting();
                 string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, parameterNamePrefix);
+                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
 
                 SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
                 {
@@ -128,20 +128,20 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
         /// no conversion occured.
+        /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>An asynchronous result that yields the first as dynamic.</returns>
         public static async Task<SimpleDbRow> QueryFirstAsDbRowAsync(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, char? parameterNamePrefix = null)
+            ICommandSetting commandSetting = null)
         {
             Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                connection.QueryFirstAsDbRow(sqlText, obj, transaction, commandSetting, parameterNamePrefix);
+                connection.QueryFirstAsDbRow(sqlText, obj, transaction, commandSetting);
             });
 
             return await resultTask;
@@ -159,22 +159,21 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
         /// no conversion occured.
+        /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>An asynchronous result that yields a T.</returns>
         public static async Task<T> FirstAsync<T>(this IDbConnection connection,
            string sqlText, object obj,
-           IDbTransaction transaction = null, ICommandSetting commandSetting = null,
-           char? parameterNamePrefix = null) where T : class, new()
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
                 return
                 connection.QueryFirst<T>(sqlText, obj,
-                 transaction, commandSetting, parameterNamePrefix);
+                 transaction, commandSetting);
             });
 
             return await resultTask;
@@ -236,22 +235,22 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
         /// no conversion occured.
+        /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns first record as dynamic object.</returns>
         public static SimpleDbRow QueryFirstAsDbRow(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, char? parameterNamePrefix = null)
+            ICommandSetting commandSetting = null)
         {
             try
             {
                 DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
                 IQuerySetting setting = connection.GetQuerySetting();
                 string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, parameterNamePrefix);
+                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
 
                 SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
                 {

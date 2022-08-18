@@ -27,24 +27,23 @@ namespace Simply.Data
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
         /// no conversion occured.
+        /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="obj">object which has contains parameters as properties.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
-        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns as object list.</returns>
         public static List<T> QueryList<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
-            char? parameterNamePrefix = null) where T : class, new()
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
         {
             try
             {
                 DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
                 IQuerySetting setting = connection.GetQuerySetting();
                 string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, parameterNamePrefix);
+                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
 
                 SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
                 {

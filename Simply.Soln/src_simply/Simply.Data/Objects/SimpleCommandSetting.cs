@@ -25,12 +25,14 @@ namespace Simply.Data.Objects
         /// <param name="closeAtFinal">If true, close at final.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         /// <param name="commandType">The command type.</param>
+        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         private SimpleCommandSetting(bool? closeAtFinal, int? commandTimeout,
-            CommandType commandType = System.Data.CommandType.Text)
+            CommandType commandType = System.Data.CommandType.Text, char? parameterNamePrefix = null)
         {
             CloseAtFinal = closeAtFinal;
             CommandTimeout = commandTimeout;
             CommandType = commandType;
+            ParameterNamePrefix = parameterNamePrefix;
         }
 
         /// <summary>
@@ -39,18 +41,14 @@ namespace Simply.Data.Objects
         /// <param name="closeAtFinal">If true, close at final.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         /// <param name="commandType">The command type.</param>
+        /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns IExecutionSetting object instance.</returns>
         public static ICommandSetting Create(bool? closeAtFinal = null,
-            int? commandTimeout = null, CommandType commandType = System.Data.CommandType.Text)
+            int? commandTimeout = null, CommandType commandType = System.Data.CommandType.Text,
+            char? parameterNamePrefix = null)
         {
-            return new SimpleCommandSetting(closeAtFinal, commandTimeout, commandType);
+            return new SimpleCommandSetting(closeAtFinal, commandTimeout, commandType, parameterNamePrefix);
         }
-
-        /// <summary>
-        /// Gets auto open. if it is true connection will be opened before operation.
-        /// </summary>
-        public bool? AutoOpen
-        { get; private set; }
 
         /// <summary>
         /// Gets close at final. if it is true connection will be closed after operation.
@@ -68,6 +66,12 @@ namespace Simply.Data.Objects
         /// Gets Command Timeout. Value as second.
         /// </summary>
         public int? CommandTimeout
+        { get; private set; }
+
+        /// <summary>
+        /// Gets Parameter Name Prefix for Rebuild Query.
+        /// </summary>
+        public char? ParameterNamePrefix
         { get; private set; }
 
         /// <summary>
@@ -100,6 +104,17 @@ namespace Simply.Data.Objects
         public ICommandSetting SetCommandTimeout(int? commandTimeout = null)
         {
             CommandTimeout = commandTimeout;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the parameter name prefix.
+        /// </summary>
+        /// <param name="parameterNamePrefix">The parameter name prefix.</param>
+        /// <returns>A ICommandSetting.</returns>
+        public ICommandSetting SetParameterNamePrefix(char? parameterNamePrefix = null)
+        {
+            ParameterNamePrefix = parameterNamePrefix;
             return this;
         }
     }
