@@ -792,7 +792,7 @@
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <returns>Returns last record as dynamic object instance.</returns>
+            <returns>Returns last record as SimpleDbRow instance.</returns>
         </member>
         <member name="T:Simply.Data.ListOperator">
             <summary>
@@ -2262,7 +2262,7 @@
              <summary>
             
              </summary>
-             <param name="closeAtFinal">connection auto close setting.</param>
+             <param name="closeAtFinal">connection auto close querySetting.</param>
              <returns>Returns object instance</returns>
         </member>
         <member name="M:Simply.Data.Interfaces.ICommandSetting.SetCommandType(System.Data.CommandType)">
@@ -2814,7 +2814,7 @@
              <summary>
             
              </summary>
-             <param name="closeAtFinal">connection auto close setting.</param>
+             <param name="closeAtFinal">connection auto close querySetting.</param>
              <returns>Returns object instance</returns>
         </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCommandType(System.Data.CommandType)">
@@ -2916,7 +2916,7 @@
         </member>
         <member name="M:Simply.Data.QuerySettings.QuerySettingsFactory.FindQuerySetting(Simply.Data.Enums.DbConnectionTypes)">
             <summary>
-            Finds the query setting.
+            Finds the query querySetting.
             </summary>
             <param name="connectionType">The connection type.</param>
             <returns>A IQuerySetting.</returns>
