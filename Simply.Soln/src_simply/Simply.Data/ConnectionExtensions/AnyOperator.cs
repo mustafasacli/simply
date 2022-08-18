@@ -33,7 +33,6 @@ namespace Simply.Data
             simpleDbCommand.AddCommandParameters(parameters);
 
             bool any = connection.Any(simpleDbCommand, transaction);
-
             return any;
         }
 

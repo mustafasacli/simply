@@ -52,11 +52,11 @@ namespace Simply.Data
 
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            IDbCommandResult<List<SimpleDbRow>> rowListResult =
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-            List<T> result = rowListResult.Result.ConvertRowsToList<T>();
-            return result;
+            List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            return instanceList;
         }
 
         /// <summary>
@@ -73,17 +73,17 @@ namespace Simply.Data
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
             where T : class, new()
         {
-            IDbCommandResult<List<T>> result = new DbCommandResult<List<T>>();
+            IDbCommandResult<List<T>> instanceListResult = new DbCommandResult<List<T>>();
 
-            IDbCommandResult<List<SimpleDbRow>> rowListResult =
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-            result.Result =
-                rowListResult.Result.ConvertRowsToList<T>()
+            instanceListResult.Result =
+                simpleDbRowListResult.Result.ConvertRowsToList<T>()
                 ?? new List<T>();
-            result.AdditionalValues = rowListResult.AdditionalValues;
+            instanceListResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
 
-            return result;
+            return instanceListResult;
         }
 
         /// <summary>
@@ -111,11 +111,11 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandSetting);
 
-            IDbCommandResult<List<SimpleDbRow>> rowListResult =
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-            List<T> result = rowListResult.Result.ConvertRowsToList<T>();
-            return result;
+            List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            return instanceList;
         }
 
         #endregion [ Page Info methods ]

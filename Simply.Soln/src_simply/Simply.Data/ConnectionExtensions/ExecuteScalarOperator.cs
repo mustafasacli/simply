@@ -110,16 +110,16 @@ namespace Simply.Data
         public static IDbCommandResult<object> ExecuteScalarQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            IDbCommandResult<object> result = new DbCommandResult<object>(-1);
+            IDbCommandResult<object> commandResult = new DbCommandResult<object>(-1);
 
             using (IDbCommand command =
                     connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                result.Result = command.ExecuteScalar();
-                result.OutputParameters = command.GetOutParameters();
+                commandResult.Result = command.ExecuteScalar();
+                commandResult.OutputParameters = command.GetOutParameters();
             }
 
-            return result;
+            return commandResult;
         }
 
         /// <summary>
@@ -133,17 +133,17 @@ namespace Simply.Data
         public static IDbCommandResult<T> ExecuteScalarQueryAs<T>(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            IDbCommandResult<object> result =
+            IDbCommandResult<object> commandResult =
                 ExecuteScalarQuery(connection, simpleDbCommand, transaction)
                 ?? new DbCommandResult<object>();
 
-            T value = !result.Result.IsNullOrDbNull() ? (T)result.Result : default;
+            T value = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
 
             return new DbCommandResult<T>()
             {
                 Result = value,
-                AdditionalValues = result.AdditionalValues,
-                ExecutionResult = result.ExecutionResult
+                AdditionalValues = commandResult.AdditionalValues,
+                ExecutionResult = commandResult.ExecutionResult
             };
         }
 

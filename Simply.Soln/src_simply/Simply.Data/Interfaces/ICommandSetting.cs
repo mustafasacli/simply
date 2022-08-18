@@ -8,11 +8,6 @@ namespace Simply.Data.Interfaces
     public interface ICommandSetting
     {
         /// <summary>
-        /// Gets close at final. if it is true connection will be closed after operation.
-        /// </summary>
-        bool? CloseAtFinal { get; }
-
-        /// <summary>
         /// Gets Command Type.
         /// </summary>
         CommandType CommandType { get; }
@@ -26,13 +21,6 @@ namespace Simply.Data.Interfaces
         /// Gets Parameter Name Prefix for Rebuild Query.
         /// </summary>
         char? ParameterNamePrefix { get; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="closeAtFinal">connection auto close querySetting.</param>
-        /// <returns>Returns object instance</returns>
-        ICommandSetting SetCloseAtFinal(bool? closeAtFinal = null);
 
         /// <summary>
         ///

@@ -44,6 +44,7 @@ namespace Simply.Data.ConnectionExtensions
             string format = querySetting.CountFormat;
             simpleDbCommand.CommandText =
                 format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+
             IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
             return result.Result;
         }
@@ -63,6 +64,7 @@ namespace Simply.Data.ConnectionExtensions
             IQuerySetting querySetting = connection.GetQuerySetting();
             string format = querySetting.CountFormat;
             string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
+
             int result = connection.ExecuteScalarAs<int>(sqlText,
                 obj, transaction, commandSetting);
             return result;

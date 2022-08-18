@@ -22,14 +22,12 @@ namespace Simply.Data.Objects
         /// <summary>
         /// Prevents a default instance of the <see cref="SimpleCommandSetting"/> class from being created.
         /// </summary>
-        /// <param name="closeAtFinal">If true, close at final.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         /// <param name="commandType">The command type.</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
-        private SimpleCommandSetting(bool? closeAtFinal, int? commandTimeout,
+        private SimpleCommandSetting(int? commandTimeout,
             CommandType commandType = System.Data.CommandType.Text, char? parameterNamePrefix = null)
         {
-            CloseAtFinal = closeAtFinal;
             CommandTimeout = commandTimeout;
             CommandType = commandType;
             ParameterNamePrefix = parameterNamePrefix;
@@ -38,23 +36,16 @@ namespace Simply.Data.Objects
         /// <summary>
         /// Default instance for IExecutionSetting with given parameters.
         /// </summary>
-        /// <param name="closeAtFinal">If true, close at final.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         /// <param name="commandType">The command type.</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         /// <returns>Returns IExecutionSetting object instance.</returns>
-        public static ICommandSetting Create(bool? closeAtFinal = null,
+        public static ICommandSetting Create(
             int? commandTimeout = null, CommandType commandType = System.Data.CommandType.Text,
             char? parameterNamePrefix = null)
         {
-            return new SimpleCommandSetting(closeAtFinal, commandTimeout, commandType, parameterNamePrefix);
+            return new SimpleCommandSetting(commandTimeout, commandType, parameterNamePrefix);
         }
-
-        /// <summary>
-        /// Gets close at final. if it is true connection will be closed after operation.
-        /// </summary>
-        public bool? CloseAtFinal
-        { get; private set; }
 
         /// <summary>
         /// Gets Command Type.
@@ -73,17 +64,6 @@ namespace Simply.Data.Objects
         /// </summary>
         public char? ParameterNamePrefix
         { get; private set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="closeAtFinal">connection auto close querySetting.</param>
-        /// <returns>Returns object instance</returns>
-        public ICommandSetting SetCloseAtFinal(bool? closeAtFinal = null)
-        {
-            CloseAtFinal = closeAtFinal;
-            return this;
-        }
 
         /// <summary>
         ///

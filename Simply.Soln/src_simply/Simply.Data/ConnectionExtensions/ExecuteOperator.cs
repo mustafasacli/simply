@@ -91,17 +91,17 @@ namespace Simply.Data
         public static IDbCommandResult<int> ExecuteQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            IDbCommandResult<int> result = new DbCommandResult<int>(-1);
+            IDbCommandResult<int> commandResult = new DbCommandResult<int>(-1);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                result.ExecutionResult = command.ExecuteNonQuery();
-                result.Result = result.ExecutionResult;
-                result.OutputParameters = command.GetOutParameters();
+                commandResult.ExecutionResult = command.ExecuteNonQuery();
+                commandResult.Result = commandResult.ExecutionResult;
+                commandResult.OutputParameters = command.GetOutParameters();
             }
 
-            return result;
+            return commandResult;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Simply.Data
             string odbcSqlQuery, object[] parameterValues,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            int result = -1;
+            int executeResult = -1;
 
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -134,10 +134,10 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                result = command.ExecuteNonQuery();
+                executeResult = command.ExecuteNonQuery();
             }
 
-            return result;
+            return executeResult;
         }
 
         #region [ Task methods ]

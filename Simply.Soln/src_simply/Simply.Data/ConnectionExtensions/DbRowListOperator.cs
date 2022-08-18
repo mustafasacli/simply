@@ -47,8 +47,8 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            IDbCommandResult<List<List<SimpleDbRow>>> dynamicList = connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
-            return dynamicList.Result;
+            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
+            return multiSimpleDbRowListResult.Result;
         }
 
         /// <summary>
@@ -63,20 +63,20 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
         {
-            IDbCommandResult<List<SimpleDbRow>> result = new DbCommandResult<List<SimpleDbRow>>();
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
-                    result.OutputParameters = command.GetOutParameters();
-                    result.Result = reader.GetResultSetAsDbRow(closeAtFinal: true) ??
+                    simpleDbRowListResult.OutputParameters = command.GetOutParameters();
+                    simpleDbRowListResult.Result = reader.GetResultSetAsDbRow(closeAtFinal: true) ??
                         new List<SimpleDbRow>();
                 }
             }
 
-            return result;
+            return simpleDbRowListResult;
         }
 
         /// <summary>
@@ -91,20 +91,20 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
         {
-            IDbCommandResult<List<List<SimpleDbRow>>> result = new DbCommandResult<List<List<SimpleDbRow>>>();
+            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
-                    result.OutputParameters = command.GetOutParameters();
-                    result.Result = reader.GetMultiDbRowList(closeAtFinal: true) ??
+                    multiSimpleDbRowListResult.OutputParameters = command.GetOutParameters();
+                    multiSimpleDbRowListResult.Result = reader.GetMultiDbRowList(closeAtFinal: true) ??
                         new List<List<SimpleDbRow>>();
                 }
             }
 
-            return result;
+            return multiSimpleDbRowListResult;
         }
 
         /// <summary>
@@ -130,11 +130,11 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand =
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
 
-            IDbCommandResult<List<SimpleDbRow>> dynamicResult =
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 connection.GetDbRowListQuery(simpleDbCommand, transaction);
 
-            List<SimpleDbRow> resultSet = dynamicResult.Result;
-            return resultSet;
+            List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
+            return simpleDbRowList;
         }
     }
 }

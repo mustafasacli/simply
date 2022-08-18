@@ -48,8 +48,8 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            IDbCommandResult<SimpleDbRow> commandResult = connection.QueryFirstAsDbRow(simpleDbCommand, transaction);
-            T instance = commandResult.Result.ConvertRowTo<T>();
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult = connection.QueryFirstAsDbRow(simpleDbCommand, transaction);
+            T instance = simpleDbRowResult.Result.ConvertRowTo<T>();
             return instance;
         }
 
@@ -66,10 +66,10 @@ namespace Simply.Data
         {
             IDbCommandResult<T> result = new DbCommandResult<T>();
 
-            IDbCommandResult<SimpleDbRow> commandResult = connection.QueryFirstAsDbRow(simpleDbCommand, transaction);
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult = connection.QueryFirstAsDbRow(simpleDbCommand, transaction);
 
-            result.Result = commandResult.Result.ConvertRowTo<T>();
-            result.AdditionalValues = commandResult.AdditionalValues;
+            result.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
+            result.AdditionalValues = simpleDbRowResult.AdditionalValues;
             return result;
         }
 
@@ -92,10 +92,10 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
                 odbcSqlQuery, commandParameters, commandSetting);
 
-            IDbCommandResult<SimpleDbRow> dbRow = QueryFirstAsDbRow(connection, simpleDbCommand, transaction);
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult = QueryFirstAsDbRow(connection, simpleDbCommand, transaction);
 
-            T result = dbRow.Result.ConvertRowTo<T>();
-            return result;
+            T instance = simpleDbRowResult.Result.ConvertRowTo<T>();
+            return instance;
         }
 
         #region [ Task methods ]
@@ -176,7 +176,7 @@ namespace Simply.Data
         public static IDbCommandResult<SimpleDbRow> QueryFirstAsDbRow(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            IDbCommandResult<SimpleDbRow> result = new DbCommandResult<SimpleDbRow>();
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
 
             IDataReader reader = null;
 
@@ -190,13 +190,13 @@ namespace Simply.Data
                 reader = connection.ExecuteReaderQuery(
                     simpleDbCommand, out outputValues, transaction, commandBehavior: CommandBehavior.SingleRow);
 
-                result.OutputParameters = outputValues;
-                result.Result = reader.FirstDbRow(closeAtFinal: true);
+                simpleDbRowResult.OutputParameters = outputValues;
+                simpleDbRowResult.Result = reader.FirstDbRow(closeAtFinal: true);
             }
             finally
             { reader?.CloseIfNot(); }
 
-            return result;
+            return simpleDbRowResult;
         }
 
         /// <summary>
@@ -232,8 +232,9 @@ namespace Simply.Data
                 CommandTimeout = commandSetting?.CommandTimeout,
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
-            SimpleDbRow instance = connection.QueryFirstAsDbRow(simpleDbCommand, transaction).Result;
-            return instance;
+
+            SimpleDbRow simpleDbRow = connection.QueryFirstAsDbRow(simpleDbCommand, transaction).Result;
+            return simpleDbRow;
         }
 
         #endregion [ DbRow methods ]

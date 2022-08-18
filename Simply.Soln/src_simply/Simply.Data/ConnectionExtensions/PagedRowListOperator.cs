@@ -41,34 +41,24 @@ namespace Simply.Data
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
         {
-            List<SimpleDbRow> result;
+            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
+                commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
 
-            try
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-                IQuerySetting querySetting = connection.GetQuerySetting();
-                string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+                CommandText = sql,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
+            };
+            simpleDbCommand.AddCommandParameters(commandParameters);
 
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sql,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout,
-                };
-                simpleDbCommand.AddCommandParameters(commandParameters);
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
+                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+            List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
 
-                IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
-                    GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
-                result = dynamicResultSet.Result;
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
-
-            return result;
+            return simpleDbRowList;
         }
 
         /// <summary>
@@ -83,14 +73,14 @@ namespace Simply.Data
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
-            DbCommandResult<List<SimpleDbRow>> result = new DbCommandResult<List<SimpleDbRow>>();
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
 
             bool isPageableAndSkipAndTakeFormatEmpty = false;
 
             if (pageInfo != null)
             {
                 if (pageInfo.Take == 0)
-                    return result;
+                    return simpleDbRowListResult;
 
                 IQuerySetting querySetting = connection.GetQuerySetting();
                 isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
@@ -107,30 +97,19 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                try
+                using (IDataReader reader = command.ExecuteReader())
                 {
-                    if (transaction == null)
-                        connection.OpenIfNot();
-
-                    using (IDataReader reader = command.ExecuteReader())
-                    {
-                        result.OutputParameters = command.GetOutParameters();
-                        result.Result =
-                            (isPageableAndSkipAndTakeFormatEmpty ?
-                            reader.GetSimleRowListSkipAndTake(
-                                skip: pageInfo.Skip, take: pageInfo.Take, closeAtFinal: true)
-                            : reader.GetResultSetAsDbRow(closeAtFinal: true))
-                            ?? new List<SimpleDbRow>();
-                    }
-                }
-                finally
-                {
-                    if (transaction == null)
-                        connection.CloseIfNot();
+                    simpleDbRowListResult.OutputParameters = command.GetOutParameters();
+                    simpleDbRowListResult.Result =
+                        (isPageableAndSkipAndTakeFormatEmpty ?
+                        reader.GetSimleRowListSkipAndTake(
+                            skip: pageInfo.Skip, take: pageInfo.Take, closeAtFinal: true)
+                        : reader.GetResultSetAsDbRow(closeAtFinal: true))
+                        ?? new List<SimpleDbRow>();
                 }
             }
 
-            return result;
+            return simpleDbRowListResult;
         }
 
         /// <summary>
@@ -148,30 +127,22 @@ namespace Simply.Data
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
         {
-            try
-            {
-                DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    }).ToArray();
+            DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
+                {
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                }).ToArray();
 
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                    commandParameters, commandSetting);
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                commandParameters, commandSetting);
 
-                IDbCommandResult<List<SimpleDbRow>> dynamicResultSet =
-                    GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
+                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-                List<SimpleDbRow> result = dynamicResultSet.Result;
-                return result;
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
+            return simpleDbRowList;
         }
 
         #endregion [ Page Info methods ]

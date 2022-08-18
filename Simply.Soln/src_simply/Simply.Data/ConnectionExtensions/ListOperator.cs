@@ -40,11 +40,11 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandSetting);
 
-            IDbCommandResult<List<SimpleDbRow>> rowListResult =
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-            List<T> resultList = rowListResult.Result.ConvertRowsToList<T>();
-            return resultList;
+            List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            return instanceList;
         }
 
         #region [ Task methods ]

@@ -89,14 +89,14 @@ namespace Simply.Data
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
-            IDbCommandResult<DataTable> result = new DbCommandResult<DataTable>();
+            IDbCommandResult<DataTable> dataTableResult = new DbCommandResult<DataTable>();
 
             bool isPageableAndSkipAndTakeFormatEmpty = false;
 
             if (pageInfo != null)
             {
                 if (!pageInfo.IsPageable)
-                    return result;
+                    return dataTableResult;
 
                 IQuerySetting querySetting = connection.GetQuerySetting();
                 isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
@@ -111,7 +111,7 @@ namespace Simply.Data
             }
 
             IDbCommandResult<DataSet> tempResultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
-            result = new DbCommandResult<DataTable>
+            dataTableResult = new DbCommandResult<DataTable>
             {
                 ExecutionResult = tempResultSet.ExecutionResult,
                 AdditionalValues = tempResultSet.AdditionalValues,
@@ -123,17 +123,17 @@ namespace Simply.Data
                 DataTable table = tempResultSet.Result.Tables[0];
                 if (isPageableAndSkipAndTakeFormatEmpty)
                 {
-                    result.Result = table.CopyDatatable(pageInfo);
+                    dataTableResult.Result = table.CopyDatatable(pageInfo);
                 }
                 else
                 {
-                    result.Result = table;
+                    dataTableResult.Result = table;
                 }
             }
             else
-            { result.Result = new DataTable(); }
+            { dataTableResult.Result = new DataTable(); }
 
-            return result;
+            return dataTableResult;
         }
     }
 }
