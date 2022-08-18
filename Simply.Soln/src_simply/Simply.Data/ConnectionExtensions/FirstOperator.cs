@@ -38,7 +38,7 @@ namespace Simply.Data
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
             string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+                commandParameters, querySetting.ParameterPrefix, commandSetting?.ParameterNamePrefix);
 
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
@@ -223,7 +223,7 @@ namespace Simply.Data
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
             string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+                commandParameters, querySetting.ParameterPrefix, commandSetting?.ParameterNamePrefix);
 
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {

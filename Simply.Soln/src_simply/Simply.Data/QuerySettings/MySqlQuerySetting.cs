@@ -17,7 +17,7 @@ namespace Simply.Data
         {
             this.ConnectionType = connectionType;
             this.ParameterPrefix = AtChar.ToString();
-            this.ParameterSuffix = ParameterPrefix;
+            this.ParameterSuffix = Empty;
             this.Prefix = BackquoteString;
             this.Suffix = BackquoteString;
             this.StringConcatOperation = "CONCAT( #params# )";
