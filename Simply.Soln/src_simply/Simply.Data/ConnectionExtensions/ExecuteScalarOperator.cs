@@ -137,11 +137,11 @@ namespace Simply.Data
                 ExecuteScalarQuery(connection, simpleDbCommand, transaction)
                 ?? new DbCommandResult<object>();
 
-            T value = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
+            T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
 
             return new DbCommandResult<T>()
             {
-                Result = value,
+                Result = instance,
                 AdditionalValues = commandResult.AdditionalValues,
                 ExecutionResult = commandResult.ExecutionResult
             };
@@ -194,8 +194,6 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null) where T : struct
         {
-            object result;
-
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
                 {
@@ -206,6 +204,7 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(
                     odbcSqlQuery, commandParameters, commandSetting);
 
+            object result;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {

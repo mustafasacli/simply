@@ -26,8 +26,8 @@ namespace Simply.Data.ConnectionExtensions
             string format = querySetting.CountFormat;
             simpleDbCommand.CommandText =
                 format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-            IDbCommandResult<int> result = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
-            return result.Result;
+            IDbCommandResult<int> commandResult = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
+            return commandResult.Result;
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace Simply.Data.ConnectionExtensions
             simpleDbCommand.CommandText =
                 format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
 
-            IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
-            return result.Result;
+            IDbCommandResult<long> commandResult = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
+            return commandResult.Result;
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace Simply.Data.ConnectionExtensions
             string format = querySetting.CountFormat;
             simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
 
-            IDbCommandResult<int> result = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
-            return result.Result;
+            IDbCommandResult<int> commandResult = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
+            return commandResult.Result;
         }
 
         /// <summary>
@@ -149,8 +149,8 @@ namespace Simply.Data.ConnectionExtensions
             string format = querySetting.CountFormat;
             simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
 
-            IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
-            return result.Result;
+            IDbCommandResult<long> commandResult = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
+            return commandResult.Result;
         }
     }
 }
