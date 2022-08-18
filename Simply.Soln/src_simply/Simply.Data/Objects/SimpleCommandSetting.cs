@@ -77,7 +77,7 @@ namespace Simply.Data.Objects
         /// <summary>
         ///
         /// </summary>
-        /// <param name="closeAtFinal">connection auto close setting.</param>
+        /// <param name="closeAtFinal">connection auto close querySetting.</param>
         /// <returns>Returns object instance</returns>
         public ICommandSetting SetCloseAtFinal(bool? closeAtFinal = null)
         {

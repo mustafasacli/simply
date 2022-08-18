@@ -46,9 +46,9 @@ namespace Simply.Data
             try
             {
                 DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-                IQuerySetting setting = connection.GetQuerySetting();
+                IQuerySetting querySetting = connection.GetQuerySetting();
                 string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+                    commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
 
                 SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
                 {
@@ -92,11 +92,11 @@ namespace Simply.Data
                 if (pageInfo.Take == 0)
                     return result;
 
-                IQuerySetting setting = connection.GetQuerySetting();
-                isPageableAndSkipAndTakeFormatEmpty = setting.SkipAndTakeFormat.IsNullOrSpace();
+                IQuerySetting querySetting = connection.GetQuerySetting();
+                isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
                 if (!isPageableAndSkipAndTakeFormatEmpty)
                 {
-                    string format = setting.SkipAndTakeFormat.CopyValue();
+                    string format = querySetting.SkipAndTakeFormat.CopyValue();
                     format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
                     format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
                     format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);

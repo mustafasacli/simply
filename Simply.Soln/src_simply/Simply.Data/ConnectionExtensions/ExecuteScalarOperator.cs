@@ -28,28 +28,20 @@ namespace Simply.Data
         {
             object result;
 
-            try
+            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sql,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout
-                };
+                CommandText = sql,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout
+            };
 
-                simpleDbCommand.AddCommandParameters(parameters);
+            simpleDbCommand.AddCommandParameters(parameters);
 
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
-                {
-                    result = command.ExecuteScalar();
-                }
-            }
-            finally
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
+                result = command.ExecuteScalar();
             }
 
             return result;
@@ -90,27 +82,19 @@ namespace Simply.Data
         {
             object result;
 
-            try
+            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sql,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout
-                };
-                simpleDbCommand.AddCommandParameters(parameters);
+                CommandText = sql,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout
+            };
+            simpleDbCommand.AddCommandParameters(parameters);
 
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
-                {
-                    result = command.ExecuteScalar();
-                }
-            }
-            finally
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
+                result = command.ExecuteScalar();
             }
 
             return result;
@@ -178,28 +162,20 @@ namespace Simply.Data
         {
             object result;
 
-            try
-            {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    }).ToArray();
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                    commandParameters, commandSetting);
-
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
                 {
-                    result = command.ExecuteScalar();
-                }
-            }
-            finally
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                }).ToArray();
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                commandParameters, commandSetting);
+
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
+                result = command.ExecuteScalar();
             }
 
             return result;
@@ -220,28 +196,20 @@ namespace Simply.Data
         {
             object result;
 
-            try
-            {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    }).ToArray();
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(
-                        odbcSqlQuery, commandParameters, commandSetting);
-
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
                 {
-                    result = command.ExecuteScalar();
-                }
-            }
-            finally
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                }).ToArray();
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(
+                    odbcSqlQuery, commandParameters, commandSetting);
+
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
+                result = command.ExecuteScalar();
             }
 
             return (T)result;

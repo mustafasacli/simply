@@ -35,30 +35,22 @@ namespace Simply.Data
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null) where T : class, new()
         {
-            try
-            {
-                DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-                IQuerySetting setting = connection.GetQuerySetting();
-                string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string sqlQuery = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
+                commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
 
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sqlQuery,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout,
-                };
-                simpleDbCommand.AddCommandParameters(commandParameters);
-
-                IDbCommandResult<SimpleDbRow> commandResult = connection.QuerySingleAsDbRow(simpleDbCommand, transaction);
-                T instance = commandResult.Result.ConvertRowTo<T>();
-                return instance;
-            }
-            finally
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+                CommandText = sqlQuery,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
+            };
+            simpleDbCommand.AddCommandParameters(commandParameters);
+
+            IDbCommandResult<SimpleDbRow> commandResult = connection.QuerySingleAsDbRow(simpleDbCommand, transaction);
+            T instance = commandResult.Result.ConvertRowTo<T>();
+            return instance;
         }
 
         /// <summary>
@@ -189,28 +181,20 @@ namespace Simply.Data
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)
         {
-            try
-            {
-                DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-                IQuerySetting setting = connection.GetQuerySetting();
-                string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
+                commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
 
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sql,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout,
-                };
-                simpleDbCommand.AddCommandParameters(commandParameters);
-                SimpleDbRow instance = connection.QuerySingleAsDbRow(simpleDbCommand, transaction).Result;
-                return instance;
-            }
-            finally
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+                CommandText = sql,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
+            };
+            simpleDbCommand.AddCommandParameters(commandParameters);
+            SimpleDbRow instance = connection.QuerySingleAsDbRow(simpleDbCommand, transaction).Result;
+            return instance;
         }
 
         /// <summary>

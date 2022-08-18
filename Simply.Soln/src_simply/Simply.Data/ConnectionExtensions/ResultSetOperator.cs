@@ -32,25 +32,18 @@ namespace Simply.Data
                 throw new Exception(DbAppMessages.DataAdapterNotFound);
 
             DataSet dataSet;
-            try
+
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
-                {
-                    dataAdapter.SelectCommand = (DbCommand)command;
-                    dataSet = new DataSet();
-                    if (transaction == null)
-                        connection.OpenIfNot();
-                    int executionResult = dataAdapter.Fill(dataSet);
-                    result.ExecutionResult = executionResult;
-                    result.Result = dataSet;
-                    result.OutputParameters = command.GetOutParameters();
-                }
-            }
-            finally
-            {
+                dataAdapter.SelectCommand = (DbCommand)command;
+                dataSet = new DataSet();
                 if (transaction == null)
-                    connection.CloseIfNot();
+                    connection.OpenIfNot();
+                int executionResult = dataAdapter.Fill(dataSet);
+                result.ExecutionResult = executionResult;
+                result.Result = dataSet;
+                result.OutputParameters = command.GetOutParameters();
             }
 
             return result;
@@ -69,27 +62,19 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            try
-            {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    })
-                    .ToArray();
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
+                {
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                })
+                .ToArray();
 
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
 
-                IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
-                return resultSet.Result;
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
+            return resultSet.Result;
         }
 
         /// <summary>
@@ -113,11 +98,11 @@ namespace Simply.Data
                 if (!pageInfo.IsPageable)
                     return result;
 
-                IQuerySetting setting = connection.GetQuerySetting();
-                isPageableAndSkipAndTakeFormatEmpty = setting.SkipAndTakeFormat.IsNullOrSpace();
+                IQuerySetting querySetting = connection.GetQuerySetting();
+                isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
                 if (!isPageableAndSkipAndTakeFormatEmpty)
                 {
-                    string format = setting.SkipAndTakeFormat.CopyValue();
+                    string format = querySetting.SkipAndTakeFormat.CopyValue();
                     format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
                     format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
                     format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);

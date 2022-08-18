@@ -38,33 +38,25 @@ namespace Simply.Data
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
         {
-            try
+            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
+                commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-                IQuerySetting setting = connection.GetQuerySetting();
-                string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+                CommandText = sql,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
+            };
 
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sql,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout,
-                };
+            simpleDbCommand.AddCommandParameters(commandParameters);
 
-                simpleDbCommand.AddCommandParameters(commandParameters);
+            IDbCommandResult<List<SimpleDbRow>> rowListResult =
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-                IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                    PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
-
-                List<T> result = rowListResult.Result.ConvertRowsToList<T>();
-                return result;
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            List<T> result = rowListResult.Result.ConvertRowsToList<T>();
+            return result;
         }
 
         /// <summary>
@@ -108,30 +100,22 @@ namespace Simply.Data
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
         {
-            try
-            {
-                DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    }).ToArray();
+            DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
+                {
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                }).ToArray();
 
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                    commandParameters, commandSetting);
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                commandParameters, commandSetting);
 
-                IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                    PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+            IDbCommandResult<List<SimpleDbRow>> rowListResult =
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-                List<T> result = rowListResult.Result.ConvertRowsToList<T>();
-                return result;
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            List<T> result = rowListResult.Result.ConvertRowsToList<T>();
+            return result;
         }
 
         #endregion [ Page Info methods ]

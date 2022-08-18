@@ -31,13 +31,13 @@ namespace Simply.Data.QuerySettings
         }
 
         /// <summary>
-        /// Finds the query setting.
+        /// Finds the query querySetting.
         /// </summary>
         /// <param name="connectionType">The connection type.</param>
         /// <returns>A IQuerySetting.</returns>
         internal static IQuerySetting FindQuerySetting(DbConnectionTypes connectionType)
         {
-            IQuerySetting setting = null;
+            IQuerySetting querySetting = null;
 
             switch (connectionType)
             {
@@ -45,149 +45,149 @@ namespace Simply.Data.QuerySettings
                     break;
 
                 case DbConnectionTypes.MsSql:
-                    setting = new MsSqlQuerySetting(connectionType);
+                    querySetting = new MsSqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.Oracle:
-                    setting = new OracleQuerySetting(connectionType);
+                    querySetting = new OracleQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.PostgreSql:
-                    setting = new PgSqlQuerySetting(connectionType);
+                    querySetting = new PgSqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.DB2:
-                    setting = new DB2QuerySettings(connectionType);
+                    querySetting = new DB2QuerySettings(connectionType);
                     break;
 
                 case DbConnectionTypes.Odbc:
-                    setting = new OdbcQuerySetting(connectionType);
+                    querySetting = new OdbcQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.Oledb:
-                    setting = new OledbQuerySetting(connectionType);
+                    querySetting = new OledbQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.MySql:
-                    setting = new MySqlQuerySetting(connectionType);
+                    querySetting = new MySqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SqlCE:
-                    setting = new SqlCEQuerySetting(connectionType);
+                    querySetting = new SqlCEQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.Firebird:
-                    setting = new FirebirdQuerySetting(connectionType);
+                    querySetting = new FirebirdQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SQLite:
-                    setting = new SQLiteQuerySetting(connectionType);
+                    querySetting = new SQLiteQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.VistaDB:
-                    setting = new VistaDbQuerySetting(connectionType);
+                    querySetting = new VistaDbQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SqlBase:
-                    setting = new SqlBaseQuerySettings(connectionType);
+                    querySetting = new SqlBaseQuerySettings(connectionType);
                     break;
 
                 case DbConnectionTypes.Synergy:
-                    setting = new SynergyQuerySetting(connectionType);
+                    querySetting = new SynergyQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SqlOdbc:
-                    setting = new MsSqlQuerySetting(connectionType);
+                    querySetting = new MsSqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SqlOledb:
-                    setting = new MsSqlQuerySetting(connectionType);
+                    querySetting = new MsSqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.OracleOdbc:
-                    setting = new OracleQuerySetting(connectionType);
+                    querySetting = new OracleQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.OracleOledb:
-                    setting = new OracleQuerySetting(connectionType);
+                    querySetting = new OracleQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.PostgreSqlOdbc:
-                    setting = new PgSqlQuerySetting(connectionType);
+                    querySetting = new PgSqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.PostgreSqlOledb:
-                    setting = new PgSqlQuerySetting(connectionType);
+                    querySetting = new PgSqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.DB2Odbc:
-                    setting = new DB2QuerySettings(connectionType);
+                    querySetting = new DB2QuerySettings(connectionType);
                     break;
 
                 case DbConnectionTypes.DB2Oledb:
-                    setting = new DB2QuerySettings(connectionType);
+                    querySetting = new DB2QuerySettings(connectionType);
                     break;
 
                 case DbConnectionTypes.MySqlOdbc:
-                    setting = new MySqlQuerySetting(connectionType);
+                    querySetting = new MySqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.MySqlOledb:
-                    setting = new MySqlQuerySetting(connectionType);
+                    querySetting = new MySqlQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.FirebirdOdbc:
-                    setting = new FirebirdQuerySetting(connectionType);
+                    querySetting = new FirebirdQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.FirebirdOledb:
-                    setting = new FirebirdQuerySetting(connectionType);
+                    querySetting = new FirebirdQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SqlBaseOdbc:
-                    setting = new SqlBaseQuerySettings(connectionType);
+                    querySetting = new SqlBaseQuerySettings(connectionType);
                     break;
 
                 case DbConnectionTypes.SqlBaseOledb:
-                    setting = new SqlBaseQuerySettings(connectionType);
+                    querySetting = new SqlBaseQuerySettings(connectionType);
                     break;
 
                 case DbConnectionTypes.SynergyOdbc:
-                    setting = new SynergyQuerySetting(connectionType);
+                    querySetting = new SynergyQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SynergyOledb:
-                    setting = new SynergyQuerySetting(connectionType);
+                    querySetting = new SynergyQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.NuoDb:
-                    setting = new NuodbQuerySetting(connectionType);
+                    querySetting = new NuodbQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SqlDatabase:
-                    setting = new SqlDatabaseQuerySetting(connectionType);
+                    querySetting = new SqlDatabaseQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SybaseASA:
-                    setting = new SybaseQuerySetting(connectionType);
+                    querySetting = new SybaseQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SybaseASAOdbc:
-                    setting = new SybaseQuerySetting(connectionType);
+                    querySetting = new SybaseQuerySetting(connectionType);
                     break;
 
                 case DbConnectionTypes.SybaseASAOledb:
-                    setting = new SybaseQuerySetting(connectionType);
+                    querySetting = new SybaseQuerySetting(connectionType);
                     break;
 
                 default:
                     break;
             }
 
-            if (setting == null)
+            if (querySetting == null)
                 throw new Exception(DbAppMessages.InvalidConnectionType + connectionType.ToString());
 
-            return setting;
+            return querySetting;
         }
     }
 }

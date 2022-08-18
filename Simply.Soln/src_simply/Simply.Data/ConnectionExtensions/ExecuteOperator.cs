@@ -25,29 +25,20 @@ namespace Simply.Data
         public static int Execute(this IDbConnection connection, string sqlQuery,
             object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
+            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+            {
+                CommandText = sqlQuery,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
+            };
+            simpleDbCommand.AddCommandParameters(parameters);
+
             int result = -1;
-
-            try
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sqlQuery,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout,
-                };
-                simpleDbCommand.AddCommandParameters(parameters);
-
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
-                {
-                    result = command.ExecuteNonQuery();
-                }
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
+                result = command.ExecuteNonQuery();
             }
 
             return result;
@@ -128,30 +119,22 @@ namespace Simply.Data
         {
             int result = -1;
 
-            try
-            {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    })
-                    .ToArray();
-
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                    commandParameters, commandSetting);
-
-                using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
                 {
-                    result = command.ExecuteNonQuery();
-                }
-            }
-            finally
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                })
+                .ToArray();
+
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                commandParameters, commandSetting);
+
+            using (IDbCommand command =
+                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
+                result = command.ExecuteNonQuery();
             }
 
             return result;

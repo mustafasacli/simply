@@ -34,11 +34,8 @@ namespace Simply.Data
             CheckConnectionIsNull(connection);
 
             PropertyInfo property = connection.GetType().GetProperty(InternalAppValues.ServerVersion);
-
             object versionValue = property?.GetValue(connection, null);
-
             string version = versionValue.ToStr();
-
             return version;
         }
 
@@ -138,8 +135,8 @@ namespace Simply.Data
         {
             CheckConnectionIsNull(connection);
             DbConnectionTypes connectionType = connection.GetDbConnectionType();
-            IQuerySetting setting = QuerySettingsFactory.GetQuerySetting(connectionType);
-            return setting;
+            IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
+            return querySetting;
         }
 
         /// <summary>
@@ -204,11 +201,11 @@ namespace Simply.Data
 
             DbParameter parameter = Activator.CreateInstance(commandParameterType) as DbParameter;
 
-            IQuerySetting setting = QuerySettingsFactory.GetQuerySetting(connectionType);
+            IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
             if (!string.IsNullOrWhiteSpace(parameterName))
                 parameter.ParameterName =
-                    parameterName.TrimStart().StartsWith(setting.ParameterPrefix) ?
-                    parameterName.TrimStart() : setting.ParameterPrefix + parameterName.TrimStart();
+                    parameterName.TrimStart().StartsWith(querySetting.ParameterPrefix) ?
+                    parameterName.TrimStart() : querySetting.ParameterPrefix + parameterName.TrimStart();
 
             parameter.Value = value ?? DBNull.Value;
             parameter.Direction = direction;
@@ -278,14 +275,14 @@ namespace Simply.Data
 
             if (parameters != null && parameters.Length > 0)
             {
-                IQuerySetting setting = connection.GetQuerySetting();
+                IQuerySetting querySetting = connection.GetQuerySetting();
 
                 for (int counter = 0; counter < parameters.Length; counter++)
                 {
-                    if (!parameters[counter].ParameterName.StartsWith(setting.ParameterPrefix))
+                    if (!parameters[counter].ParameterName.StartsWith(querySetting.ParameterPrefix))
                     {
                         parameters[counter].ParameterName =
-                            setting.ParameterPrefix + parameters[counter].ParameterName.TrimStart();
+                            querySetting.ParameterPrefix + parameters[counter].ParameterName.TrimStart();
                     }
 
                     command.Parameters.Add(parameters[counter]);
@@ -318,14 +315,14 @@ namespace Simply.Data
 
             if (parameters != null && parameters.Length > 0)
             {
-                IQuerySetting setting = connection.GetQuerySetting();
+                IQuerySetting querySetting = connection.GetQuerySetting();
 
                 for (int counter = 0; counter < parameters.Length; counter++)
                 {
-                    if (!parameters[counter].ParameterName.StartsWith(setting.ParameterPrefix))
+                    if (!parameters[counter].ParameterName.StartsWith(querySetting.ParameterPrefix))
                     {
                         parameters[counter].ParameterName =
-                            setting.ParameterPrefix + parameters[counter].ParameterName.TrimStart();
+                            querySetting.ParameterPrefix + parameters[counter].ParameterName.TrimStart();
                     }
 
                     command.Parameters.Add(parameters[counter]);

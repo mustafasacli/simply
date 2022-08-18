@@ -35,29 +35,19 @@ namespace Simply.Data
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)
         {
-            IDbCommandResult<List<List<SimpleDbRow>>> dynamicList;
-
-            try
+            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
+                commandParameters, querySetting.ParameterPrefix, commandSetting.ParameterNamePrefix);
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-                IQuerySetting setting = connection.GetQuerySetting();
-                string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                    commandParameters, setting.ParameterPrefix, commandSetting.ParameterNamePrefix);
-                SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-                {
-                    CommandText = sql,
-                    CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                    CommandTimeout = commandSetting?.CommandTimeout,
-                };
-                simpleDbCommand.AddCommandParameters(commandParameters);
-                dynamicList = connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+                CommandText = sql,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
+            };
+            simpleDbCommand.AddCommandParameters(commandParameters);
 
+            IDbCommandResult<List<List<SimpleDbRow>>> dynamicList = connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
             return dynamicList.Result;
         }
 
@@ -130,29 +120,21 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            try
-            {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    }).ToArray() ?? ArrayHelper.Empty<DbCommandParameter>();
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
+                {
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                }).ToArray() ?? ArrayHelper.Empty<DbCommandParameter>();
 
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
 
-                IDbCommandResult<List<SimpleDbRow>> dynamicResult =
-                    connection.GetDbRowListQuery(simpleDbCommand, transaction);
+            IDbCommandResult<List<SimpleDbRow>> dynamicResult =
+                connection.GetDbRowListQuery(simpleDbCommand, transaction);
 
-                List<SimpleDbRow> resultSet = dynamicResult.Result;
-                return resultSet;
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            List<SimpleDbRow> resultSet = dynamicResult.Result;
+            return resultSet;
         }
     }
 }

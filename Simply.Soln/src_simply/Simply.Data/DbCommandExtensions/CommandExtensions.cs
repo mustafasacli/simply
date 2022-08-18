@@ -100,8 +100,8 @@ namespace Simply.Data.DbCommandExtensions
             if (commandParameters == null || commandParameters.Count < 1)
                 return;
 
-            IQuerySetting setting = command.Connection.GetQuerySetting();
-            string parameterPrefix = setting.ParameterPrefix;
+            IQuerySetting querySetting = command.Connection.GetQuerySetting();
+            string parameterPrefix = querySetting.ParameterPrefix;
 
             foreach (DbCommandParameter parameter in commandParameters)
             {
@@ -308,8 +308,8 @@ namespace Simply.Data.DbCommandExtensions
             if (commandParameters == null || commandParameters.Count < 1)
                 return command;
 
-            IQuerySetting setting = command.Connection.GetQuerySetting();
-            string parameterPrefix = setting.ParameterPrefix;
+            IQuerySetting querySetting = command.Connection.GetQuerySetting();
+            string parameterPrefix = querySetting.ParameterPrefix;
 
             foreach (DbCommandParameter parameter in commandParameters)
             {
@@ -332,8 +332,8 @@ namespace Simply.Data.DbCommandExtensions
             if (!(commandParameters?.Any() ?? false))
                 return command;
 
-            IQuerySetting setting = command.Connection.GetQuerySetting();
-            string parameterPrefix = setting.ParameterPrefix;
+            IQuerySetting querySetting = command.Connection.GetQuerySetting();
+            string parameterPrefix = querySetting.ParameterPrefix;
 
             foreach (object parameter in commandParameters)
             {

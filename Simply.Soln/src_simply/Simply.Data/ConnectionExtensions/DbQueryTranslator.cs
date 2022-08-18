@@ -75,7 +75,7 @@ namespace Simply.Data
             List<string> queryParts = odbcSqlQuery
                 .Split(new char[] { InternalAppValues.QuestionMark }, StringSplitOptions.None)
                 .ToList() ?? ArrayHelper.EmptyList<string>();
-            IQuerySetting setting = QuerySettingsFactory.GetQuerySetting(connectionType);
+            IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
 
             StringBuilder sqlBuilder = new StringBuilder();
             int parameterCounter = 0;
@@ -89,7 +89,7 @@ namespace Simply.Data
 
                 do
                 {
-                    parameterName = setting.ParameterPrefix + InternalAppValues.ParameterChar.ToString() + parameterCounter.ToString();
+                    parameterName = querySetting.ParameterPrefix + InternalAppValues.ParameterChar.ToString() + parameterCounter.ToString();
                     parameterCounter++;
                 } while (!(queryParts.All(q => !q.Contains(parameterName)) && queryAndParameters.IndexOf(parameterName) == -1));
 

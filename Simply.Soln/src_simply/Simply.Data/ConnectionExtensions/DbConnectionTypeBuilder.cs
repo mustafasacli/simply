@@ -400,15 +400,15 @@ namespace Simply.Data
         {
             string tableName = typeof(T).GetTableNameOfType();
 
-            IQuerySetting setting = QuerySettingsFactory.GetQuerySetting(connectionType);
-            string fullTableName = $"{setting.Prefix}{tableName}{setting.Suffix}";
+            IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
+            string fullTableName = $"{querySetting.Prefix}{tableName}{querySetting.Suffix}";
 
             if (!includeSchemaName) return fullTableName;
 
             string schema = typeof(T).GetSchemaNameOfType();
             if (!string.IsNullOrWhiteSpace(schema))
             {
-                fullTableName = $"{setting.Prefix}{schema}{setting.Suffix}.{fullTableName}";
+                fullTableName = $"{querySetting.Prefix}{schema}{querySetting.Suffix}.{fullTableName}";
             }
 
             return fullTableName;

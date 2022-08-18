@@ -60,22 +60,11 @@ namespace Simply.Data.ConnectionExtensions
         public static int Count(this IDbConnection connection, string sql, object obj,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            int result;
-
-            try
-            {
-                IQuerySetting querySetting = connection.GetQuerySetting();
-                string format = querySetting.CountFormat;
-                string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
-                result = connection.ExecuteScalarAs<int>(sqlText,
-                    obj, transaction, commandSetting);
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
-
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
+            int result = connection.ExecuteScalarAs<int>(sqlText,
+                obj, transaction, commandSetting);
             return result;
         }
 
@@ -91,22 +80,12 @@ namespace Simply.Data.ConnectionExtensions
         public static long CountLong(this IDbConnection connection, string sql, object obj,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            long result;
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
 
-            try
-            {
-                IQuerySetting querySetting = connection.GetQuerySetting();
-                string format = querySetting.CountFormat;
-                string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
-                result = connection.ExecuteScalarAs<long>(sqlText, obj,
-                    transaction, commandSetting);
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
-
+            long result = connection.ExecuteScalarAs<long>(sqlText, obj,
+                transaction, commandSetting);
             return result;
         }
 
@@ -124,30 +103,20 @@ namespace Simply.Data.ConnectionExtensions
         public static int Count(this IDbConnection connection, string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            IDbCommandResult<int> result;
-
-            try
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+            .Select(p => new DbCommandParameter
             {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                }).ToArray();
+                Value = p,
+                ParameterDbType = p.ToDbType()
+            }).ToArray();
 
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
-                IQuerySetting querySetting = connection.GetQuerySetting();
-                string format = querySetting.CountFormat;
-                simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-                result = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
 
+            IDbCommandResult<int> result = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
             return result.Result;
         }
 
@@ -165,30 +134,20 @@ namespace Simply.Data.ConnectionExtensions
         public static long CountLong(this IDbConnection connection, string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            IDbCommandResult<long> result;
-
-            try
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+            .Select(p => new DbCommandParameter
             {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                }).ToArray();
+                Value = p,
+                ParameterDbType = p.ToDbType()
+            }).ToArray();
 
-                SimpleDbCommand simpleDbCommand =
-                    connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
-                IQuerySetting querySetting = connection.GetQuerySetting();
-                string format = querySetting.CountFormat;
-                simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-                result = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            SimpleDbCommand simpleDbCommand =
+                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
+            IQuerySetting querySetting = connection.GetQuerySetting();
+            string format = querySetting.CountFormat;
+            simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
 
+            IDbCommandResult<long> result = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
             return result.Result;
         }
     }

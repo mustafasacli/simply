@@ -29,30 +29,22 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
         {
-            try
-            {
-                DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                    .Select(p => new DbCommandParameter
-                    {
-                        Value = p,
-                        ParameterDbType = p.ToDbType()
-                    })
-                    .ToArray();
+            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
+                .Select(p => new DbCommandParameter
+                {
+                    Value = p,
+                    ParameterDbType = p.ToDbType()
+                })
+                .ToArray();
 
-                SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
-                    commandParameters, commandSetting);
+            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
+                commandParameters, commandSetting);
 
-                IDbCommandResult<List<SimpleDbRow>> rowListResult =
-                    PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+            IDbCommandResult<List<SimpleDbRow>> rowListResult =
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
-                List<T> resultSet = rowListResult.Result.ConvertRowsToList<T>();
-                return resultSet;
-            }
-            finally
-            {
-                if (commandSetting?.CloseAtFinal ?? false)
-                    connection.CloseIfNot();
-            }
+            List<T> resultList = rowListResult.Result.ConvertRowsToList<T>();
+            return resultList;
         }
 
         #region [ Task methods ]
