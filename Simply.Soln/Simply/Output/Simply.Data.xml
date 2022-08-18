@@ -2238,11 +2238,6 @@
             Command Settings for execution.
             </summary>
         </member>
-        <member name="P:Simply.Data.Interfaces.ICommandSetting.CloseAtFinal">
-            <summary>
-            Gets close at final. if it is true connection will be closed after operation.
-            </summary>
-        </member>
         <member name="P:Simply.Data.Interfaces.ICommandSetting.CommandType">
             <summary>
             Gets Command Type.
@@ -2257,13 +2252,6 @@
             <summary>
             Gets Parameter Name Prefix for Rebuild Query.
             </summary>
-        </member>
-        <member name="M:Simply.Data.Interfaces.ICommandSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
-             <summary>
-            
-             </summary>
-             <param name="closeAtFinal">connection auto close querySetting.</param>
-             <returns>Returns object instance</returns>
         </member>
         <member name="M:Simply.Data.Interfaces.ICommandSetting.SetCommandType(System.Data.CommandType)">
              <summary>
@@ -2771,29 +2759,22 @@
             Default instance
             </summary>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleCommandSetting.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.#ctor(System.Nullable{System.Int32},System.Data.CommandType,System.Nullable{System.Char})">
             <summary>
             Prevents a default instance of the <see cref="T:Simply.Data.Objects.SimpleCommandSetting"/> class from being created.
             </summary>
-            <param name="closeAtFinal">If true, close at final.</param>
             <param name="commandTimeout">The command timeout.</param>
             <param name="commandType">The command type.</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleCommandSetting.Create(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.Create(System.Nullable{System.Int32},System.Data.CommandType,System.Nullable{System.Char})">
             <summary>
             Default instance for IExecutionSetting with given parameters.
             </summary>
-            <param name="closeAtFinal">If true, close at final.</param>
             <param name="commandTimeout">The command timeout.</param>
             <param name="commandType">The command type.</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns IExecutionSetting object instance.</returns>
-        </member>
-        <member name="P:Simply.Data.Objects.SimpleCommandSetting.CloseAtFinal">
-            <summary>
-            Gets close at final. if it is true connection will be closed after operation.
-            </summary>
         </member>
         <member name="P:Simply.Data.Objects.SimpleCommandSetting.CommandType">
             <summary>
@@ -2809,13 +2790,6 @@
             <summary>
             Gets Parameter Name Prefix for Rebuild Query.
             </summary>
-        </member>
-        <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
-             <summary>
-            
-             </summary>
-             <param name="closeAtFinal">connection auto close querySetting.</param>
-             <returns>Returns object instance</returns>
         </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCommandType(System.Data.CommandType)">
              <summary>
