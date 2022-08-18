@@ -271,7 +271,7 @@
             Defines the <see cref="T:Simply.Data.DbRowListOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.DbRowListOperator.QueryMultiDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.DbRowListOperator.QueryMultiDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             QueryMultiDbRowList Gets query multi result set as multi expando object list.
             </summary>
@@ -283,11 +283,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns list of SimpleDbRow object list.</returns>
         </member>
         <member name="M:Simply.Data.DbRowListOperator.GetDbRowListQuery(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction,System.Nullable{System.Data.CommandBehavior})">
@@ -575,7 +575,7 @@
             Defines the <see cref="T:Simply.Data.FirstOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.FirstOperator.QueryFirst``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.QueryFirst``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get First Row of the Resultset as object instance.
             </summary>
@@ -588,11 +588,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns first record as object instance.</returns>
         </member>
         <member name="M:Simply.Data.FirstOperator.QueryFirst``1(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -616,7 +616,7 @@
             <param name="commandSetting">Command setting</param>
             <returns>Returns first record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRowAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRowAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get First Row of the Resultset as dynamic object instance with async operation.
             </summary>
@@ -628,14 +628,14 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields the first as dynamic.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.FirstAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.FirstAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get First Row of the Resultset as object instance with async operation.
             </summary>
@@ -648,11 +648,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields a T.</returns>
         </member>
         <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRow(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -664,7 +664,7 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns first record as dynamic object instance.</returns>
         </member>
-        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.FirstOperator.QueryFirstAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get First Row of the Resultset as SimpleDbRow object instance.
             </summary>
@@ -676,11 +676,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns first record as dynamic object.</returns>
         </member>
         <member name="T:Simply.Data.LastOperator">
@@ -688,7 +688,7 @@
             Defines the <see cref="T:Simply.Data.LastOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.LastOperator.QueryLast``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.LastOperator.QueryLast``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Last Row of the Resultset as object instance.
             </summary>
@@ -701,11 +701,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns last record as object instance.</returns>
         </member>
         <member name="M:Simply.Data.LastOperator.QueryLast``1(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -731,7 +731,7 @@
             <param name="commandSetting">Command setting</param>
             <returns>Returns last record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.LastOperator.LastAsDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
+        <member name="M:Simply.Data.LastOperator.LastAsDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Last Row of the Resultset as dynamic object instance with async operation.
             </summary>
@@ -741,14 +741,14 @@
             parameterNamePrefix : ?
             Query For Oracle ==> Select * From TableName Where Column1 = :p1
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields the last as dynamic.</returns>
         </member>
-        <member name="M:Simply.Data.LastOperator.LastAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
+        <member name="M:Simply.Data.LastOperator.LastAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Last Row of the Resultset as object instance with async operation.
             </summary>
@@ -759,11 +759,11 @@
             parameterNamePrefix : ?
             Query For Oracle ==> Select * From TableName Where Column1 = :p1
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields a T.</returns>
         </member>
         <member name="M:Simply.Data.LastOperator.QueryLastAsDbRow(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -775,7 +775,7 @@
             <param name="transaction">(Optional) Database transaction.</param>
             <returns>Returns last record as dynamic object instance.</returns>
         </member>
-        <member name="M:Simply.Data.LastOperator.QueryLastDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.LastOperator.QueryLastDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Last Row of the Resultset as SimpleDbRow object instance.
             </summary>
@@ -787,11 +787,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns last record as dynamic object instance.</returns>
         </member>
         <member name="T:Simply.Data.ListOperator">
@@ -812,7 +812,7 @@
             if it is null then paging will be disabled.</param>
             <returns>Returns as object list.</returns>
         </member>
-        <member name="M:Simply.Data.ListOperator.QueryListAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo,System.Char)">
+        <member name="M:Simply.Data.ListOperator.QueryListAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo)">
             <summary>
             Gets Resultset of query as object instance list with async operation.
             </summary>
@@ -823,12 +823,12 @@
             parameterNamePrefix : ?
             Query For Oracle ==> Select * From TableName Where Column1 = :p1
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
             <param name="pageInfo">page info for skip and take counts.</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns as object list.</returns>
         </member>
         <member name="T:Simply.Data.PagedListOperator">
@@ -836,7 +836,7 @@
             Defines the <see cref="T:Simply.Data.PagedListOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.PagedListOperator.QueryList``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.PagedListOperator.QueryList``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo)">
             <summary>
             Gets query resultset as object list with paging option.
             </summary>
@@ -849,12 +849,12 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object which has contains parameters as properties.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
             <param name="pageInfo">page info for skip and take counts.</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns as object list.</returns>
         </member>
         <member name="M:Simply.Data.PagedListOperator.GetList``1(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction,Simply.Data.Interfaces.IPageInfo)">
@@ -885,9 +885,9 @@
             Defines the <see cref="T:Simply.Data.PagedRowListOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.PagedRowListOperator.QueryDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.PagedRowListOperator.QueryDbRowList(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,Simply.Data.Interfaces.IPageInfo)">
             <summary>
-            QueryDbRowList Gets query resultset as expando object list with paging option.
+            QueryDbRowList Gets query resultset as simpledbrow list with paging option.
             </summary>
             <param name="connection">Database connection.</param>
             <param name="sqlText">Sql query.
@@ -897,6 +897,7 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
@@ -904,7 +905,6 @@
             <param name="pageInfo">page info for skip and take counts. it is optional.
             if it is null then paging will be disabled.
             </param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns SimpleDbRow object list.</returns>
         </member>
         <member name="M:Simply.Data.PagedRowListOperator.GetDbRowList(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction,Simply.Data.Interfaces.IPageInfo)">
@@ -1173,7 +1173,7 @@
             Defines the <see cref="T:Simply.Data.SingleOperator"/>.
             </summary>
         </member>
-        <member name="M:Simply.Data.SingleOperator.QuerySingle``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.SingleOperator.QuerySingle``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Single Row of the Resultset as object instance.
             </summary>
@@ -1186,11 +1186,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns single record as object instance.</returns>
         </member>
         <member name="M:Simply.Data.SingleOperator.QuerySingle``1(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -1214,7 +1214,7 @@
             <param name="commandSetting">Command setting</param>
             <returns>Returns single record as object instance.</returns>
         </member>
-        <member name="M:Simply.Data.SingleOperator.QuerySingleDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
+        <member name="M:Simply.Data.SingleOperator.QuerySingleDynamicAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Single Row of the Resultset as simple db row object instance with async operation.
             </summary>
@@ -1224,14 +1224,14 @@
             parameterNamePrefix : ?
             Query For Oracle ==> Select * From TableName Where Column1 = :p1
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields the single as dynamic.</returns>
         </member>
-        <member name="M:Simply.Data.SingleOperator.SingleAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Char)">
+        <member name="M:Simply.Data.SingleOperator.SingleAsync``1(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Single Row of the Resultset as object instance with async operation.
             </summary>
@@ -1242,14 +1242,14 @@
             parameterNamePrefix : ?
             Query For Oracle ==> Select * From TableName Where Column1 = :p1
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="commandSetting">Command setting</param>
             <param name="transaction">(Optional) Database transaction.</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>An asynchronous result that yields a T.</returns>
         </member>
-        <member name="M:Simply.Data.SingleOperator.QuerySingleAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting,System.Nullable{System.Char})">
+        <member name="M:Simply.Data.SingleOperator.QuerySingleAsDbRow(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,Simply.Data.Interfaces.ICommandSetting)">
             <summary>
             Get Single Row of the Resultset as dynamic object instance.
             </summary>
@@ -1261,11 +1261,11 @@
             Query For Sql Server ==> Select * From TableName Where Column1 = @p1
             if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
             no conversion occured.
+            parameterNamePrefix will be set in ICommandSetting instance.
             </param>
             <param name="obj">object contains db parameters as property.</param>
             <param name="transaction">(Optional) Database transaction.</param>
             <param name="commandSetting">Command setting</param>
-            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns single record as dynamic object.</returns>
         </member>
         <member name="M:Simply.Data.SingleOperator.QuerySingleAsDbRow(System.Data.IDbConnection,Simply.Data.Objects.SimpleDbCommand,System.Data.IDbTransaction)">
@@ -2253,6 +2253,11 @@
             Gets Command Timeout.
             </summary>
         </member>
+        <member name="P:Simply.Data.Interfaces.ICommandSetting.ParameterNamePrefix">
+            <summary>
+            Gets Parameter Name Prefix for Rebuild Query.
+            </summary>
+        </member>
         <member name="M:Simply.Data.Interfaces.ICommandSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
              <summary>
             
@@ -2273,6 +2278,13 @@
              </summary>
              <param name="commandTimeout">command timeout.</param>
              <returns>Returns object instance</returns>
+        </member>
+        <member name="M:Simply.Data.Interfaces.ICommandSetting.SetParameterNamePrefix(System.Nullable{System.Char})">
+            <summary>
+            Sets the parameter name prefix.
+            </summary>
+            <param name="parameterNamePrefix">The parameter name prefix.</param>
+            <returns>A ICommandSetting.</returns>
         </member>
         <member name="T:Simply.Data.Interfaces.IPageInfo">
              <summary>
@@ -2759,27 +2771,24 @@
             Default instance
             </summary>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleCommandSetting.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType)">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType,System.Nullable{System.Char})">
             <summary>
             Prevents a default instance of the <see cref="T:Simply.Data.Objects.SimpleCommandSetting"/> class from being created.
             </summary>
             <param name="closeAtFinal">If true, close at final.</param>
             <param name="commandTimeout">The command timeout.</param>
             <param name="commandType">The command type.</param>
+            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         </member>
-        <member name="M:Simply.Data.Objects.SimpleCommandSetting.Create(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType)">
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.Create(System.Nullable{System.Boolean},System.Nullable{System.Int32},System.Data.CommandType,System.Nullable{System.Char})">
             <summary>
             Default instance for IExecutionSetting with given parameters.
             </summary>
             <param name="closeAtFinal">If true, close at final.</param>
             <param name="commandTimeout">The command timeout.</param>
             <param name="commandType">The command type.</param>
+            <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
             <returns>Returns IExecutionSetting object instance.</returns>
-        </member>
-        <member name="P:Simply.Data.Objects.SimpleCommandSetting.AutoOpen">
-            <summary>
-            Gets auto open. if it is true connection will be opened before operation.
-            </summary>
         </member>
         <member name="P:Simply.Data.Objects.SimpleCommandSetting.CloseAtFinal">
             <summary>
@@ -2794,6 +2803,11 @@
         <member name="P:Simply.Data.Objects.SimpleCommandSetting.CommandTimeout">
             <summary>
             Gets Command Timeout. Value as second.
+            </summary>
+        </member>
+        <member name="P:Simply.Data.Objects.SimpleCommandSetting.ParameterNamePrefix">
+            <summary>
+            Gets Parameter Name Prefix for Rebuild Query.
             </summary>
         </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCloseAtFinal(System.Nullable{System.Boolean})">
@@ -2816,6 +2830,13 @@
              </summary>
              <param name="commandTimeout">command timeout. Value as second.</param>
              <returns>Returns object instance</returns>
+        </member>
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetParameterNamePrefix(System.Nullable{System.Char})">
+            <summary>
+            Sets the parameter name prefix.
+            </summary>
+            <param name="parameterNamePrefix">The parameter name prefix.</param>
+            <returns>A ICommandSetting.</returns>
         </member>
         <member name="T:Simply.Data.DB2QuerySettings">
             <summary>
