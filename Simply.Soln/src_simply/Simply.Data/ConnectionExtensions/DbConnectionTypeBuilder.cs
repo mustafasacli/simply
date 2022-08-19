@@ -399,7 +399,6 @@ namespace Simply.Data
         public static string GetFullTableName<T>(this DbConnectionTypes connectionType, bool includeSchemaName = true) where T : class
         {
             string tableName = typeof(T).GetTableNameOfType();
-
             IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
             string fullTableName = $"{querySetting.Prefix}{tableName}{querySetting.Suffix}";
 

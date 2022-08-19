@@ -34,9 +34,9 @@ namespace Simply.Data
             CheckConnectionIsNull(connection);
 
             PropertyInfo property = connection.GetType().GetProperty(InternalAppValues.ServerVersion);
-            object versionValue = property?.GetValue(connection, null);
-            string version = versionValue.ToStr();
-            return version;
+            object serverVersionValue = property?.GetValue(connection, null);
+            string serverVersion = serverVersionValue.ToStr();
+            return serverVersion;
         }
 
         /// <summary>
@@ -64,13 +64,13 @@ namespace Simply.Data
                   && type.Name.ToLower().StartsWith(connectionTypeName)
                   && typeof(DbConnectionStringBuilder).IsAssignableFrom(type));
 
-            DbConnectionStringBuilder builder = null;
+            DbConnectionStringBuilder connectionStringBuilder = null;
             if (builderType != null)
             {
-                builder = Activator.CreateInstance(builderType) as DbConnectionStringBuilder;
+                connectionStringBuilder = Activator.CreateInstance(builderType) as DbConnectionStringBuilder;
             }
 
-            return builder;
+            return connectionStringBuilder;
         }
 
         /// <summary>

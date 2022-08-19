@@ -89,12 +89,12 @@ namespace Simply.Data
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            List<SimpleDbRow> list = new List<SimpleDbRow>();
+            List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
 
             try
             {
                 if (reader.IsClosed || take == 0)
-                    return list;
+                    return simpleDbRowListlist;
 
                 uint cntr = 0;
 
@@ -108,13 +108,13 @@ namespace Simply.Data
 
                     cntr++;
                     SimpleDbRow row = reader.GetSimpleDbRow();
-                    list.Add(row);
+                    simpleDbRowListlist.Add(row);
                 }
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
 
-            return list;
+            return simpleDbRowListlist;
         }
 
         /// <summary>
@@ -129,23 +129,23 @@ namespace Simply.Data
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            List<SimpleDbRow> list = new List<SimpleDbRow>();
+            List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
 
             if (reader.IsClosed)
-                return list;
+                return simpleDbRowListlist;
 
             try
             {
                 while (reader.Read())
                 {
                     SimpleDbRow expando = reader.GetSimpleDbRow();
-                    list.Add(expando);
+                    simpleDbRowListlist.Add(expando);
                 }
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
 
-            return list;
+            return simpleDbRowListlist;
         }
 
         /// <summary>
@@ -190,20 +190,20 @@ namespace Simply.Data
         public static List<List<SimpleDbRow>> GetMultiDbRowList(
             this IDataReader reader, bool closeAtFinal = false)
         {
-            List<List<SimpleDbRow>> objDynList = new List<List<SimpleDbRow>>();
+            List<List<SimpleDbRow>> multiSimpleDbRowList = new List<List<SimpleDbRow>>();
 
             try
             {
                 do
                 {
-                    List<SimpleDbRow> resultSet = reader.GetResultSetAsDbRow();
-                    objDynList.Add(resultSet);
+                    List<SimpleDbRow> simpleDbRowListlist = reader.GetResultSetAsDbRow();
+                    multiSimpleDbRowList.Add(simpleDbRowListlist);
                 } while (reader.NextResult());
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
 
-            return objDynList;
+            return multiSimpleDbRowList;
         }
 
         /// <summary>
@@ -246,22 +246,22 @@ namespace Simply.Data
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            SimpleDbRow row = SimpleDbRow.NewRow();
+            SimpleDbRow simpleDbRow = SimpleDbRow.NewRow();
 
             if (reader.IsClosed)
-                return row;
+                return simpleDbRow;
 
             try
             {
                 while (reader.Read())
                 {
-                    row = reader.GetSimpleDbRow();
+                    simpleDbRow = reader.GetSimpleDbRow();
                 }
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
 
-            return row;
+            return simpleDbRow;
         }
 
         /// <summary>
@@ -274,16 +274,16 @@ namespace Simply.Data
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            SimpleDbRow expando = SimpleDbRow.NewRow();
+            SimpleDbRow simpleDbRow = SimpleDbRow.NewRow();
 
             if (reader.IsClosed)
-                return expando;
+                return simpleDbRow;
 
             try
             {
                 if (reader.Read())
                 {
-                    expando = reader.GetSimpleDbRow();
+                    simpleDbRow = reader.GetSimpleDbRow();
 
                     if (reader.Read())
                         throw new Exception(DbAppMessages.SingleRowError);
@@ -292,7 +292,7 @@ namespace Simply.Data
             finally
             { reader.CloseIfNot(); }
 
-            return expando;
+            return simpleDbRow;
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Simply.Data
         /// <returns>Returns SimpleDbRow object instance. </returns>
         public static SimpleDbRow GetDataReaderMetadataRow(this IDataReader dataReader)
         {
-            SimpleDbRow readerMetadata = SimpleDbRow.NewRow();
+            SimpleDbRow metaDataRow = SimpleDbRow.NewRow();
 
             int fieldCount = dataReader.FieldCount;
             for (int counter = 0; counter < fieldCount; counter++)
@@ -310,20 +310,20 @@ namespace Simply.Data
                 string columnName = dataReader.GetName(counter);
                 Type columnDataType = dataReader.GetFieldType(counter);
 
-                if (readerMetadata.ContainsCellName(columnName))
+                if (metaDataRow.ContainsCellName(columnName))
                 {
                     int columnCounter = 1;
-                    while (readerMetadata.ContainsCellName(columnName))
+                    while (metaDataRow.ContainsCellName(columnName))
                     {
                         columnName = $"{columnName}_{columnCounter}";
                         columnCounter++;
                     }
                 }
 
-                readerMetadata.AddCell(columnName, columnDataType, null);
+                metaDataRow.AddCell(columnName, columnDataType, null);
             }
 
-            return readerMetadata;
+            return metaDataRow;
         }
     }
 }
