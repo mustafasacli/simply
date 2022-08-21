@@ -32,7 +32,7 @@ namespace Simply.Data
         /// <returns>
         /// The <see cref="string[]"/> Returns translated query and parameters in same array. First
         /// element of array is translated query and other elements are query parameters. Query :
-        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" 
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?"
         /// For Sql Server Result;
         /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0"
         /// For Oracle Result;
@@ -56,7 +56,7 @@ namespace Simply.Data
         /// <returns>
         /// The <see cref="string[]"/> Returns translated query and parameters in same array. First
         /// element of array is translated query and other elements are query parameters. Query :
-        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?" 
+        /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = ?"
         /// For Sql Server Result;
         /// "SELECT T1.* FROM TABLE1 T1 WHERE T1.ID_COLUMN = @p0", "@p0"
         /// For Oracle Result;

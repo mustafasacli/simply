@@ -90,7 +90,7 @@ namespace Simply.Data
         /// <summary>
         /// Gets the string count format.
         /// </summary>
-        public string CountFormat 
+        public string CountFormat
         { get; private set; }
     }
 }
