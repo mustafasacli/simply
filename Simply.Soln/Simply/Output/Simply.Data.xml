@@ -975,22 +975,22 @@
             Defines the connectionTypePairs.
             </summary>
         </member>
-        <member name="F:Simply.Data.DbConnectionTypeBuilder.odbcConnectionTypes">
+        <member name="F:Simply.Data.DbConnectionTypeBuilder.OdbcConnectionTypes">
             <summary>
             Gets Odbc Connection Types.
             </summary>
         </member>
-        <member name="F:Simply.Data.DbConnectionTypeBuilder.oledbConnectionTypes">
+        <member name="F:Simply.Data.DbConnectionTypeBuilder.OledbConnectionTypes">
             <summary>
             Gets Oledb Connection Types.
             </summary>
         </member>
-        <member name="F:Simply.Data.DbConnectionTypeBuilder.oracleConnectionTypes">
+        <member name="F:Simply.Data.DbConnectionTypeBuilder.OracleConnectionTypes">
             <summary>
             Gets Oracle Connection Types.
             </summary>
         </member>
-        <member name="F:Simply.Data.DbConnectionTypeBuilder.scalarInsertConnectionTypes">
+        <member name="F:Simply.Data.DbConnectionTypeBuilder.ScalarInsertConnectionTypes">
             <summary>
             Gets ConnectionTypes for Scalar Insert op.
             </summary>
