@@ -9,11 +9,6 @@ namespace Simply.Data.Objects
     public class SimpleCommandSetting : ICommandSetting
     {
         /// <summary>
-        /// Default instance for IExecutionSetting.
-        /// </summary>
-        public static readonly ICommandSetting DefaultInstance = new SimpleCommandSetting();
-
-        /// <summary>
         /// Default instance
         /// </summary>
         private SimpleCommandSetting()
@@ -26,7 +21,7 @@ namespace Simply.Data.Objects
         /// <param name="commandType">The command type.</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
         private SimpleCommandSetting(int? commandTimeout,
-            CommandType commandType = System.Data.CommandType.Text, char? parameterNamePrefix = null)
+            CommandType commandType = CommandType.Text, char? parameterNamePrefix = null)
         {
             CommandTimeout = commandTimeout;
             CommandType = commandType;
@@ -34,17 +29,26 @@ namespace Simply.Data.Objects
         }
 
         /// <summary>
-        /// Default instance for IExecutionSetting with given parameters.
+        /// Create instance for ICommandSetting with given parameters.
         /// </summary>
         /// <param name="commandTimeout">The command timeout.</param>
         /// <param name="commandType">The command type.</param>
         /// <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
-        /// <returns>Returns IExecutionSetting object instance.</returns>
+        /// <returns>Returns ICommandSetting object instance.</returns>
         public static ICommandSetting Create(
-            int? commandTimeout = null, CommandType commandType = System.Data.CommandType.Text,
+            int? commandTimeout = null, CommandType commandType = CommandType.Text,
             char? parameterNamePrefix = null)
         {
             return new SimpleCommandSetting(commandTimeout, commandType, parameterNamePrefix);
+        }
+
+        /// <summary>
+        /// Create empty instance for ICommandSetting.
+        /// </summary>
+        /// <returns>Returns ICommandSetting object instance.</returns>
+        public static ICommandSetting New()
+        {
+            return new SimpleCommandSetting();
         }
 
         /// <summary>
@@ -69,7 +73,7 @@ namespace Simply.Data.Objects
         ///
         /// </summary>
         /// <param name="commandType">command type.</param>
-        /// <returns>Returns object instance</returns>
+        /// <returns>Returns ICommandSetting object instance.</returns>
         public ICommandSetting SetCommandType(CommandType commandType)
         {
             CommandType = commandType;
@@ -80,7 +84,7 @@ namespace Simply.Data.Objects
         ///
         /// </summary>
         /// <param name="commandTimeout">command timeout. Value as second.</param>
-        /// <returns>Returns object instance</returns>
+        /// <returns>Returns ICommandSetting object instance.</returns>
         public ICommandSetting SetCommandTimeout(int? commandTimeout = null)
         {
             CommandTimeout = commandTimeout;
@@ -91,7 +95,7 @@ namespace Simply.Data.Objects
         /// Sets the parameter name prefix.
         /// </summary>
         /// <param name="parameterNamePrefix">The parameter name prefix.</param>
-        /// <returns>A ICommandSetting.</returns>
+        /// <returns>Returns ICommandSetting object instance.</returns>
         public ICommandSetting SetParameterNamePrefix(char? parameterNamePrefix = null)
         {
             ParameterNamePrefix = parameterNamePrefix;

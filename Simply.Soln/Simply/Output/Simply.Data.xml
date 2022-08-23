@@ -2749,11 +2749,6 @@
             Execution Settings for Database Operations.
             </summary>
         </member>
-        <member name="F:Simply.Data.Objects.SimpleCommandSetting.DefaultInstance">
-            <summary>
-            Default instance for IExecutionSetting.
-            </summary>
-        </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.#ctor">
             <summary>
             Default instance
@@ -2769,12 +2764,18 @@
         </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.Create(System.Nullable{System.Int32},System.Data.CommandType,System.Nullable{System.Char})">
             <summary>
-            Default instance for IExecutionSetting with given parameters.
+            Create instance for ICommandSetting with given parameters.
             </summary>
             <param name="commandTimeout">The command timeout.</param>
             <param name="commandType">The command type.</param>
             <param name="parameterNamePrefix">Parameter Name Prefix for Rebuild Query</param>
-            <returns>Returns IExecutionSetting object instance.</returns>
+            <returns>Returns ICommandSetting object instance.</returns>
+        </member>
+        <member name="M:Simply.Data.Objects.SimpleCommandSetting.New">
+            <summary>
+            Create empty instance for ICommandSetting.
+            </summary>
+            <returns>Returns ICommandSetting object instance.</returns>
         </member>
         <member name="P:Simply.Data.Objects.SimpleCommandSetting.CommandType">
             <summary>
@@ -2796,21 +2797,21 @@
             
              </summary>
              <param name="commandType">command type.</param>
-             <returns>Returns object instance</returns>
+             <returns>Returns ICommandSetting object instance.</returns>
         </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetCommandTimeout(System.Nullable{System.Int32})">
              <summary>
             
              </summary>
              <param name="commandTimeout">command timeout. Value as second.</param>
-             <returns>Returns object instance</returns>
+             <returns>Returns ICommandSetting object instance.</returns>
         </member>
         <member name="M:Simply.Data.Objects.SimpleCommandSetting.SetParameterNamePrefix(System.Nullable{System.Char})">
             <summary>
             Sets the parameter name prefix.
             </summary>
             <param name="parameterNamePrefix">The parameter name prefix.</param>
-            <returns>A ICommandSetting.</returns>
+            <returns>Returns ICommandSetting object instance.</returns>
         </member>
         <member name="T:Simply.Data.DB2QuerySettings">
             <summary>
