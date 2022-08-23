@@ -23,7 +23,7 @@ namespace Simply.Data
         /// <summary>
         /// Gets Odbc Connection Types.
         /// </summary>
-        public static readonly DbConnectionTypes[] odbcConnectionTypes = new DbConnectionTypes[]
+        public static readonly DbConnectionTypes[] OdbcConnectionTypes = new DbConnectionTypes[]
             {
                 DbConnectionTypes.Odbc,
                 DbConnectionTypes.DB2Odbc,
@@ -41,7 +41,7 @@ namespace Simply.Data
         /// <summary>
         /// Gets Oledb Connection Types.
         /// </summary>
-        public static readonly DbConnectionTypes[] oledbConnectionTypes = new DbConnectionTypes[]
+        public static readonly DbConnectionTypes[] OledbConnectionTypes = new DbConnectionTypes[]
             {
                 DbConnectionTypes.Oledb,
                 DbConnectionTypes.DB2Oledb,
@@ -58,7 +58,7 @@ namespace Simply.Data
         /// <summary>
         /// Gets Oracle Connection Types.
         /// </summary>
-        public static readonly DbConnectionTypes[] oracleConnectionTypes = new DbConnectionTypes[]
+        public static readonly DbConnectionTypes[] OracleConnectionTypes = new DbConnectionTypes[]
             {
                 DbConnectionTypes.Oracle,
                 DbConnectionTypes.OracleOdbc,
@@ -68,7 +68,7 @@ namespace Simply.Data
         /// <summary>
         /// Gets ConnectionTypes for Scalar Insert op.
         /// </summary>
-        public static readonly DbConnectionTypes[] scalarInsertConnectionTypes = new DbConnectionTypes[]
+        public static readonly DbConnectionTypes[] ScalarInsertConnectionTypes = new DbConnectionTypes[]
             {
                 DbConnectionTypes.MsSql,
                 DbConnectionTypes.VistaDB,
@@ -333,7 +333,7 @@ namespace Simply.Data
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool IsInsertScalarMode(this DbConnectionTypes connectionType)
         {
-            bool isMember = connectionType.IsMember(scalarInsertConnectionTypes);
+            bool isMember = connectionType.IsMember(ScalarInsertConnectionTypes);
             return isMember;
         }
 
@@ -350,7 +350,7 @@ namespace Simply.Data
         /// </returns>
         public static bool IsOdbcConn(this DbConnectionTypes connectionType)
         {
-            bool isOdbc = connectionType.IsMember(odbcConnectionTypes);
+            bool isOdbc = connectionType.IsMember(OdbcConnectionTypes);
             return isOdbc;
         }
 
@@ -367,7 +367,7 @@ namespace Simply.Data
         /// </returns>
         public static bool IsOledbConn(this DbConnectionTypes connectionType)
         {
-            bool isOledb = connectionType.IsMember(oledbConnectionTypes);
+            bool isOledb = connectionType.IsMember(OledbConnectionTypes);
             return isOledb;
         }
 
@@ -383,7 +383,7 @@ namespace Simply.Data
         /// </returns>
         public static bool IsOracleConnection(this DbConnectionTypes connectionType)
         {
-            bool isOracle = connectionType.IsMember(oracleConnectionTypes);
+            bool isOracle = connectionType.IsMember(OracleConnectionTypes);
             return isOracle;
         }
 

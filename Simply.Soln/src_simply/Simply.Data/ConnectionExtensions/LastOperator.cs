@@ -66,11 +66,10 @@ namespace Simply.Data
         public static IDbCommandResult<T> QueryLast<T>(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null) where T : class, new()
         {
-            IDbCommandResult<T> instanceResult = new DbCommandResult<T>();
-
             IDbCommandResult<SimpleDbRow> simpleDbRowResult =
                 connection.QueryLastAsDbRow(simpleDbCommand, transaction);
 
+            IDbCommandResult<T> instanceResult = new DbCommandResult<T>();
             instanceResult.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
             instanceResult.AdditionalValues = simpleDbRowResult.AdditionalValues;
             return instanceResult;
@@ -101,6 +100,7 @@ namespace Simply.Data
 
             SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
                 odbcSqlQuery, commandParameters, commandSetting);
+
             IDbCommandResult<SimpleDbRow> simpleDbRowResult = connection.QueryLastAsDbRow(simpleDbCommand, transaction);
 
             T instance = simpleDbRowResult.Result.ConvertRowTo<T>();
@@ -194,11 +194,10 @@ namespace Simply.Data
                     commandBehavior = CommandBehavior.SingleRow;
                 }
 
+                //if (transaction == null)
+                //    connection.OpenIfNot();
+
                 DbCommandParameter[] outputValues;
-
-                if (transaction == null)
-                    connection.OpenIfNot();
-
                 reader =
                     connection.ExecuteReaderQuery(simpleDbCommand, out outputValues, transaction, commandBehavior);
 

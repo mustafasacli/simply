@@ -69,7 +69,6 @@ namespace Simply.Data
             IDbCommandResult<T> instanceResult = new DbCommandResult<T>();
             instanceResult.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
             instanceResult.AdditionalValues = simpleDbRowResult.AdditionalValues;
-
             return instanceResult;
         }
 

@@ -31,15 +31,13 @@ namespace Simply.Data
             if (dataAdapter == null)
                 throw new Exception(DbAppMessages.DataAdapterNotFound);
 
-            DataSet dataSet;
-
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                //if (transaction == null)
+                //    connection.OpenIfNot();
                 dataAdapter.SelectCommand = (DbCommand)command;
-                dataSet = new DataSet();
-                if (transaction == null)
-                    connection.OpenIfNot();
+                DataSet dataSet = new DataSet();
                 int executionResult = dataAdapter.Fill(dataSet);
                 result.ExecutionResult = executionResult;
                 result.Result = dataSet;

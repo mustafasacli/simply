@@ -64,13 +64,12 @@ namespace Simply.Data
         public static IDbCommandResult<T> QueryFirst<T>(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null) where T : class, new()
         {
-            IDbCommandResult<T> result = new DbCommandResult<T>();
-
             IDbCommandResult<SimpleDbRow> simpleDbRowResult = connection.QueryFirstAsDbRow(simpleDbCommand, transaction);
 
-            result.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
-            result.AdditionalValues = simpleDbRowResult.AdditionalValues;
-            return result;
+            IDbCommandResult<T> instanceResult = new DbCommandResult<T>();
+            instanceResult.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
+            instanceResult.AdditionalValues = simpleDbRowResult.AdditionalValues;
+            return instanceResult;
         }
 
         /// <summary>
@@ -182,11 +181,10 @@ namespace Simply.Data
 
             try
             {
+                //if (transaction == null)
+                //    connection.OpenIfNot();
+
                 DbCommandParameter[] outputValues;
-
-                if (transaction == null)
-                    connection.OpenIfNot();
-
                 reader = connection.ExecuteReaderQuery(
                     simpleDbCommand, out outputValues, transaction, commandBehavior: CommandBehavior.SingleRow);
 

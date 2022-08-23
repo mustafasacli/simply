@@ -54,7 +54,6 @@ namespace Simply.Data.DbCommandExtensions
             string parameterName, object parameterValue)
         {
             IDbDataParameter dbParameter = command.Parameters[parameterName] as IDbDataParameter;
-            dbParameter.Value = InternalAppValues.NullValue;
             dbParameter.Value = parameterValue ?? InternalAppValues.NullValue;
             command.Parameters[parameterName] = dbParameter;
         }
@@ -180,7 +179,7 @@ namespace Simply.Data.DbCommandExtensions
 
             if (!string.IsNullOrWhiteSpace(parameterName)) parameter.ParameterName = parameterName;
 
-            parameter.Value = value ?? DBNull.Value;
+            parameter.Value = value ?? InternalAppValues.NullValue;
             parameter.Direction = direction;
 
             if (dbType != null)
@@ -345,7 +344,7 @@ namespace Simply.Data.DbCommandExtensions
                 if (/*parameter == null && */parameter.GetRealType().IsSimpleTypeV2())
                 {
                     dbParameter = command.CreateDbParameter();
-                    dbParameter.Value = parameter ?? (object)DBNull.Value;
+                    dbParameter.Value = parameter ?? InternalAppValues.NullValue;
                 }
                 else if (parameter is DbCommandParameter)
                 {

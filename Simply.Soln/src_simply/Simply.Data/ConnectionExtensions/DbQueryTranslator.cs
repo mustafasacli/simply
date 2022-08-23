@@ -186,7 +186,9 @@ namespace Simply.Data
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout
             };
-            List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
+            List<string> paramStringArray = queryAndParameters
+                .Skip(1)
+                .ToList() ?? ArrayHelper.EmptyList<string>();
 
             if ((!setOverratedParametersToOutput && paramStringArray.Count != commandParameters.Length) || paramStringArray.Count < commandParameters.Length)
                 throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
@@ -273,7 +275,8 @@ namespace Simply.Data
                         new DbCommandParameter
                         {
                             Direction = ParameterDirection.Output,
-                            ParameterName = paramStringArray[tempsimpleDbCommand.CommandParameters.Count + counter]
+                            ParameterName =
+                            paramStringArray[tempsimpleDbCommand.CommandParameters.Count + counter]
                         });
                 }
             }

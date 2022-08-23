@@ -47,7 +47,8 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
+            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = 
+                connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
             return multiSimpleDbRowListResult.Result;
         }
 
@@ -63,13 +64,14 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
         {
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult;
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
+                    simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
                     simpleDbRowListResult.OutputParameters = command.GetOutParameters();
                     simpleDbRowListResult.Result = reader.GetResultSetAsDbRow(closeAtFinal: true) ??
                         new List<SimpleDbRow>();
@@ -91,13 +93,14 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
         {
-            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();
+            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult;
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
+                    multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();
                     multiSimpleDbRowListResult.OutputParameters = command.GetOutParameters();
                     multiSimpleDbRowListResult.Result = reader.GetMultiDbRowList(closeAtFinal: true) ??
                         new List<List<SimpleDbRow>>();

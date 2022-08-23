@@ -25,8 +25,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand, out DbCommandParameter[] outputParameters,
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null)
         {
-            IDataReader dataReader = null;
             outputParameters = ArrayHelper.Empty<DbCommandParameter>();
+            IDataReader dataReader;
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
@@ -58,8 +58,6 @@ namespace Simply.Data
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null,
             int? commandTimeout = null)
         {
-            IDataReader dataReader = null;
-
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
@@ -69,6 +67,7 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(parameters);
 
+            IDataReader dataReader;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
@@ -95,8 +94,6 @@ namespace Simply.Data
             string sql, object obj, IDbTransaction transaction = null,
              ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null)
         {
-            IDataReader dataReader = null;
-
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
@@ -106,6 +103,7 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(parameters);
 
+            IDataReader dataReader;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {

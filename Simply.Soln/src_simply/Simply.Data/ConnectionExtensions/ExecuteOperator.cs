@@ -34,7 +34,7 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(parameters);
 
-            int result = -1;
+            int result;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
@@ -117,7 +117,6 @@ namespace Simply.Data
             string odbcSqlQuery, object[] parameterValues,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-            int executeResult = -1;
 
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -131,6 +130,7 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandSetting);
 
+            int executeResult;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
