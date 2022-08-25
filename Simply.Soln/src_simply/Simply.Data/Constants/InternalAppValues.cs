@@ -125,11 +125,11 @@ namespace Simply.Data.Constants
         /// <summary>
         /// Defines " " string.
         /// </summary>
-        internal const string OneSpace = " ";
+        internal static readonly string OneSpace = " ";
 
         /// <summary>
         /// Defines the Backquote as String ==> '`'.
         /// </summary>
-        internal const string BackquoteString = "`";
+        internal static readonly string BackquoteString = "`";
     }
 }
