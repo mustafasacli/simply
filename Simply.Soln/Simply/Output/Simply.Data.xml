@@ -2515,6 +2515,11 @@
             Gets Sets OracleCommand BindByName value.
             </summary>
         </member>
+        <member name="P:Simply.Data.Objects.SimpleDbCommand.ParameterNamePrefix">
+            <summary>
+            Gets Parameter Name Prefix for Rebuild Query.
+            </summary>
+        </member>
         <member name="M:Simply.Data.Objects.SimpleDbCommand.AddDatabaseParameterReturn(System.Object)">
             <summary>
             Adds command parameter to list.
@@ -2527,6 +2532,13 @@
             Creates the parameter.
             </summary>
             <returns>A DbParameter.</returns>
+        </member>
+        <member name="M:Simply.Data.Objects.SimpleDbCommand.RecompileQuery(Simply.Data.Interfaces.IQuerySetting,System.Object)">
+            <summary>
+            Recompiles the parameters.
+            </summary>
+            <param name="querySetting">The query setting.</param>
+            <param name="obj">The value object.</param>
         </member>
         <member name="T:Simply.Data.Objects.DbCommandParameter">
             <summary>
