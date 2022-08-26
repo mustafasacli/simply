@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Simply.Data.Interfaces;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace Simply.Data.Objects
@@ -128,6 +130,12 @@ namespace Simply.Data.Objects
         { get; set; }
 
         /// <summary>
+        /// Gets Parameter Name Prefix for Rebuild Query.
+        /// </summary>
+        public char? ParameterNamePrefix
+        { get; set; }
+
+        /// <summary>
         /// Adds command parameter to list.
         /// </summary>
         /// <param name="dbCommandParameter">db command parameter</param>
@@ -145,6 +153,27 @@ namespace Simply.Data.Objects
         public DbParameter CreateParameter()
         {
             return new DbCommandParameter();
+        }
+
+        /// <summary>
+        /// Recompiles the parameters.
+        /// </summary>
+        /// <param name="querySetting">The query setting.</param>
+        /// <param name="obj">The value object.</param>
+        public void RecompileQuery(IQuerySetting querySetting, object obj)
+        {
+            if (this.ParameterNamePrefix != null && obj != null)
+            {
+                PropertyInfo[] properties = obj.GetType().GetProperties();
+                foreach (PropertyInfo property in properties)
+                {
+                    this.CommandText = this.CommandText
+                        .Replace(
+                        string.Concat(this.ParameterNamePrefix, property.Name, this.ParameterNamePrefix),
+                        string.Concat(querySetting.ParameterPrefix, property.Name, querySetting.ParameterSuffix)
+                        );
+                }
+            }
         }
     }
 }

@@ -47,7 +47,10 @@ namespace Simply.Data
                 CommandText = sql,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
             SimpleDbRow simpleDbRow = connection.QueryLastAsDbRow(simpleDbCommand, transaction).Result;
@@ -241,7 +244,10 @@ namespace Simply.Data
                 CommandText = sql,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<SimpleDbRow> simpleDbRowResult =

@@ -45,7 +45,10 @@ namespace Simply.Data
                 CommandText = sqlQuery,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<SimpleDbRow> commandResult = connection.QuerySingleAsDbRow(simpleDbCommand, transaction);

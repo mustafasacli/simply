@@ -100,7 +100,10 @@ namespace Simply.Data
                 CommandText = sql,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
             IDataReader dataReader;

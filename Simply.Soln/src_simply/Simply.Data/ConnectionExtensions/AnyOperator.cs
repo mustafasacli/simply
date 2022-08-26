@@ -29,7 +29,10 @@ namespace Simply.Data
                 CommandText = sqlText,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
             bool any = connection.Any(simpleDbCommand, transaction);

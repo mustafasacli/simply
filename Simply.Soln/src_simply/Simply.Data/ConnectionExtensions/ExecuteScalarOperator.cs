@@ -4,7 +4,6 @@ using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Simply.Data
@@ -32,22 +31,11 @@ namespace Simply.Data
             {
                 CommandText = sql,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
-                CommandTimeout = commandSetting?.CommandTimeout
+                CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
-            char? parameterNamePrefix = commandSetting?.ParameterNamePrefix;
-            if (parameterNamePrefix != null && obj != null)
-            {
-                IQuerySetting querySetting = connection.GetQuerySetting();
-                PropertyInfo[] properties = obj.GetType().GetProperties();
-                foreach (PropertyInfo property in properties)
-                {
-                    simpleDbCommand.CommandText = simpleDbCommand.CommandText
-                        .Replace(
-                        string.Format("{0}{1}{0}", parameterNamePrefix, property.Name),
-                        string.Concat(querySetting.ParameterPrefix, property.Name, querySetting.ParameterSuffix)
-                        );
-                }
-            }
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
             object result;

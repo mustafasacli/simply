@@ -44,10 +44,13 @@ namespace Simply.Data
                 CommandText = sql,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = 
+            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult =
                 connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
             return multiSimpleDbRowListResult.Result;
         }

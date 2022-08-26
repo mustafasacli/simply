@@ -31,7 +31,10 @@ namespace Simply.Data
                 CommandText = sqlQuery,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
+
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
             int result;
@@ -117,7 +120,6 @@ namespace Simply.Data
             string odbcSqlQuery, object[] parameterValues,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
-
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
                 {
