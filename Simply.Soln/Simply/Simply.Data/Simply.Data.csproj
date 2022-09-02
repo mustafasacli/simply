@@ -131,11 +131,17 @@
     <Compile Include="..\..\src_simply\Simply.Data\Enums\DbConnectionTypes.cs">
       <Link>Enums\DbConnectionTypes.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\Helpers\InternalLogHelper.cs">
+      <Link>Helpers\InternalLogHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IDbCommandResult.cs">
       <Link>Interfaces\IDbCommandResult.cs</Link>
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ICommandSetting.cs">
       <Link>Interfaces\ICommandSetting.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ILogSetting.cs">
+      <Link>Interfaces\ILogSetting.cs</Link>
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IPageInfo.cs">
       <Link>Interfaces\IPageInfo.cs</Link>
@@ -157,6 +163,9 @@
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleCommandSetting.cs">
       <Link>Objects\SimpleCommandSetting.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleLogSetting.cs">
+      <Link>Objects\SimpleLogSetting.cs</Link>
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs">
       <Link>QuerySettings\Core\IQuerySetting.cs</Link>
@@ -214,9 +223,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="simply.data.snk" />

@@ -26,3 +26,10 @@ Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþt
 Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
 IQuerySetting öðesi ICommandSetting nesnesi içinde gönderilebilir.
 
+02-09-2022 Notlar;
+- IQuerySettings için external inject mekanizmasý kurulacak.
+Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
+IQuerySetting öðesi ICommandSetting nesnesi içinde gönderilebilir.
+- ILogSetting yapýsý kuruldu. SimpleDbCommand(DONE) ve IDbCommand(WILL BE DONE) nesnelerinin loglanmasý buradan yapýlacak.
+- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.
+

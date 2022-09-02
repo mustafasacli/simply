@@ -27,7 +27,7 @@ namespace Simply.Data
         /// <returns>Returns as object list.</returns>
         public static List<T> GetList<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null) where T : class
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -41,7 +41,8 @@ namespace Simply.Data
                 commandParameters, commandSetting);
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand,
+                transaction, pageInfo, logSetting: logSetting);
 
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;
@@ -68,13 +69,14 @@ namespace Simply.Data
         /// <returns>Returns as object list.</returns>
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
+            ILogSetting logSetting = null) where T : class, new()
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {
                 return
                 connection.QueryList<T>(sqlText, obj,
-                transaction, commandSetting, pageInfo);
+                transaction, commandSetting, pageInfo, logSetting: logSetting);
             });
 
             return await resultTask;

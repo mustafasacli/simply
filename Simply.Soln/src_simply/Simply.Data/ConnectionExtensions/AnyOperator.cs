@@ -19,9 +19,10 @@ namespace Simply.Data
         /// <param name="obj">The obj <see cref="object"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this IDbConnection connection, string sqlText, object obj,
-            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
+            IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand
@@ -35,7 +36,7 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
-            bool any = connection.Any(simpleDbCommand, transaction);
+            bool any = connection.Any(simpleDbCommand, transaction, logSetting);
             return any;
         }
 
@@ -45,14 +46,15 @@ namespace Simply.Data
         /// <param name="connection">The connection <see cref="IDbConnection"/>.</param>
         /// <param name="simpleDbCommand">The simpleDbCommand <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] outputValues;
 
             IDataReader reader = connection.ExecuteReaderQuery(simpleDbCommand, out outputValues,
-                transaction, commandBehavior: CommandBehavior.SingleRow);
+                transaction, commandBehavior: CommandBehavior.SingleRow, logSetting: logSetting);
 
             bool any = reader.Any(closeAtFinal: true);
             return any;
@@ -66,10 +68,11 @@ namespace Simply.Data
         /// <param name="parameterValues">The parameterValues <see cref="object[]"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this IDbConnection connection,
             string odbcSqlQuery, object[] parameterValues,
-           IDbTransaction transaction = null, ICommandSetting commandSetting = null)
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p, ParameterDbType = p.ToDbType() })
@@ -77,7 +80,7 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
                 odbcSqlQuery, commandParameters, commandSetting);
 
-            bool any = connection.Any(simpleDbCommand, transaction);
+            bool any = connection.Any(simpleDbCommand, transaction, logSetting);
             return any;
         }
     }

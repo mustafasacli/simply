@@ -36,7 +36,8 @@ namespace Simply.Data
         /// <returns>Returns as object list.</returns>
         public static List<T> QueryList<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
+            ILogSetting logSetting = null) where T : class, new()
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
@@ -55,7 +56,7 @@ namespace Simply.Data
             simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo, logSetting: logSetting);
 
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;
@@ -72,13 +73,14 @@ namespace Simply.Data
         /// <returns>Returns as object list.</returns>
         public static IDbCommandResult<List<T>> GetList<T>(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null, IPageInfo pageInfo = null)
+            IDbTransaction transaction = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
             where T : class, new()
         {
             IDbCommandResult<List<T>> instanceListResult = new DbCommandResult<List<T>>();
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction,
+                pageInfo, logSetting: logSetting);
 
             instanceListResult.Result =
                 simpleDbRowListResult.Result.ConvertRowsToList<T>()
@@ -100,7 +102,7 @@ namespace Simply.Data
         /// <returns>Returns as object list.</returns>
         public static List<T> SelectList<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null) where T : class
         {
             DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -114,7 +116,8 @@ namespace Simply.Data
                 commandParameters, commandSetting);
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand,
+                transaction, pageInfo, logSetting: logSetting);
 
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;

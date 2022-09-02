@@ -38,5 +38,7 @@
         public static readonly string InvalidConnectionType = "No Query Setting found for with connection type: ";
 
         public static readonly string ParameterCanNotBeNullFormat = "{0} can not be null.";
+
+        public static readonly string CommandLogActionNotDefined = "Command Log Action not defined.";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Simply.Common;
 using Simply.Data.DbCommandExtensions;
+using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
@@ -20,13 +21,17 @@ namespace Simply.Data
         /// <param name="outputParameters"></param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">Db Command Behavior.</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
-        public static IDataReader ExecuteReaderQuery(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, out DbCommandParameter[] outputParameters,
-            IDbTransaction transaction = null, CommandBehavior? commandBehavior = null)
+        public static IDataReader ExecuteReaderQuery(
+            this IDbConnection connection, SimpleDbCommand simpleDbCommand,
+            out DbCommandParameter[] outputParameters, IDbTransaction transaction = null,
+            CommandBehavior? commandBehavior = null, ILogSetting logSetting = null)
         {
             outputParameters = ArrayHelper.Empty<DbCommandParameter>();
             IDataReader dataReader;
+
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
@@ -52,11 +57,12 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
         /// <param name="commandTimeout">db command timeout(optional).</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
         public static IDataReader ExecuteReader(this IDbConnection connection,
             string sql, object obj, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null,
-            int? commandTimeout = null)
+            int? commandTimeout = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -66,6 +72,8 @@ namespace Simply.Data
                 CommandTimeout = commandTimeout,
             };
             simpleDbCommand.AddCommandParameters(parameters);
+
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             IDataReader dataReader;
             using (IDbCommand command =
@@ -89,10 +97,12 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
         public static IDataReader ExecuteReader(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
-             ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null)
+             ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null,
+             ILogSetting logSetting = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -105,6 +115,8 @@ namespace Simply.Data
 
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
+
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             IDataReader dataReader;
             using (IDbCommand command =
@@ -130,16 +142,18 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">Db Command Behavior</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute reader.</returns>
         public static async Task<IDataReader> ExecuteReaderAsync(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null)
+            ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null,
+            ILogSetting logSetting = null)
         {
             Task<IDataReader> resultTask = Task.Factory.StartNew(() =>
             {
                 return
                 ExecuteReader(connection, sql, obj, transaction,
-                commandSetting, commandBehavior);
+                commandSetting, commandBehavior, logSetting);
             });
 
             return await resultTask;

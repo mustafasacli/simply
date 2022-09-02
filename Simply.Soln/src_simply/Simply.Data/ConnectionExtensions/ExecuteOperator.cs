@@ -1,5 +1,6 @@
 ﻿using Simply.Common;
 using Simply.Data.DbCommandExtensions;
+using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
@@ -21,9 +22,10 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns exection result as int.</returns>
         public static int Execute(this IDbConnection connection, string sqlQuery,
-            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null)
+            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -36,6 +38,8 @@ namespace Simply.Data
 
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
+
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             int result;
             using (IDbCommand command =
@@ -55,12 +59,13 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as long.</returns>
         public static long ExecuteAsLong(this IDbConnection connection, string sqlQuery,
-            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null)
+            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             long value =
-                Execute(connection, sqlQuery, obj, transaction, commandSetting);
+                Execute(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
 
             return value;
         }
@@ -73,13 +78,14 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as decimal.</returns>
         public static decimal ExecuteAsDecimal(this IDbConnection connection,
            string sqlQuery, object obj, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null)
+           ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             decimal value =
-                Execute(connection, sqlQuery, obj, transaction, commandSetting);
+                Execute(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
 
             return value;
         }
@@ -90,10 +96,12 @@ namespace Simply.Data
         /// <param name="connection">Database connection <see cref="IDbConnection"/></param>
         /// <param name="simpleDbCommand">Db database command <see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as int. <see cref="IDbCommandResult{System.Int32}"/></returns>
         public static IDbCommandResult<int> ExecuteQuery(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
         {
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
             IDbCommandResult<int> commandResult = new DbCommandResult<int>(-1);
 
             using (IDbCommand command =
@@ -115,10 +123,11 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameters.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as int.</returns>
         public static int ExecuteAsOdbc(this IDbConnection connection,
             string odbcSqlQuery, object[] parameterValues,
-            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
+            IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -131,6 +140,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand =
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandSetting);
+
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             int executeResult;
             using (IDbCommand command =
@@ -152,15 +163,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) The transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute.</returns>
         public static async Task<int> ExecuteAsync(this IDbConnection connection,
             string sqlQuery, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null)
+            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return Execute(connection,
-                    sqlQuery, obj, transaction, commandSetting);
+                    sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
             });
         }
 
@@ -173,15 +185,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>.</returns>
         public static async Task<long> ExecuteAsLongAsync(this IDbConnection connection,
             string sqlQuery, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null)
+            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteAsLong(connection, sqlQuery, obj, transaction, commandSetting);
+                ExecuteAsLong(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
             });
         }
 
@@ -194,15 +207,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute.</returns>
         public static async Task<decimal> ExecuteAsDecimalAsync(this IDbConnection connection,
             string sqlQuery, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null)
+            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteAsDecimal(connection, sqlQuery, obj, transaction, commandSetting);
+                ExecuteAsDecimal(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
             });
         }
 

@@ -2,6 +2,7 @@
 using Simply.Common.Objects;
 using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
+using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
@@ -36,10 +37,11 @@ namespace Simply.Data
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.
         /// </param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static List<SimpleDbRow> QueryDbRowList(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
@@ -57,8 +59,11 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(commandParameters);
 
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                GetDbRowList(connection, simpleDbCommand,
+                transaction, pageInfo, logSetting: logSetting);
             List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
 
             return simpleDbRowList;
@@ -71,10 +76,11 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowList(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null, IPageInfo pageInfo = null)
+            IDbTransaction transaction = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
         {
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
 
@@ -96,6 +102,8 @@ namespace Simply.Data
                     simpleDbCommand.CommandText = format.CopyValue();
                 }
             }
+
+            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
@@ -125,10 +133,11 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns as SimpleDbRow object list.</returns>
         public static List<SimpleDbRow> SelectDbRowList(this IDbConnection connection,
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -142,7 +151,8 @@ namespace Simply.Data
                 commandParameters, commandSetting);
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
+                GetDbRowList(connection, simpleDbCommand, transaction,
+                pageInfo, logSetting: logSetting);
 
             List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
             return simpleDbRowList;

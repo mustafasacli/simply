@@ -21,9 +21,10 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static IDbCommandResult<DataSet> GetResultSetQuery(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
         {
             DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
@@ -34,8 +35,6 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                //if (transaction == null)
-                //    connection.OpenIfNot();
                 dataAdapter.SelectCommand = (DbCommand)command;
                 DataSet dataSet = new DataSet();
                 int executionResult = dataAdapter.Fill(dataSet);
@@ -55,10 +54,11 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameters.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static DataSet GetOdbcResultSet(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
-           IDbTransaction transaction = null, ICommandSetting commandSetting = null)
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -82,10 +82,11 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
+        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns dynamic object list.</returns>
         public static IDbCommandResult<DataTable> GetResultSet(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null, IPageInfo pageInfo = null)
+            IDbTransaction transaction = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
         {
             IDbCommandResult<DataTable> dataTableResult = new DbCommandResult<DataTable>();
 
