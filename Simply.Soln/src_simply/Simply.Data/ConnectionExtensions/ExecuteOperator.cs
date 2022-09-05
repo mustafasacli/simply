@@ -45,6 +45,7 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteNonQuery();
             }
 
@@ -107,6 +108,7 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 commandResult.ExecutionResult = command.ExecuteNonQuery();
                 commandResult.Result = commandResult.ExecutionResult;
                 commandResult.OutputParameters = command.GetOutParameters();
@@ -147,6 +149,7 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 executeResult = command.ExecuteNonQuery();
             }
 

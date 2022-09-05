@@ -77,6 +77,8 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command,logSetting);
+
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
                     simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
@@ -109,6 +111,8 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
+
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
                     multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();

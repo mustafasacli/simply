@@ -1,6 +1,7 @@
 ﻿using Simply.Common;
 using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
+using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -35,10 +36,10 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 dataAdapter.SelectCommand = (DbCommand)command;
                 DataSet dataSet = new DataSet();
-                int executionResult = dataAdapter.Fill(dataSet);
-                result.ExecutionResult = executionResult;
+                result.ExecutionResult = dataAdapter.Fill(dataSet);
                 result.Result = dataSet;
                 result.OutputParameters = command.GetOutParameters();
             }
@@ -71,7 +72,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand =
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
 
-            IDbCommandResult<DataSet> resultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
+            IDbCommandResult<DataSet> resultSet =
+                GetResultSetQuery(connection, simpleDbCommand, transaction, logSetting: logSetting);
             return resultSet.Result;
         }
 
@@ -109,7 +111,8 @@ namespace Simply.Data
                 }
             }
 
-            IDbCommandResult<DataSet> tempResultSet = GetResultSetQuery(connection, simpleDbCommand, transaction);
+            IDbCommandResult<DataSet> tempResultSet =
+                GetResultSetQuery(connection, simpleDbCommand, transaction, logSetting: logSetting);
             dataTableResult = new DbCommandResult<DataTable>
             {
                 ExecutionResult = tempResultSet.ExecutionResult,

@@ -46,6 +46,7 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 
@@ -102,6 +103,7 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 
@@ -125,6 +127,7 @@ namespace Simply.Data
             using (IDbCommand command =
                     connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 commandResult = new DbCommandResult<object>();
                 commandResult.Result = command.ExecuteScalar();
                 commandResult.OutputParameters = command.GetOutParameters();
@@ -189,6 +192,7 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 
@@ -225,6 +229,7 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 

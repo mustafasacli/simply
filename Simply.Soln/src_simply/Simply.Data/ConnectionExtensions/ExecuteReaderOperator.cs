@@ -36,6 +36,8 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
+
                 if (!commandBehavior.HasValue)
                     dataReader = command.ExecuteReader();
                 else
@@ -79,6 +81,8 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
+
                 if (!commandBehavior.HasValue)
                     dataReader = command.ExecuteReader();
                 else
@@ -122,6 +126,8 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
+
                 if (!commandBehavior.HasValue)
                     dataReader = command.ExecuteReader();
                 else

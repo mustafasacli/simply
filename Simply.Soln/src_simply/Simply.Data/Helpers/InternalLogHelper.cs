@@ -2,6 +2,7 @@
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
+using System.Data;
 
 namespace Simply.Data.Helpers
 {
@@ -27,6 +28,26 @@ namespace Simply.Data.Helpers
                 throw new Exception(DbAppMessages.CommandLogActionNotDefined);
 
             logSetting.CommandLogAction(simpleDbCommand);
+        }
+
+        /// <summary>
+        /// Logs the database command.
+        /// </summary>
+        /// <param name="dbCommand">The database command.</param>
+        /// <param name="logSetting">The log setting.</param>
+        /// <exception cref="System.Exception"></exception>
+        public static void LogDbCommand(IDbCommand dbCommand, ILogSetting logSetting = null)
+        {
+            if (logSetting == null || dbCommand == null)
+                return;
+
+            if (!logSetting.LogCommand && logSetting.CommandLogAction == null)
+                return;
+
+            if (logSetting.CommandLogAction == null)
+                throw new Exception(DbAppMessages.CommandLogActionNotDefined);
+
+            logSetting.DbCommandLogAction(dbCommand);
         }
     }
 }

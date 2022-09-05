@@ -108,6 +108,8 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
+                InternalLogHelper.LogDbCommand(command, logSetting);
+
                 using (IDataReader reader = command.ExecuteReader())
                 {
                     simpleDbRowListResult.OutputParameters = command.GetOutParameters();
