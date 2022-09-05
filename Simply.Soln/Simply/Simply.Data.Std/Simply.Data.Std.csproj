@@ -25,6 +25,8 @@
         <Compile Include="..\..\src_simply\Simply.Data\Constants\DbConnectionNames.cs" Link="Constants\DbConnectionNames.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Constants\InternalAppValues.cs" Link="Constants\InternalAppValues.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Constants\DbAppMessages.cs" Link="Constants\DbAppMessages.cs" />
+		<Compile Include="..\..\src_simply\Simply.Data\Database\SimpleDatabase.cs" Link="Database\SimpleDatabase.cs" />
+		<Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbAnyOperator.cs" Link="DatabaseExtensions\DbAnyOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataExtensions\DataExtension.cs" Link="DataExtensions\DataExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderAsyncOperator.cs" Link="DataReader\DataReaderAsyncOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderOperator.cs" Link="DataReader\DataReaderOperator.cs" />
@@ -36,6 +38,7 @@
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ICommandSetting.cs" Link="Interfaces\ICommandSetting.cs" />
 		<Compile Include="..\..\src_simply\Simply.Data\Interfaces\ILogSetting.cs" Link="Interfaces\ILogSetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IPageInfo.cs" Link="Interfaces\IPageInfo.cs" />
+		<Compile Include="..\..\src_simply\Simply.Data\Interfaces\ISimpleDatabase.cs" Link="Interfaces\ISimpleDatabase.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\BaseDbCommand.cs" Link="Objects\BaseDbCommand.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleDbCommand.cs" Link="Objects\SimpleDbCommand.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandParameter.cs" Link="Objects\DbCommandParameter.cs" />
@@ -66,6 +69,10 @@
     <ItemGroup>
         <Folder Include="Helpers\" />
         <Folder Include="Interfaces\" />
+        <Folder Include="Interfaces\" />
+        <Folder Include="Helpers\" />
+        <Folder Include="QuerySettings\Core\" />
+        <Folder Include="QuerySettings\Factory\" />
         <Folder Include="QuerySettings\Core\" />
         <Folder Include="QuerySettings\Factory\" />
     </ItemGroup>

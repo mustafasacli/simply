@@ -84,6 +84,16 @@ namespace Simply.Data
         }
 
         /// <summary>
+        /// Closes the and dispose.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        public static void CloseAndDispose(this IDbConnection connection)
+        {
+            connection?.CloseIfNot();
+            connection?.Dispose();
+        }
+
+        /// <summary>
         /// Opens DbConnection if not opened.
         /// </summary>
         /// <param name="connection">Database Connection.</param>
