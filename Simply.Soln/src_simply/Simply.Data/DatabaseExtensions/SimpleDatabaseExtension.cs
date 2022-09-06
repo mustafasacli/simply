@@ -2,6 +2,7 @@
 using Simply.Data.Interfaces;
 using System;
 using System.Data;
+using System.Reflection;
 
 namespace Simply.Data.DatabaseExtensions
 {
@@ -18,9 +19,9 @@ namespace Simply.Data.DatabaseExtensions
         public static IDbConnection GetDbConnection<TSimpleDatabase>(this TSimpleDatabase database)
             where TSimpleDatabase : class, ISimpleDatabase
         {
-            var field = database.GetType().GetField(InternalAppValues.ConnectionParameterName,
+            FieldInfo fieldInfo = database.GetType().GetField(InternalAppValues.ConnectionParameterName,
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            IDbConnection connection = field.GetValue(database) as IDbConnection;
+            IDbConnection connection = fieldInfo.GetValue(database) as IDbConnection;
 
             if (connection == null)
                 throw new Exception(DbAppMessages.DbConnectionNotDefined);
@@ -36,12 +37,9 @@ namespace Simply.Data.DatabaseExtensions
         public static IDbTransaction GetDbTransaction<TSimpleDatabase>(this TSimpleDatabase database)
             where TSimpleDatabase : class, ISimpleDatabase
         {
-            var field = database.GetType().GetField(InternalAppValues.TransactionParameterName,
+            FieldInfo fieldInfo = database.GetType().GetField(InternalAppValues.TransactionParameterName,
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            IDbTransaction transaction = field.GetValue(database) as IDbTransaction;
-
-            //if (transaction == null)
-            //    throw new Exception(DbAppMessages.DbTransactionNotDefined);
+            IDbTransaction transaction = fieldInfo.GetValue(database) as IDbTransaction;
 
             return transaction;
         }
