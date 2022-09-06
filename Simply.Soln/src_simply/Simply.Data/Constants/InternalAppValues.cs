@@ -131,5 +131,9 @@ namespace Simply.Data.Constants
         /// Defines the Backquote as String ==> '`'.
         /// </summary>
         internal static readonly string BackquoteString = "`";
+
+        internal static readonly string ConnectionParameterName = "connection";
+
+        internal static readonly string TransactionParameterName = "transaction";
     }
 }
