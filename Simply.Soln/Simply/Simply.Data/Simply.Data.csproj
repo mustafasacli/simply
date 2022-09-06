@@ -116,6 +116,9 @@
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbAnyOperator.cs">
       <Link>DatabaseExtensions\DbAnyOperator.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDatabaseExtension.cs">
+      <Link>DatabaseExtensions\SimpleDatabaseExtension.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Database\SimpleDatabase.cs">
       <Link>Database\SimpleDatabase.cs</Link>
     </Compile>
