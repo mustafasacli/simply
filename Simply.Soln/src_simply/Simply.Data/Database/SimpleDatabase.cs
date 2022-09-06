@@ -54,9 +54,6 @@ namespace Simply.Data.Database
             this.connection = connection;
             this.transaction = transaction;
             CommandSetting = commandSetting;
-            // This codes will be used in extension methods.
-            var field = this.GetType().GetField("", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var conn = field.GetValue(this) as IDbConnection;
         }
 
         public SimpleDatabase(DbProviderFactory providerFactory,
@@ -92,6 +89,11 @@ namespace Simply.Data.Database
             get { return logSetting.DbCommandLogAction; }
             set { logSetting.SetDbCommandLogAction(value); }
         }
+        /// <summary>
+        /// Gets the log setting.
+        /// </summary>
+        public ILogSetting LogSetting
+        { get { return this.logSetting; } }
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.

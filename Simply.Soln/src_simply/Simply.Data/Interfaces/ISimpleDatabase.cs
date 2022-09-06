@@ -26,6 +26,11 @@ namespace Simply.Data.Interfaces
         Action<IDbCommand> DbCommandLogAction { get; set; }
 
         /// <summary>
+        /// Gets the log setting.
+        /// </summary>
+        ILogSetting LogSetting { get; }
+
+        /// <summary>
         /// Begins the transaction.
         /// </summary>
         /// <param name="isolationLevel">The isolation level.</param>
@@ -40,5 +45,7 @@ namespace Simply.Data.Interfaces
         /// Rollbacks the transaction.
         /// </summary>
         void RollbackTransaction();
+
+
     }
 }
