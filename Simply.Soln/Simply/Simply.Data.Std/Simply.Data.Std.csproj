@@ -27,6 +27,9 @@
         <Compile Include="..\..\src_simply\Simply.Data\Constants\DbAppMessages.cs" Link="Constants\DbAppMessages.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Database\SimpleDatabase.cs" Link="Database\SimpleDatabase.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbAnyOperator.cs" Link="DatabaseExtensions\DbAnyOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbCountOperator.cs" Link="DatabaseExtensions\DbCountOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbExecuteOperator.cs" Link="DatabaseExtensions\DbExecuteOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDbRowListOperator.cs" Link="DatabaseExtensions\SimpleDbRowListOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDatabaseExtension.cs" Link="DatabaseExtensions\SimpleDatabaseExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataExtensions\DataExtension.cs" Link="DataExtensions\DataExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderAsyncOperator.cs" Link="DataReader\DataReaderAsyncOperator.cs" />

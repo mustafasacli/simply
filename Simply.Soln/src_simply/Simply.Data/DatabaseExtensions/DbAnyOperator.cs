@@ -1,8 +1,9 @@
-﻿using Simply.Data.Interfaces;
+﻿using Simply.Data.DatabaseExtensions;
+using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
 
-namespace Simply.Data.DatabaseExtensions
+namespace Simply.Data
 {
     /// <summary>
     /// Defines the <see cref="DbAnyOperator"/>.

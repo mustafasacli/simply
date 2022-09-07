@@ -116,8 +116,17 @@
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbAnyOperator.cs">
       <Link>DatabaseExtensions\DbAnyOperator.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbCountOperator.cs">
+      <Link>DatabaseExtensions\DbCountOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbExecuteOperator.cs">
+      <Link>DatabaseExtensions\DbExecuteOperator.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDatabaseExtension.cs">
       <Link>DatabaseExtensions\SimpleDatabaseExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDbRowListOperator.cs">
+      <Link>DatabaseExtensions\SimpleDbRowListOperator.cs</Link>
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Database\SimpleDatabase.cs">
       <Link>Database\SimpleDatabase.cs</Link>

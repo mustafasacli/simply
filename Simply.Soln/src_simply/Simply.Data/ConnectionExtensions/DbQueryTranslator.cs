@@ -211,8 +211,8 @@ namespace Simply.Data
 
             if (setOverratedParametersToOutput && paramStringArray.Count > commandParameters.Length)
             {
-                int cnt = paramStringArray.Count - commandParameters.Length;
-                for (int counter = 0; counter < cnt; counter++)
+                int outputParameterCount = paramStringArray.Count - commandParameters.Length;
+                for (int counter = 0; counter < outputParameterCount; counter++)
                 {
                     simpleDbCommand.AddParameter(
                         new DbCommandParameter
@@ -268,8 +268,8 @@ namespace Simply.Data
 
             if (setOverratedParamsToOutput && paramStringArray.Count > tempsimpleDbCommand.CommandParameters.Count)
             {
-                int count = paramStringArray.Count - tempsimpleDbCommand.CommandParameters.Count;
-                for (int counter = 0; counter < count; counter++)
+                int outputParameterCount = paramStringArray.Count - tempsimpleDbCommand.CommandParameters.Count;
+                for (int counter = 0; counter < outputParameterCount; counter++)
                 {
                     simpleDbCommand.AddParameter(
                         new DbCommandParameter
