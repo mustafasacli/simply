@@ -56,6 +56,12 @@ namespace Simply.Data.Database
             CommandSetting = commandSetting;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleDatabase"/> class.
+        /// </summary>
+        /// <param name="providerFactory">The provider factory.</param>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="commandSetting">The command setting.</param>
         public SimpleDatabase(DbProviderFactory providerFactory,
             string connectionString,
             ICommandSetting commandSetting = null)
