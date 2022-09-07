@@ -30,6 +30,15 @@ IQuerySetting öðesi ICommandSetting nesnesi içinde gönderilebilir.
 - IQuerySettings için external inject mekanizmasý kurulacak.
 Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
 IQuerySetting öðesi ICommandSetting nesnesi içinde gönderilebilir.
-- ILogSetting yapýsý kuruldu. SimpleDbCommand(DONE) ve IDbCommand(WILL BE DONE) nesnelerinin loglanmasý buradan yapýlacak.
+- ILogSetting yapýsý kuruldu. SimpleDbCommand(DONE) ve IDbCommand(WILL BE DONE) nesnelerinin loglanmasý buradan yapýlacak. DONE
 - LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.
+
+08-09-2022 Notlar;
+- SimpleDatabase yapýsý kuruldu. Metodlarýn çoðu ona göre düzenlenecek.
+- IQuerySettings için external inject mekanizmasý kurulacak.
+Bir connection tipi için settings deðiþmesi için querysettings.xml dosyasý oluþturulup ayarlar deðiþtirilebilir.
+IQuerySetting öðesi ICommandSetting nesnesi içinde gönderilebilir.
+- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.
+- DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
+metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.
 

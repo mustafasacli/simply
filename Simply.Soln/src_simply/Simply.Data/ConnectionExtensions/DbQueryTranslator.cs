@@ -230,28 +230,28 @@ namespace Simply.Data
         ///
         /// </summary>
         /// <param name="connectionType">db connacteion type.</param>
-        /// <param name="tempsimpleDbCommand">odbc database command</param>
+        /// <param name="tempSimpleDbCommand">odbc database command</param>
         /// <param name="setOverratedParamsToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns></returns>
         public static SimpleDbCommand RebuildSimpleDbCommandForTranslate(this DbConnectionTypes connectionType,
-            SimpleDbCommand tempsimpleDbCommand, bool setOverratedParamsToOutput = false)
+            SimpleDbCommand tempSimpleDbCommand, bool setOverratedParamsToOutput = false)
         {
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand();
 
-            string[] queryAndParameters = connectionType.TranslateOdbcQuery(tempsimpleDbCommand.CommandText);
+            string[] queryAndParameters = connectionType.TranslateOdbcQuery(tempSimpleDbCommand.CommandText);
 
             simpleDbCommand.CommandText = queryAndParameters[0];
-            simpleDbCommand.CommandType = tempsimpleDbCommand.CommandType;
-            simpleDbCommand.CommandTimeout = tempsimpleDbCommand.CommandTimeout;
+            simpleDbCommand.CommandType = tempSimpleDbCommand.CommandType;
+            simpleDbCommand.CommandTimeout = tempSimpleDbCommand.CommandTimeout;
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
-            if ((!setOverratedParamsToOutput && paramStringArray.Count != tempsimpleDbCommand.CommandParameters.Count)
-                || paramStringArray.Count < tempsimpleDbCommand.CommandParameters.Count)
+            if ((!setOverratedParamsToOutput && paramStringArray.Count != tempSimpleDbCommand.CommandParameters.Count)
+                || paramStringArray.Count < tempSimpleDbCommand.CommandParameters.Count)
                 throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
 
-            for (int counter = 0; counter < tempsimpleDbCommand.CommandParameters.Count; counter++)
+            for (int counter = 0; counter < tempSimpleDbCommand.CommandParameters.Count; counter++)
             {
-                DbCommandParameter parameter = tempsimpleDbCommand.CommandParameters[counter] as DbCommandParameter;
+                DbCommandParameter parameter = tempSimpleDbCommand.CommandParameters[counter] as DbCommandParameter;
                 object cmdParameter = new DbCommandParameter
                 {
                     DbType = parameter.DbType,
@@ -266,9 +266,9 @@ namespace Simply.Data
                 simpleDbCommand.AddCommandParameter(cmdParameter);
             }
 
-            if (setOverratedParamsToOutput && paramStringArray.Count > tempsimpleDbCommand.CommandParameters.Count)
+            if (setOverratedParamsToOutput && paramStringArray.Count > tempSimpleDbCommand.CommandParameters.Count)
             {
-                int outputParameterCount = paramStringArray.Count - tempsimpleDbCommand.CommandParameters.Count;
+                int outputParameterCount = paramStringArray.Count - tempSimpleDbCommand.CommandParameters.Count;
                 for (int counter = 0; counter < outputParameterCount; counter++)
                 {
                     simpleDbCommand.AddParameter(
@@ -276,7 +276,7 @@ namespace Simply.Data
                         {
                             Direction = ParameterDirection.Output,
                             ParameterName =
-                            paramStringArray[tempsimpleDbCommand.CommandParameters.Count + counter]
+                            paramStringArray[tempSimpleDbCommand.CommandParameters.Count + counter]
                         });
                 }
             }
@@ -350,6 +350,11 @@ namespace Simply.Data
             DbCommandParameter[] parameters = ArrayHelper.Empty<DbCommandParameter>();
             if (obj == null)
                 return parameters;
+
+            //
+            // TODO: Bu method SimpleDatabase içine alınacak.
+            // obj nesnesi IEnumerable olursa ona göre tekrar düzenleme yapılacak.
+            //
 
             DbConnectionTypes connectionType = connection.GetDbConnectionType();
             bool isOdbc = connectionType.IsOdbcConn();

@@ -1,5 +1,4 @@
-﻿using Simply.Common;
-using Simply.Common.Objects;
+﻿using Simply.Common.Objects;
 using Simply.Data.DatabaseExtensions;
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.Helpers;
@@ -7,7 +6,6 @@ using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace Simply.Data
 {

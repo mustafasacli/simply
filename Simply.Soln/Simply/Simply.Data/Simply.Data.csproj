@@ -122,6 +122,18 @@
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbExecuteOperator.cs">
       <Link>DatabaseExtensions\DbExecuteOperator.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbExecuteScalarOperator.cs">
+      <Link>DatabaseExtensions\DbExecuteScalarOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbFirstOperator.cs">
+      <Link>DatabaseExtensions\DbFirstOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbLastOperator.cs">
+      <Link>DatabaseExtensions\DbLastOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbSingleOperator.cs">
+      <Link>DatabaseExtensions\DbSingleOperator.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDatabaseExtension.cs">
       <Link>DatabaseExtensions\SimpleDatabaseExtension.cs</Link>
     </Compile>

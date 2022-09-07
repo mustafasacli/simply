@@ -29,6 +29,10 @@
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbAnyOperator.cs" Link="DatabaseExtensions\DbAnyOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbCountOperator.cs" Link="DatabaseExtensions\DbCountOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbExecuteOperator.cs" Link="DatabaseExtensions\DbExecuteOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbExecuteScalarOperator.cs" Link="DatabaseExtensions\DbExecuteScalarOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbFirstOperator.cs" Link="DatabaseExtensions\DbFirstOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbLastOperator.cs" Link="DatabaseExtensions\DbLastOperator.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbSingleOperator.cs" Link="DatabaseExtensions\DbSingleOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDbRowListOperator.cs" Link="DatabaseExtensions\SimpleDbRowListOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDatabaseExtension.cs" Link="DatabaseExtensions\SimpleDatabaseExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataExtensions\DataExtension.cs" Link="DataExtensions\DataExtension.cs" />
