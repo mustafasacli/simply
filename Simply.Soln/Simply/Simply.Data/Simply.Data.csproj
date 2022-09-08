@@ -131,6 +131,18 @@
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbLastOperator.cs">
       <Link>DatabaseExtensions\DbLastOperator.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbListOperator.cs">
+      <Link>DatabaseExtensions\DbListOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbPagedListOperator.cs">
+      <Link>DatabaseExtensions\DbPagedListOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbPagedRowListOperator.cs">
+      <Link>DatabaseExtensions\DbPagedRowListOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbResultSetOperator.cs">
+      <Link>DatabaseExtensions\DbResultSetOperator.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbSingleOperator.cs">
       <Link>DatabaseExtensions\DbSingleOperator.cs</Link>
     </Compile>
