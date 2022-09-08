@@ -35,7 +35,7 @@ namespace Simply.Data.QuerySettings
         /// </summary>
         /// <param name="connectionType">The connection type.</param>
         /// <returns>A IQuerySetting.</returns>
-        internal static IQuerySetting FindQuerySetting(DbConnectionTypes connectionType)
+        private static IQuerySetting FindQuerySetting(DbConnectionTypes connectionType)
         {
             IQuerySetting querySetting = null;
 

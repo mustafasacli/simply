@@ -1,4 +1,5 @@
 ﻿using Simply.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -126,6 +127,7 @@ namespace Simply.Data.Objects
         /// Gets Sets OracleCommand BindByName value.
         /// </summary>
         [DataMember]
+        [Obsolete("This property will be removed later versions.")]
         public bool OracleCommandBindByName
         { get; set; }
 
@@ -162,17 +164,37 @@ namespace Simply.Data.Objects
         /// <param name="obj">The value object.</param>
         public void RecompileQuery(IQuerySetting querySetting, object obj)
         {
-            if (this.ParameterNamePrefix != null && obj != null)
+            if (this.ParameterNamePrefix == null || obj == null)
+                return;
+
+            PropertyInfo[] properties = obj.GetType().GetProperties();
+            foreach (PropertyInfo property in properties)
             {
-                PropertyInfo[] properties = obj.GetType().GetProperties();
-                foreach (PropertyInfo property in properties)
-                {
-                    this.CommandText = this.CommandText
-                        .Replace(
-                        string.Concat(this.ParameterNamePrefix, property.Name, this.ParameterNamePrefix),
-                        string.Concat(querySetting.ParameterPrefix, property.Name, querySetting.ParameterSuffix)
-                        );
-                }
+                this.CommandText = this.CommandText
+                    .Replace(
+                    string.Concat(this.ParameterNamePrefix, property.Name, this.ParameterNamePrefix),
+                    string.Concat(querySetting.ParameterPrefix, property.Name, querySetting.ParameterSuffix)
+                    );
+            }
+        }
+
+        /// <summary>
+        /// Recompiles the query.
+        /// </summary>
+        /// <param name="querySetting">The query setting.</param>
+        /// <param name="parameters">The parameters.</param>
+        public void RecompileQuery(IQuerySetting querySetting, List<DbCommandParameter> parameters)
+        {
+            if (this.ParameterNamePrefix == null || (parameters?.Count ?? 0) < 1)
+                return;
+
+            foreach (DbCommandParameter parameter in parameters)
+            {
+                this.CommandText = this.CommandText
+                    .Replace(
+                    string.Concat(this.ParameterNamePrefix, parameter.ParameterName, this.ParameterNamePrefix),
+                    string.Concat(querySetting.ParameterPrefix, parameter.ParameterName, querySetting.ParameterSuffix)
+                    );
             }
         }
     }
