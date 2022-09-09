@@ -49,3 +49,10 @@ metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.
 - LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT SURE)
 - DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
 metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL BE TESTED.)
+
+10-09-2022 Notlar;
+- DbFirstOperator, DbLastOperator ve diðer sýnýflarda async metotlar eklenecek.
+- SimpleDatabase yapýsý kuruldu. Metodlarýn çoðu ona göre düzenlenecek.(PROCESSING)
+- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT SURE)
+- DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
+metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL BE TESTED.)

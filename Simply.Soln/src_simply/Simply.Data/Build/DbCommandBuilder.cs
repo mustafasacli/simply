@@ -35,8 +35,7 @@ namespace Simply.Data
                 .SetCommandText(simpleDbCommand.CommandText)
                 .SetCommandTimeout(simpleDbCommand.CommandTimeout)
                 .SetTransaction(transaction)
-                .IncludeCommandParameters(simpleDbCommand.CommandParameters)
-                ;
+                .IncludeCommandParameters(simpleDbCommand.CommandParameters);
 
             return command;
         }

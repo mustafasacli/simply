@@ -1,10 +1,7 @@
 ﻿using Simply.Common;
-using Simply.Data.Constants;
-using Simply.Data.DatabaseExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
-using System.Linq;
 
 namespace Simply.Data
 {
@@ -21,18 +18,9 @@ namespace Simply.Data
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
         public static int Count(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string format = querySetting.CountFormat;
-            simpleDbCommand.CommandText =
-                format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-            IDbCommandResult<int> commandResult = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
-            return commandResult.Result;
+            IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
+            int result = commandResult.Result.ToInt();
+            return result;
         }
 
         /// <summary>
@@ -43,42 +31,23 @@ namespace Simply.Data
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
         public static long CountLong(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string format = querySetting.CountFormat;
-            simpleDbCommand.CommandText =
-                format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-
-            IDbCommandResult<long> commandResult = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
-            return commandResult.Result;
+            IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
+            long result = commandResult.Result.ToLong();
+            return result;
         }
 
         /// <summary>
         /// counts rows for given sql query and parameters.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sql">Sql query <see cref="string"/>.</param>
-        /// <param name="obj">object which has parameters as property <see cref="object"/>.</param>
+        /// <param name="sqlQuery">Sql query <see cref="string"/>.</param>
+        /// <param name="parameterObject">object which has parameters as property <see cref="object"/>.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
-        public static int Count(this ISimpleDatabase database, string sql, object obj)
+        public static int Count(this ISimpleDatabase database, string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string format = querySetting.CountFormat;
-            string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
-
-            int result = connection.ExecuteScalarAs<int>(sqlText,
-                obj, transaction, database.CommandSetting);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            int result = database.Count(simpleDbCommand);
             return result;
         }
 
@@ -86,23 +55,14 @@ namespace Simply.Data
         /// counts rows as long for given sql query and parameters.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sql">Sql query <see cref="string"/>.</param>
-        /// <param name="obj">object which has parameters as property <see cref="object"/>.</param>
+        /// <param name="sqlQuery">Sql query <see cref="string"/>.</param>
+        /// <param name="parameterObject">object which has parameters as property <see cref="object"/>.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
-        public static long CountLong(this ISimpleDatabase database, string sql, object obj)
+        public static long CountLong(this ISimpleDatabase database, string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string format = querySetting.CountFormat;
-            string sqlText = format.Replace(InternalAppValues.SqlScriptFormat, sql);
-
-            long result = connection.ExecuteScalarAs<long>(sqlText, obj,
-                transaction, database.CommandSetting);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            long result = database.CountLong(simpleDbCommand);
             return result;
         }
 
@@ -114,30 +74,13 @@ namespace Simply.Data
         /// The ODBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ? AND COLUMN3 = TRUNC(?)
         /// </param>
         /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
-        public static int Count(this ISimpleDatabase database, string odbcSqlQuery, object[] parameterValues)
+        public static int Count(this ISimpleDatabase database, string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-            .Select(p => new DbCommandParameter
-            {
-                Value = p,
-                ParameterDbType = p.ToDbType()
-            }).ToArray();
-
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, database.CommandSetting);
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string format = querySetting.CountFormat;
-            simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-
-            IDbCommandResult<int> commandResult = connection.ExecuteScalarQueryAs<int>(simpleDbCommand, transaction);
-            return commandResult.Result;
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            int result = database.Count(simpleDbCommand);
+            return result;
         }
 
         /// <summary>
@@ -148,30 +91,13 @@ namespace Simply.Data
         /// The ODBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ? AND COLUMN3 = TRUNC(?)
         /// </param>
         /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns count value as long.</returns>
-        public static long CountLong(this ISimpleDatabase database, string odbcSqlQuery, object[] parameterValues)
+        public static long CountLong(this ISimpleDatabase database, string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-            .Select(p => new DbCommandParameter
-            {
-                Value = p,
-                ParameterDbType = p.ToDbType()
-            }).ToArray();
-
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, database.CommandSetting);
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string format = querySetting.CountFormat;
-            simpleDbCommand.CommandText = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-
-            IDbCommandResult<long> commandResult = connection.ExecuteScalarQueryAs<long>(simpleDbCommand, transaction);
-            return commandResult.Result;
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            long result = database.CountLong(simpleDbCommand);
+            return result;
         }
     }
 }

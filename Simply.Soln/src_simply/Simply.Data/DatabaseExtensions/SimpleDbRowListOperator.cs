@@ -18,7 +18,7 @@ namespace Simply.Data
         /// QueryMultiDbRowList Gets query multi result set as multi expando object list.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlText">Sql query.
+        /// <param name="sqlQuery">Sql query.
         /// if parameterNamePrefix is ? and Query: Select * From TableName Where Column1 = ?p1?
         /// Then;
         /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
@@ -27,31 +27,18 @@ namespace Simply.Data
         /// no conversion occured.
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
         public static List<List<SimpleDbRow>> QueryMultiDbRowList(this ISimpleDatabase database,
-            string sqlText, object obj)
+            string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
             IDbConnection connection = database.GetDbConnection();
             IDbTransaction transaction = database.GetDbTransaction();
 
             if (transaction == null)
                 connection.OpenIfNot();
-
-            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                commandParameters, querySetting.ParameterPrefix, database.CommandSetting?.ParameterNamePrefix);
-            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-            {
-                CommandText = sql,
-                CommandType = database.CommandSetting?.CommandType ?? CommandType.Text,
-                CommandTimeout = database.CommandSetting?.CommandTimeout,
-                ParameterNamePrefix = database.CommandSetting?.ParameterNamePrefix
-            };
-
-            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
-            simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult =
                 connection.GetMultiDbRowListQuery(simpleDbCommand, transaction, logSetting: database.LogSetting);
@@ -138,38 +125,14 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static List<SimpleDbRow> GetListAsDbRow(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues)
+           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            List<SimpleDbRow> simpleDbRowList =
-            connection.GetListAsDbRow(odbcSqlQuery, parameterValues,
-                transaction: transaction, commandSetting: database.CommandSetting, logSetting: database.LogSetting);
-            return simpleDbRowList;
-
-            /*
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                }).ToArray() ?? ArrayHelper.Empty<DbCommandParameter>();
-
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, database.CommandSetting);
-
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                connection.GetDbRowListQuery(simpleDbCommand, transaction, logSetting: database.LogSetting);
-
-            List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
-            return simpleDbRowList;
-            */
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            IDbCommandResult<List<SimpleDbRow>> commandResult = database.GetDbRowListQuery(simpleDbCommand);
+            return commandResult.Result;
         }
     }
 }

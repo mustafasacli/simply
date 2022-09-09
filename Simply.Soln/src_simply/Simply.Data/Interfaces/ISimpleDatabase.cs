@@ -82,5 +82,13 @@ namespace Simply.Data.Interfaces
         /// <param name="commandType">Type of the command.</param>
         /// <returns>Returns simple database command object instance <see cref="SimpleDbCommand" />.</returns>
         SimpleDbCommand BuildSimpleDbCommandForQuery(string sqlQuery, object parameterObject, CommandType? commandType = null);
+
+        /// <summary>
+        /// Create IDbCommand instance with database command and db transaction for given db connection.
+        /// </summary>
+        /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
+        /// <param name="connectionShouldBeOpened">if it is true database connection will be opened, else not.</param>
+        /// <returns>Returns DbCommand object instance <see cref="IDbCommand"/>.</returns>
+        IDbCommand CreateCommandWithOptions(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true);
     }
 }

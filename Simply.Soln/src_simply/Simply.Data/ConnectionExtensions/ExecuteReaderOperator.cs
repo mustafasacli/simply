@@ -53,8 +53,8 @@ namespace Simply.Data
         /// Executes query with parameters and returns DataReader object.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="sql">Sql query.</param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="sqlQuery">Sql query.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="commandType">(Optional) Command type.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
@@ -62,14 +62,14 @@ namespace Simply.Data
         /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
         public static IDataReader ExecuteReader(this IDbConnection connection,
-            string sql, object obj, CommandType commandType = CommandType.Text,
+            string sqlQuery, object parameterObject, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null,
             int? commandTimeout = null, ILogSetting logSetting = null)
         {
-            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
+            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(parameterObject);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                CommandText = sql,
+                CommandText = sqlQuery,
                 CommandType = commandType,
                 CommandTimeout = commandTimeout,
             };
@@ -96,28 +96,28 @@ namespace Simply.Data
         /// Executes query with parameters and returns DataReader object.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="sql">Sql query.</param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="sqlQuery">Sql query.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
         public static IDataReader ExecuteReader(this IDbConnection connection,
-            string sql, object obj, IDbTransaction transaction = null,
+            string sqlQuery, object parameterObject, IDbTransaction transaction = null,
              ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null,
              ILogSetting logSetting = null)
         {
-            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
+            DbCommandParameter[] parameters = connection.TranslateParametersFromObject(parameterObject);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
-                CommandText = sql,
+                CommandText = sqlQuery,
                 CommandType = commandSetting?.CommandType ?? CommandType.Text,
                 CommandTimeout = commandSetting?.CommandTimeout,
                 ParameterNamePrefix = commandSetting?.ParameterNamePrefix
             };
 
-            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
+            simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), parameterObject);
             simpleDbCommand.AddCommandParameters(parameters);
 
             InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
@@ -143,22 +143,22 @@ namespace Simply.Data
         /// An IDbConnection extension method that executes the reader asynchronous operation.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="sql">Sql query.</param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="sqlQuery">Sql query.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">Db Command Behavior</param>
         /// <param name="commandSetting">Command setting</param>
         /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute reader.</returns>
         public static async Task<IDataReader> ExecuteReaderAsync(this IDbConnection connection,
-            string sql, object obj, IDbTransaction transaction = null,
+            string sqlQuery, object parameterObject, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null,
             ILogSetting logSetting = null)
         {
             Task<IDataReader> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteReader(connection, sql, obj, transaction,
+                ExecuteReader(connection, sqlQuery, parameterObject, transaction,
                 commandSetting, commandBehavior, logSetting);
             });
 

@@ -14,20 +14,14 @@ namespace Simply.Data
         /// The Any.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlText">The sqlText <see cref="string"/>.</param>
-        /// <param name="obj">The obj <see cref="object"/>.</param>
+        /// <param name="sqlQuery">Sql Query<see cref="string"/>.</param>
+        /// <param name="parameterObject">parameter Value object <see cref="object"/>.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        public static bool Any(this ISimpleDatabase database, string sqlText, object obj)
+        public static bool Any(this ISimpleDatabase database, string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            bool any = connection.Any(sqlText, obj,
-            transaction, database.CommandSetting, database.LogSetting);
-
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            bool any = database.Any(simpleDbCommand);
             return any;
         }
 
@@ -55,17 +49,12 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The odbcSqlQuery <see cref="string"/>.</param>
         /// <param name="parameterValues">The parameterValues <see cref="object[]"/>.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        public static bool Any(this ISimpleDatabase database, string odbcSqlQuery, object[] parameterValues)
+        public static bool Any(this ISimpleDatabase database, string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            bool any = connection.Any(odbcSqlQuery, parameterValues, transaction,
-                database.CommandSetting, database.LogSetting);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            bool any = database.Any(simpleDbCommand);
             return any;
         }
     }

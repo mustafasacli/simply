@@ -1,5 +1,6 @@
 ﻿using Simply.Common;
 using Simply.Data.Constants;
+using Simply.Data.DbCommandExtensions;
 using Simply.Data.DbTransactionExtensions;
 using Simply.Data.Enums;
 using Simply.Data.Interfaces;
@@ -462,11 +463,38 @@ namespace Simply.Data.Database
                 CommandText = sqlQuery,
                 CommandTimeout = this.CommandSetting?.CommandTimeout,
                 ParameterNamePrefix = this.CommandSetting?.ParameterNamePrefix,
-                CommandType = commandType,
+                CommandType = commandType ?? CommandType.Text,
             };
 
             simpleDbCommand.RecompileQuery(this.QuerySetting, parameters);
             return simpleDbCommand;
+        }
+
+        /// <summary>
+        /// Create IDbCommand instance with database command and db transaction for given db connection.
+        /// </summary>
+        /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
+        /// <param name="connectionShouldBeOpened">if it is true database connection will be opened, else not.</param>
+        /// <returns>Returns DbCommand object instance <see cref="IDbCommand"/>.</returns>
+        public virtual IDbCommand CreateCommandWithOptions(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true)
+        {
+            if (simpleDbCommand == null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
+                throw new ArgumentNullException(nameof(simpleDbCommand));
+
+            if (connectionShouldBeOpened && transaction == null)
+                connection.OpenIfNot();
+
+            // TODO : WILL BE CHECKED AND TESTED.
+            // LIST AND BULK INSERT TEST OK.
+
+            IDbCommand command = connection.CreateCommand()
+                .SetCommandType(simpleDbCommand.CommandType)
+                .SetCommandText(simpleDbCommand.CommandText)
+                .SetCommandTimeout(simpleDbCommand.CommandTimeout)
+                .SetTransaction(transaction)
+                .IncludeCommandParameters(simpleDbCommand.CommandParameters);
+
+            return command;
         }
     }
 }

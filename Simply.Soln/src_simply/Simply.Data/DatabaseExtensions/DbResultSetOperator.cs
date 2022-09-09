@@ -55,26 +55,29 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static DataSet GetOdbcResultSet(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues)
+           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter
-                {
-                    Value = p,
-                    ParameterDbType = p.ToDbType()
-                })
-                .ToArray();
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
+            return resultSet.Result;
+        }
 
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            SimpleDbCommand simpleDbCommand =
-                connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, database.CommandSetting);
-
-            IDbCommandResult<DataSet> resultSet =
-                connection.GetResultSetQuery(simpleDbCommand, transaction, logSetting: database.LogSetting);
+        /// <summary>
+        /// Get Resultset of the specified SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="sqlQuery">The SQL query.</param>
+        /// <param name="parameterObject">Sql command parameters.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <returns>Returns result set in a dataset instance.</returns>
+        public static DataSet GetResultSet(this ISimpleDatabase database,
+           string sqlQuery, object parameterObject, CommandType? commandType = null)
+        {
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
             return resultSet.Result;
         }
 
@@ -99,7 +102,7 @@ namespace Simply.Data
                 if (!pageInfo.IsPageable)
                     return dataTableResult;
 
-                IQuerySetting querySetting = connection.GetQuerySetting();
+                IQuerySetting querySetting = database.QuerySetting ?? connection.GetQuerySetting();
                 isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
                 if (!isPageableAndSkipAndTakeFormatEmpty)
                 {

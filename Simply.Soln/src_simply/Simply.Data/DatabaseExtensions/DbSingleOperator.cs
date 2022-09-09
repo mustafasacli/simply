@@ -19,7 +19,7 @@ namespace Simply.Data
         /// </summary>
         /// <typeparam name="T">T class.</typeparam>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlText">Sql query.
+        /// <param name="sqlQuery">Sql query.
         /// if parameterNamePrefix is ? and Query: Select * From TableName Where Column1 = ?p1?
         /// Then;
         /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
@@ -28,14 +28,15 @@ namespace Simply.Data
         /// no conversion occured.
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns single record as object instance.</returns>
         public static T QuerySingle<T>(this ISimpleDatabase database,
-            string sqlText, object obj) where T : class, new()
+            string sqlQuery, object parameterObject, CommandType? commandType = null) where T : class, new()
         {
-            SimpleDbRow row = database.QuerySingleAsDbRow(sqlText, obj);
-            T instance = row.ConvertRowTo<T>();
-            return instance;
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            IDbCommandResult<T> commandResult = database.QuerySingle<T>(simpleDbCommand);
+            return commandResult.Result;
         }
 
         /// <summary>
@@ -63,26 +64,14 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns single record as object instance.</returns>
         public static T GetSingle<T>(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues) where T : class
+           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : class, new()
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
-                .Select(p => new DbCommandParameter { Value = p })
-                .ToArray() ?? new DbCommandParameter[0];
-            SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
-                odbcSqlQuery, commandParameters, database.CommandSetting);
-
-            IDbCommandResult<SimpleDbRow> simpleDbRowResult =
-                connection.QuerySingleAsDbRow(simpleDbCommand, transaction, logSetting: database.LogSetting);
-            T instance = simpleDbRowResult.Result.ConvertRowTo<T>();
-            return instance;
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            IDbCommandResult<T> commandResult = database.QuerySingle<T>(simpleDbCommand);
+            return commandResult.Result;
         }
 
         #region [ Task methods ]
@@ -91,21 +80,22 @@ namespace Simply.Data
         /// Get Single Row of the Resultset as simple db row object instance with async operation.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlText">Sql query.
+        /// <param name="sqlQuery">Sql query.
         /// Select * From TableName Where Column1 = ?p1?
         /// parameterNamePrefix : ?
         /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>An asynchronous result that yields the single as dynamic.</returns>
         public static async Task<SimpleDbRow> QuerySingleAsDbRowAsync(
-            this ISimpleDatabase database, string sqlText, object obj)
+            this ISimpleDatabase database, string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
             Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QuerySingleAsDbRow(sqlText, obj);
+                return database.QuerySingleAsDbRow(sqlQuery, parameterObject, commandType);
             });
 
             return await resultTask;
@@ -116,21 +106,22 @@ namespace Simply.Data
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlText">Sql query.
+        /// <param name="sqlQuery">Sql query.
         /// Select * From TableName Where Column1 = ?p1?
         /// parameterNamePrefix : ?
         /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>An asynchronous result that yields a T.</returns>
         public static async Task<T> SingleAsync<T>(this ISimpleDatabase database,
-            string sqlText, object obj) where T : class, new()
+            string sqlQuery, object parameterObject, CommandType? commandType = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QuerySingle<T>(sqlText, obj);
+                return database.QuerySingle<T>(sqlQuery, parameterObject, commandType);
             });
 
             return await resultTask;
@@ -144,7 +135,7 @@ namespace Simply.Data
         /// Get Single Row of the Resultset as dynamic object instance.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlText">Sql query.
+        /// <param name="sqlQuery">Sql query.
         /// if parameterNamePrefix is ? and Query: Select * From TableName Where Column1 = ?p1?
         /// Then;
         /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
@@ -153,28 +144,14 @@ namespace Simply.Data
         /// no conversion occured.
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
-        /// <param name="obj">object contains db parameters as property.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns single record as dynamic object.</returns>
         public static SimpleDbRow QuerySingleAsDbRow(this ISimpleDatabase database,
-            string sqlText, object obj)
+            string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-
-            DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
-            IQuerySetting querySetting = connection.GetQuerySetting();
-            string sql = DbCommandBuilder.RebuildQueryWithParamaters(sqlText,
-                commandParameters, querySetting.ParameterPrefix, database.CommandSetting?.ParameterNamePrefix);
-
-            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-            {
-                CommandText = sql,
-                CommandType = database.CommandSetting?.CommandType ?? CommandType.Text,
-                CommandTimeout = database.CommandSetting?.CommandTimeout,
-            };
-            simpleDbCommand.AddCommandParameters(commandParameters);
-
-            SimpleDbRow simpleDbRow =
-                database.QuerySingleAsDbRow(simpleDbCommand).Result;
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            SimpleDbRow simpleDbRow = database.QuerySingleAsDbRow(simpleDbCommand).Result;
             return simpleDbRow;
         }
 
