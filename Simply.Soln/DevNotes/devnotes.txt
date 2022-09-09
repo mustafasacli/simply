@@ -44,7 +44,7 @@ edilebilecek þekilde düzeltildi.)
 metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.
 
 09-09-2022 Notlar;
--- SimpleDbCommand sýnýfýndan, OracleCommandBindByName property si çýkarýlacak.(WILL BE DONE.)
+-- SimpleDbCommand sýnýfýndan, OracleCommandBindByName property si çýkarýlacak.(WILL BE DONE.)(DONE)
 - SimpleDatabase yapýsý kuruldu. Metodlarýn çoðu ona göre düzenlenecek.(PROCESSING)
 - LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT SURE)
 - DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#

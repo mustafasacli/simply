@@ -1,5 +1,4 @@
 ﻿using Simply.Data.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -26,15 +25,13 @@ namespace Simply.Data.Objects
         /// </summary>
         /// <param name="commandText">The command text.</param>
         /// <param name="commandType">The command type.</param>
-        /// <param name="oracleCommandBindByName">If true, oracle command bind by name.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         public SimpleDbCommand(
             string commandText, CommandType? commandType = null,
-            bool oracleCommandBindByName = false, int? commandTimeout = null)
+             int? commandTimeout = null)
         {
             CommandText = commandText;
             CommandType = commandType;
-            OracleCommandBindByName = oracleCommandBindByName;
             CommandTimeout = commandTimeout;
         }
 
@@ -44,12 +41,11 @@ namespace Simply.Data.Objects
         /// <param name="commandText">The command text.</param>
         /// <param name="commandParameters">The command parameters.</param>
         /// <param name="commandType">The command type.</param>
-        /// <param name="oracleCommandBindByName">If true, oracle command bind by name.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         public SimpleDbCommand(
-            string commandText, IEnumerable<object> commandParameters, CommandType? commandType = null,
-            bool oracleCommandBindByName = false, int? commandTimeout = null)
-            : this(commandText, commandType, oracleCommandBindByName, commandTimeout)
+            string commandText, IEnumerable<object> commandParameters,
+            CommandType? commandType = null, int? commandTimeout = null)
+            : this(commandText, commandType, commandTimeout)
         {
             if (commandParameters != null)
             { AddCommandParameters(commandParameters); }
@@ -61,12 +57,11 @@ namespace Simply.Data.Objects
         /// <param name="commandText">The command text.</param>
         /// <param name="commandParameters">The command parameters.</param>
         /// <param name="commandType">The command type.</param>
-        /// <param name="oracleCommandBindByName">If true, oracle command bind by name.</param>
         /// <param name="commandTimeout">The command timeout.</param>
         public SimpleDbCommand(
-            string commandText, IEnumerable<DbCommandParameter> commandParameters, CommandType? commandType = null,
-            bool oracleCommandBindByName = false, int? commandTimeout = null)
-            : this(commandText, commandType, oracleCommandBindByName, commandTimeout)
+            string commandText, IEnumerable<DbCommandParameter> commandParameters,
+            CommandType? commandType = null, int? commandTimeout = null)
+            : this(commandText, commandType, commandTimeout)
         {
             if (commandParameters != null)
             { AddCommandParameters(commandParameters); }
@@ -122,14 +117,6 @@ namespace Simply.Data.Objects
         {
             commandParameters?.Clear();
         }
-
-        /// <summary>
-        /// Gets Sets OracleCommand BindByName value.
-        /// </summary>
-        [DataMember]
-        [Obsolete("This property will be removed later versions.")]
-        public bool OracleCommandBindByName
-        { get; set; }
 
         /// <summary>
         /// Gets Parameter Name Prefix for Rebuild Query.
