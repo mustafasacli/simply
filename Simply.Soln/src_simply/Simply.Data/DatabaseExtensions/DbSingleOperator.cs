@@ -1,10 +1,9 @@
 ﻿using Simply.Common;
 using Simply.Common.Objects;
-using Simply.Data.DatabaseExtensions;
+using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simply.Data
@@ -165,26 +164,21 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand)
         {
             IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
-            IDataReader reader = null;
 
-            try
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
             {
-                IDbConnection connection = database.GetDbConnection();
-                IDbTransaction transaction = database.GetDbTransaction();
-
-                if (transaction == null)
-                    connection.OpenIfNot();
-
-                DbCommandParameter[] outputValues;
-
-                reader = connection.ExecuteReaderQuery(
-                    simpleDbCommand, out outputValues, transaction, commandBehavior: null, logSetting: database.LogSetting);
-
-                simpleDbRowResult.OutputParameters = outputValues;
-                simpleDbRowResult.Result = reader.SingleDbRow();
+                using (IDataReader dataReader = command.ExecuteDataReader(CommandBehavior.SingleRow))
+                {
+                    try
+                    {
+                        simpleDbRowResult.OutputParameters = command.GetOutParameters();
+                        simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
+                        simpleDbRowResult.Result = dataReader.SingleDbRow();
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
+                }
             }
-            finally
-            { reader?.CloseIfNot(); }
 
             return simpleDbRowResult;
         }

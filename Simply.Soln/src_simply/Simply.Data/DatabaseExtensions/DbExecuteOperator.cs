@@ -1,6 +1,4 @@
-﻿using Simply.Data.DatabaseExtensions;
-using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
+﻿using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
@@ -36,19 +34,10 @@ namespace Simply.Data
         /// <returns>Returns execution result as int. <see cref="IDbCommandResult{System.Int32}"/></returns>
         public static IDbCommandResult<int> ExecuteQuery(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            InternalLogHelper.LogCommand(simpleDbCommand, database.LogSetting);
             IDbCommandResult<int> commandResult = new DbCommandResult<int>(-1);
 
-            using (IDbCommand command =
-                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
             {
-                InternalLogHelper.LogDbCommand(command, database.LogSetting);
                 commandResult.ExecutionResult = command.ExecuteNonQuery();
                 commandResult.Result = commandResult.ExecutionResult;
                 commandResult.OutputParameters = command.GetOutParameters();

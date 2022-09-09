@@ -89,6 +89,6 @@ namespace Simply.Data.Interfaces
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
         /// <param name="connectionShouldBeOpened">if it is true database connection will be opened, else not.</param>
         /// <returns>Returns DbCommand object instance <see cref="IDbCommand"/>.</returns>
-        IDbCommand CreateCommandWithOptions(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true);
+        IDbCommand CreateCommand(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true);
     }
 }

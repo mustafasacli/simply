@@ -1,7 +1,7 @@
 ﻿using Simply.Common;
 using Simply.Common.Objects;
 using Simply.Data.Constants;
-using Simply.Data.DatabaseExtensions;
+using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -139,38 +139,33 @@ namespace Simply.Data
         public static IDbCommandResult<SimpleDbRow> QueryLastAsDbRow(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
-            IDataReader reader = null;
+            IQuerySetting querySetting = database.QuerySetting;
+            CommandBehavior? commandBehavior = null;
 
-            try
+            if (!querySetting.LastFormat.IsNullOrSpace())
             {
-                IDbConnection connection = database.GetDbConnection();
-                IDbTransaction transaction = database.GetDbTransaction();
-
-                if (transaction == null)
-                    connection.OpenIfNot();
-
-                IQuerySetting querySetting = database.QuerySetting ?? connection.GetQuerySetting();
-                CommandBehavior? commandBehavior = null;
-
-                if (!querySetting.LastFormat.IsNullOrSpace())
-                {
-                    string format = querySetting.LastFormat;
-                    simpleDbCommand.CommandText =
-                        format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-                    commandBehavior = CommandBehavior.SingleRow;
-                }
-
-                DbCommandParameter[] outputValues;
-                reader =
-                    connection.ExecuteReaderQuery(simpleDbCommand, out outputValues,
-                    transaction, commandBehavior, logSetting: database.LogSetting);
-
-                simpleDbRowResult.Result = reader.LastDbRow();
-                simpleDbRowResult.OutputParameters = outputValues;
+                string format = querySetting.LastFormat;
+                simpleDbCommand.CommandText =
+                    format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+                commandBehavior = CommandBehavior.SingleRow;
             }
-            finally
-            { reader?.CloseIfNot(); }
+
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
+
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            {
+                using (IDataReader dataReader = command.ExecuteDataReader(commandBehavior))
+                {
+                    try
+                    {
+                        simpleDbRowResult.OutputParameters = command.GetOutParameters();
+                        simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
+                        simpleDbRowResult.Result = dataReader.LastDbRow(closeAtFinal: true);
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
+                }
+            }
 
             return simpleDbRowResult;
         }

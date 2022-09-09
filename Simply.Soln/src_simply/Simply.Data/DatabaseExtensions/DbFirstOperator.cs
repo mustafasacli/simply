@@ -1,6 +1,6 @@
 ﻿using Simply.Common;
 using Simply.Common.Objects;
-using Simply.Data.DatabaseExtensions;
+using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -24,18 +24,12 @@ namespace Simply.Data
         public static IDbCommandResult<T> QueryFirst<T>(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand) where T : class, new()
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IDbCommandResult<SimpleDbRow> simpleDbRowResult =
-                connection.QueryFirstAsDbRow(simpleDbCommand, transaction, logSetting: database.LogSetting);
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult = database.QueryFirstAsDbRow(simpleDbCommand);
 
             IDbCommandResult<T> instanceResult = new DbCommandResult<T>();
-            instanceResult.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
             instanceResult.AdditionalValues = simpleDbRowResult.AdditionalValues;
+            instanceResult.ExecutionResult = simpleDbRowResult.ExecutionResult;
+            instanceResult.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
             return instanceResult;
         }
 
@@ -150,26 +144,20 @@ namespace Simply.Data
         {
             IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
 
-            IDataReader reader = null;
-
-            try
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
             {
-                IDbConnection connection = database.GetDbConnection();
-                IDbTransaction transaction = database.GetDbTransaction();
-
-                if (transaction == null)
-                    connection.OpenIfNot();
-
-                DbCommandParameter[] outputValues;
-                reader = connection.ExecuteReaderQuery(
-                    simpleDbCommand, out outputValues, transaction,
-                    commandBehavior: CommandBehavior.SingleRow, logSetting: database.LogSetting);
-
-                simpleDbRowResult.OutputParameters = outputValues;
-                simpleDbRowResult.Result = reader.FirstDbRow(closeAtFinal: true);
+                using (IDataReader dataReader = command.ExecuteDataReader(CommandBehavior.SingleRow))
+                {
+                    try
+                    {
+                        simpleDbRowResult.OutputParameters = command.GetOutParameters();
+                        simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
+                        simpleDbRowResult.Result = dataReader.FirstDbRow(closeAtFinal: true);
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
+                }
             }
-            finally
-            { reader?.CloseIfNot(); }
 
             return simpleDbRowResult;
         }

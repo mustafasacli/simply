@@ -1,7 +1,5 @@
 ﻿using Simply.Common;
-using Simply.Data.DatabaseExtensions;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -24,19 +22,10 @@ namespace Simply.Data
         public static IDbCommandResult<object> ExecuteScalarQuery(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            InternalLogHelper.LogCommand(simpleDbCommand, database.LogSetting);
-            if (transaction == null)
-                connection.OpenIfNot();
-
             IDbCommandResult<object> commandResult;
 
-            using (IDbCommand command =
-                    connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
             {
-                InternalLogHelper.LogDbCommand(command, database.LogSetting);
                 commandResult = new DbCommandResult<object>();
                 commandResult.Result = command.ExecuteScalar();
                 commandResult.OutputParameters = command.GetOutParameters();

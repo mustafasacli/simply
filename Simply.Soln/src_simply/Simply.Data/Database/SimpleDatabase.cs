@@ -3,6 +3,7 @@ using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.DbTransactionExtensions;
 using Simply.Data.Enums;
+using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using Simply.Data.QuerySettings;
@@ -476,13 +477,12 @@ namespace Simply.Data.Database
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
         /// <param name="connectionShouldBeOpened">if it is true database connection will be opened, else not.</param>
         /// <returns>Returns DbCommand object instance <see cref="IDbCommand"/>.</returns>
-        public virtual IDbCommand CreateCommandWithOptions(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true)
+        public virtual IDbCommand CreateCommand(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true)
         {
             if (simpleDbCommand == null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
                 throw new ArgumentNullException(nameof(simpleDbCommand));
 
-            if (connectionShouldBeOpened && transaction == null)
-                connection.OpenIfNot();
+            InternalLogHelper.LogCommand(simpleDbCommand, this.LogSetting);
 
             // TODO : WILL BE CHECKED AND TESTED.
             // LIST AND BULK INSERT TEST OK.
@@ -493,6 +493,11 @@ namespace Simply.Data.Database
                 .SetCommandTimeout(simpleDbCommand.CommandTimeout)
                 .SetTransaction(transaction)
                 .IncludeCommandParameters(simpleDbCommand.CommandParameters);
+
+            InternalLogHelper.LogDbCommand(command, this.LogSetting);
+
+            if (connectionShouldBeOpened && transaction == null)
+                connection.OpenIfNot();
 
             return command;
         }
