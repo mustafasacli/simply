@@ -53,7 +53,8 @@ namespace Simply.Data
         public static T QueryFirst<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, CommandType? commandType = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
             IDbCommandResult<T> commandResult = database.QueryFirst<T>(simpleDbCommand);
             return commandResult.Result;
         }
@@ -69,7 +70,8 @@ namespace Simply.Data
         public static T GetFirst<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
             IDbCommandResult<T> commandResult = database.QueryFirst<T>(simpleDbCommand);
             return commandResult.Result;
         }
@@ -77,26 +79,18 @@ namespace Simply.Data
         #region [ Task methods ]
 
         /// <summary>
-        /// Get First Row of the Resultset as dynamic object instance with async operation.
+        /// Get First Row of the Resultset as object instance with async operation.
         /// </summary>
+        /// <typeparam name="T">T class.</typeparam>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlQuery">Sql query.
-        /// if parameterNamePrefix is ? and Query: Select * From TableName Where Column1 = ?p1?
-        /// Then;
-        /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
-        /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
-        /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
-        /// no conversion occured.
-        /// parameterNamePrefix will be set in ICommandSetting instance.
-        /// </param>
-        /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <returns>An asynchronous result that yields the first as dynamic.</returns>
-        public static async Task<SimpleDbRow> QueryFirstAsDbRowAsync(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject)
+        /// <param name="simpleDbCommand">database command.</param>
+        /// <returns>Returns first record as T object instance as async.</returns>
+        public static async Task<T> QueryFirstAsync<T>(this ISimpleDatabase database,
+            SimpleDbCommand simpleDbCommand) where T : class, new()
         {
-            Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
+            Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QueryFirstAsDbRow(sqlQuery, parameterObject);
+                return database.QueryFirst<T>(simpleDbCommand).Result;
             });
 
             return await resultTask;
@@ -124,6 +118,25 @@ namespace Simply.Data
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
                 return database.QueryFirst<T>(sqlQuery, parameterObject);
+            });
+
+            return await resultTask;
+        }
+
+        /// <summary>
+        /// Get First Row of the Odbc Sql Query Resultset as object instance with async operation.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="odbcSqlQuery">The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <returns>An asynchronous result that yields the first as T.</returns>
+        public static async Task<T> GetFirstAsync<T>(this ISimpleDatabase database,
+           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : class, new()
+        {
+            Task<T> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.GetFirst<T>(odbcSqlQuery, parameterValues, commandType);
             });
 
             return await resultTask;

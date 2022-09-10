@@ -2,6 +2,7 @@
 using Simply.Data.Objects;
 using System;
 using System.Data;
+using System.Data.Common;
 
 namespace Simply.Data.Interfaces
 {
@@ -90,5 +91,19 @@ namespace Simply.Data.Interfaces
         /// <param name="connectionShouldBeOpened">if it is true database connection will be opened, else not.</param>
         /// <returns>Returns DbCommand object instance <see cref="IDbCommand"/>.</returns>
         IDbCommand CreateCommand(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true);
+
+        /// <summary>
+        /// Gets DbDataAdapter instance of database connection.
+        /// </summary>
+        /// <returns>Returns DbDataAdapter instance.</returns>
+        DbDataAdapter CreateDataAdapter();
+
+        /// <summary>
+        /// Applies the paging.
+        /// </summary>
+        /// <param name="dbCommand">The database command.</param>
+        /// <param name="pageInfo">The page information.</param>
+        /// <returns>Applies paging and return simpledbcommand instance.</returns>
+        SimpleDbCommand ApplyPageInfo(SimpleDbCommand dbCommand, IPageInfo pageInfo = null);
     }
 }

@@ -472,7 +472,7 @@ namespace Simply.Data.Database
         }
 
         /// <summary>
-        /// Create IDbCommand instance with database command and db transaction for given db connection.
+        /// Create IDbCommand instance with database command.
         /// </summary>
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
         /// <param name="connectionShouldBeOpened">if it is true database connection will be opened, else not.</param>
@@ -500,6 +500,66 @@ namespace Simply.Data.Database
                 connection.OpenIfNot();
 
             return command;
+        }
+
+        /// <summary>
+        /// Gets DbDataAdapter instance of database connection.
+        /// </summary>
+        /// <returns>Returns DbDataAdapter instance.</returns>
+        public virtual DbDataAdapter CreateDataAdapter()
+        {
+            Type adapterType = null;
+
+            IEnumerable<Type> adapterTypes =
+                 connection.GetType().Assembly.GetExportedTypes().Where(
+                     type => type.IsClass && type.GetInterfaces().Contains(typeof(IDbDataAdapter))
+                            && !type.IsAbstract && typeof(DbDataAdapter).IsAssignableFrom(type));
+
+            if (adapterTypes.Count() > 1)
+            {
+                string connectionTypeName = connection.GetType().Name;
+                connectionTypeName = connectionTypeName.Substring(0,
+                    connectionTypeName.Length - InternalAppValues.ConnectionName.Length).ToLower();
+                adapterType = adapterTypes.First(typ => typ.Name.ToLower().StartsWith(connectionTypeName));
+            }
+            else if (adapterTypes.Count() == 1)
+            {
+                adapterType = adapterTypes.First();
+            }
+
+            DbDataAdapter dataAdapter = null;
+            if (adapterType != null)
+            {
+                dataAdapter = Activator.CreateInstance(adapterType) as DbDataAdapter;
+            }
+
+            return dataAdapter;
+        }
+
+        /// <summary>
+        /// Applies the paging.
+        /// </summary>
+        /// <param name="dbCommand">The database command.</param>
+        /// <param name="pageInfo">The page information.</param>
+        /// <returns>Applies paging and return simpledbcommand instance.</returns>
+        public virtual SimpleDbCommand ApplyPageInfo(SimpleDbCommand dbCommand, IPageInfo pageInfo = null)
+        {
+            if (pageInfo == null) return dbCommand;
+
+            if (!pageInfo.IsPageable) return dbCommand;
+
+            string skipAndTakeFormat = this.QuerySetting.SkipAndTakeFormat;
+            bool isPageableAndSkipAndTakeFormatEmpty = skipAndTakeFormat.IsNullOrSpace();
+            if (!isPageableAndSkipAndTakeFormatEmpty)
+            {
+                string format = skipAndTakeFormat.CopyValue();
+                format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
+                format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
+                format = format.Replace(InternalAppValues.SqlScriptFormat, dbCommand.CommandText);
+                dbCommand.CommandText = format.CopyValue();
+            }
+
+            return dbCommand;
         }
     }
 }

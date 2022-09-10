@@ -52,7 +52,8 @@ namespace Simply.Data
         public static T QueryLast<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, CommandType? commandType = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
             IDbCommandResult<T> commandResult = database.QueryLast<T>(simpleDbCommand);
             return commandResult.Result;
         }
@@ -70,7 +71,8 @@ namespace Simply.Data
         public static T GetLast<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
             IDbCommandResult<T> commandResult = database.QueryLast<T>(simpleDbCommand);
             return commandResult.Result;
         }
@@ -80,23 +82,16 @@ namespace Simply.Data
         /// <summary>
         /// Get Last Row of the Resultset as dynamic object instance with async operation.
         /// </summary>
+        /// <typeparam name="T">T class.</typeparam>
         /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlQuery">Sql query.
-        /// Select * From TableName Where Column1 = ?p1?
-        /// parameterNamePrefix : ?
-        /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
-        /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
-        /// parameterNamePrefix will be set in ICommandSetting instance.
-        /// </param>
-        /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
-        /// <returns>An asynchronous result that yields the last as dynamic.</returns>
-        public static async Task<SimpleDbRow> LastAsDynamicAsync(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null)
+        /// <param name="simpleDbCommand">database command.</param>
+        /// <returns>An asynchronous result that yields the last record as object instance.</returns>
+        public static async Task<T> QueryLastAsync<T>(this ISimpleDatabase database,
+            SimpleDbCommand simpleDbCommand) where T : class, new()
         {
-            Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
+            Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QueryLastDbRow(sqlQuery, parameterObject);
+                return database.QueryLast<T>(simpleDbCommand).Result;
             });
 
             return await resultTask;
@@ -117,18 +112,42 @@ namespace Simply.Data
         /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>An asynchronous result that yields a T.</returns>
-        public static async Task<T> LastAsync<T>(this ISimpleDatabase database,
+        public static async Task<T> QueryLastAsync<T>(this ISimpleDatabase database,
            string sqlQuery, object parameterObject, CommandType? commandType = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QueryLast<T>(sqlQuery, parameterObject);
+                return database.QueryLast<T>(sqlQuery, parameterObject, commandType);
+            });
+
+            return await resultTask;
+        }
+
+        /// <summary>
+        /// Get Last Row of the Resultset as object instance with async operation.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="odbcSqlQuery">
+        /// The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).
+        /// </param>
+        /// <param name="parameterValues">object contains db parameters as property.</param>
+        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <returns>An asynchronous result that yields a T.</returns>
+        public static async Task<T> GetLastAsync<T>(this ISimpleDatabase database,
+           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : class, new()
+        {
+            Task<T> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.GetLast<T>(odbcSqlQuery, parameterValues, commandType);
             });
 
             return await resultTask;
         }
 
         #endregion [ Task methods ]
+
+        #region [ DbRow methods ]
 
         /// <summary>
         /// Get Last Row of the Resultset as SimpleDbRow object instance.
@@ -189,7 +208,8 @@ namespace Simply.Data
         public static SimpleDbRow QueryLastDbRow(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
             IDbCommandResult<SimpleDbRow> commandResult = database.QueryLastAsDbRow(simpleDbCommand);
             return commandResult.Result;
         }
@@ -207,9 +227,12 @@ namespace Simply.Data
         public static SimpleDbRow GetLastAsDbRow(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
             IDbCommandResult<SimpleDbRow> commandResult = database.QueryLastAsDbRow(simpleDbCommand);
             return commandResult.Result;
         }
+
+        #endregion [ DbRow methods ]
     }
 }

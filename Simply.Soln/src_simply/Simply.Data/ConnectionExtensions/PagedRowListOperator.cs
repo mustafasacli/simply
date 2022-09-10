@@ -88,7 +88,7 @@ namespace Simply.Data
 
             if (pageInfo != null)
             {
-                if (pageInfo.Take == 0)
+                if (!pageInfo.IsPageable)
                     return simpleDbRowListResult;
 
                 IQuerySetting querySetting = connection.GetQuerySetting();

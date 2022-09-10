@@ -1,14 +1,11 @@
 ﻿using Simply.Common;
 using Simply.Data.Constants;
-using Simply.Data.DatabaseExtensions;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
 
 namespace Simply.Data
 {
@@ -26,19 +23,14 @@ namespace Simply.Data
         public static IDbCommandResult<DataSet> GetResultSetQuery(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
             DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
-            DbDataAdapter dataAdapter = connection.CreateAdapter();
+            DbDataAdapter dataAdapter = database.CreateDataAdapter();
             if (dataAdapter == null)
                 throw new Exception(DbAppMessages.DataAdapterNotFound);
 
-            using (IDbCommand command =
-                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand, false))
             {
-                InternalLogHelper.LogDbCommand(command, database.LogSetting);
                 dataAdapter.SelectCommand = (DbCommand)command;
                 DataSet dataSet = new DataSet();
                 result.ExecutionResult = dataAdapter.Fill(dataSet);
@@ -94,19 +86,16 @@ namespace Simply.Data
             IDbCommandResult<DataTable> dataTableResult = new DbCommandResult<DataTable>();
 
             bool isPageableAndSkipAndTakeFormatEmpty = false;
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
             if (pageInfo != null)
             {
                 if (!pageInfo.IsPageable)
                     return dataTableResult;
 
-                IQuerySetting querySetting = database.QuerySetting ?? connection.GetQuerySetting();
-                isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
+                string skipAndTakeFormat = database.QuerySetting.SkipAndTakeFormat;
+                isPageableAndSkipAndTakeFormatEmpty = skipAndTakeFormat.IsNullOrSpace();
                 if (!isPageableAndSkipAndTakeFormatEmpty)
                 {
-                    string format = querySetting.SkipAndTakeFormat.CopyValue();
+                    string format = skipAndTakeFormat.CopyValue();
                     format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
                     format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
                     format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
@@ -114,8 +103,8 @@ namespace Simply.Data
                 }
             }
 
-            IDbCommandResult<DataSet> tempResultSet =
-                connection.GetResultSetQuery(simpleDbCommand, transaction, logSetting: database.LogSetting);
+            IDbCommandResult<DataSet> tempResultSet = database.GetResultSetQuery(simpleDbCommand);
+
             dataTableResult = new DbCommandResult<DataTable>
             {
                 ExecutionResult = tempResultSet.ExecutionResult,

@@ -33,7 +33,6 @@
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbFirstOperator.cs" Link="DatabaseExtensions\DbFirstOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbLastOperator.cs" Link="DatabaseExtensions\DbLastOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbListOperator.cs" Link="DatabaseExtensions\DbListOperator.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbPagedRowListOperator.cs" Link="DatabaseExtensions\DbPagedRowListOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbPagedListOperator.cs" Link="DatabaseExtensions\DbPagedListOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbResultSetOperator.cs" Link="DatabaseExtensions\DbResultSetOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbSingleOperator.cs" Link="DatabaseExtensions\DbSingleOperator.cs" />

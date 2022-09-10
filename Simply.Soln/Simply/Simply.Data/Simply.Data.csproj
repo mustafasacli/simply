@@ -137,9 +137,6 @@
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbPagedListOperator.cs">
       <Link>DatabaseExtensions\DbPagedListOperator.cs</Link>
     </Compile>
-    <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbPagedRowListOperator.cs">
-      <Link>DatabaseExtensions\DbPagedRowListOperator.cs</Link>
-    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\DbResultSetOperator.cs">
       <Link>DatabaseExtensions\DbResultSetOperator.cs</Link>
     </Compile>

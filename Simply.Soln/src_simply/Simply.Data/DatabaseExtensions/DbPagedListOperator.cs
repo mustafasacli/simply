@@ -1,9 +1,9 @@
-﻿using Simply.Common;
-using Simply.Common.Objects;
-using Simply.Data.Interfaces;
+﻿using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Simply.Data
 {
@@ -12,80 +12,80 @@ namespace Simply.Data
     /// </summary>
     public static class DbPagedListOperator
     {
-        #region [ Page Info methods ]
+        #region [ Task methods ]
 
         /// <summary>
-        /// Gets query resultset as object list with paging option.
+        /// Gets Resultset of query as object instance list with async operation.
         /// </summary>
         /// <typeparam name="T">T class.</typeparam>
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">Sql query.
-        /// if parameterNamePrefix is ? and Query: Select * From TableName Where Column1 = ?p1?
-        /// Then;
+        /// Select * From TableName Where Column1 = ?p1?
+        /// parameterNamePrefix : ?
         /// Query For Oracle ==> Select * From TableName Where Column1 = :p1
         /// Query For Sql Server ==> Select * From TableName Where Column1 = @p1
-        /// if parameterNamePrefix is null and Query: Select * From TableName Where Column1 = :p1 (for PostgreSql)
-        /// no conversion occured.
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
-        /// <param name="parameterObject">object which has contains parameters as properties.</param>
+        /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
-        /// <returns>Returns as object list.</returns>
-        public static List<T> QueryList<T>(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, IPageInfo pageInfo = null, CommandType? commandType = null) where T : class, new()
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns as object list async.</returns>
+        public static async Task<List<T>> QueryListAsync<T>(this ISimpleDatabase database,
+            string sqlQuery, object parameterObject, IPageInfo pageInfo = null,
+            CommandType? commandType = null, CommandBehavior? behavior = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.GetDbRowList(simpleDbCommand, pageInfo);
-            List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
-            return instanceList;
+            Task<List<T>> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.QueryList<T>(sqlQuery, parameterObject, commandType, pageInfo, behavior);
+            });
+
+            return await resultTask;
         }
 
         /// <summary>
-        /// Gets query resultset as object list with paging option.
-        /// </summary>
-        /// <typeparam name="T">T class.</typeparam>
-        /// <param name="database">The simple database object instance.</param>
-        /// <param name="simpleDbCommand">database command.</param>
-        /// <param name="pageInfo">page info for skip and take counts.</param>
-        /// <returns>Returns as object list.</returns>
-        public static IDbCommandResult<List<T>> GetList<T>(
-            this ISimpleDatabase database, SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null)
-            where T : class, new()
-        {
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                database.GetDbRowList(simpleDbCommand, pageInfo);
-
-            IDbCommandResult<List<T>> instanceListResult = new DbCommandResult<List<T>>();
-            instanceListResult.Result =
-                simpleDbRowListResult.Result.ConvertRowsToList<T>()
-                ?? new List<T>();
-            instanceListResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
-
-            return instanceListResult;
-        }
-
-        /// <summary>
-        /// Get List the specified ODBC SQL query with paging option.
+        /// Gets odbc sql query result set as SimpleDbRow object list.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
-        /// <param name="parameterValues">The parameters.</param>
-        /// <param name="pageInfo">page info for skip and take counts.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
-        /// <returns>Returns as object list.</returns>
-        public static List<T> SelectList<T>(this ISimpleDatabase database,
+        /// <param name="pageInfo">page info for skip and take counts. it is optional.
+        /// if it is null then paging will be disabled.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static async Task<List<T>> GetListAsync<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
-           IPageInfo pageInfo = null, CommandType? commandType = null) where T : class
+           CommandType? commandType = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                database.GetDbRowList(simpleDbCommand, pageInfo);
+            Task<List<T>> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.GetList<T>(odbcSqlQuery, parameterValues, commandType, pageInfo, behavior);
+            });
 
-            List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
-            return instanceList;
+            return await resultTask;
         }
 
-        #endregion [ Page Info methods ]
+        /// <summary>
+        /// GetDbRowListQuery Gets query result set as object instance list.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="simpleDbCommand">database command.</param>
+        /// <param name="pageInfo">page info for skip and take counts. it is optional.
+        /// if it is null then paging will be disabled.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static async Task<List<T>> GetListAsync<T>(this ISimpleDatabase database,
+            SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
+        {
+            Task<List<T>> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.GetList<T>(simpleDbCommand, pageInfo, behavior);
+            });
+
+            return await resultTask;
+        }
+
+        #endregion [ Task methods ]
     }
 }

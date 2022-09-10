@@ -1,4 +1,4 @@
-﻿using Simply.Data.DatabaseExtensions;
+﻿using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Data;
@@ -18,9 +18,11 @@ namespace Simply.Data
         /// <param name="parameterObject">parameter Value object <see cref="object"/>.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        public static bool Any(this ISimpleDatabase database, string sqlQuery, object parameterObject, CommandType? commandType = null)
+        public static bool Any(this ISimpleDatabase database, string sqlQuery,
+            object parameterObject, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
             bool any = database.Any(simpleDbCommand);
             return any;
         }
@@ -33,13 +35,19 @@ namespace Simply.Data
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
+            bool any;
 
-            if (transaction == null)
-                connection.OpenIfNot();
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            {
+                using (IDataReader dataReader = command.ExecuteDataReader())
+                {
+                    try
+                    { any = dataReader.Any(closeAtFinal: true); }
+                    finally
+                    { dataReader?.CloseIfNot(); }
+                }
+            }
 
-            bool any = connection.Any(simpleDbCommand, transaction, database.LogSetting);
             return any;
         }
 
@@ -51,9 +59,11 @@ namespace Simply.Data
         /// <param name="parameterValues">The parameterValues <see cref="object[]"/>.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        public static bool Any(this ISimpleDatabase database, string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
+        public static bool Any(this ISimpleDatabase database, string odbcSqlQuery,
+            object[] parameterValues, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
             bool any = database.Any(simpleDbCommand);
             return any;
         }
