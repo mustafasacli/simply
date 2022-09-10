@@ -19,8 +19,10 @@ namespace Simply.Data.DatabaseExtensions
         public static IDbConnection GetDbConnection<TSimpleDatabase>(this TSimpleDatabase database)
             where TSimpleDatabase : class, ISimpleDatabase
         {
-            FieldInfo fieldInfo = database.GetType().GetField(InternalAppValues.ConnectionParameterName,
-                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            FieldInfo fieldInfo = database.GetType()
+                .GetField(InternalAppValues.ConnectionParameterName,
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
             IDbConnection connection = fieldInfo.GetValue(database) as IDbConnection;
 
             if (connection == null)
@@ -37,8 +39,9 @@ namespace Simply.Data.DatabaseExtensions
         public static IDbTransaction GetDbTransaction<TSimpleDatabase>(this TSimpleDatabase database)
             where TSimpleDatabase : class, ISimpleDatabase
         {
-            FieldInfo fieldInfo = database.GetType().GetField(InternalAppValues.TransactionParameterName,
-                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            FieldInfo fieldInfo = database.GetType()
+                .GetField(InternalAppValues.TransactionParameterName,
+                BindingFlags.Instance | BindingFlags.NonPublic);
             IDbTransaction transaction = fieldInfo.GetValue(database) as IDbTransaction;
 
             return transaction;

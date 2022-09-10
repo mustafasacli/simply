@@ -1,9 +1,6 @@
 ﻿using Simply.Common;
 using Simply.Common.Objects;
 using Simply.Data.Constants;
-using Simply.Data.DatabaseExtensions;
-using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
@@ -41,21 +38,8 @@ namespace Simply.Data
             string sqlQuery, object parameterObject, IPageInfo pageInfo = null, CommandType? commandType = null)
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
-
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            InternalLogHelper.LogCommand(simpleDbCommand, database.LogSetting);
-
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                connection.GetDbRowList(simpleDbCommand,
-                transaction, pageInfo, logSetting: database.LogSetting);
-            List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
-
-            return simpleDbRowList;
+            IDbCommandResult<List<SimpleDbRow>> result = database.GetDbRowList(simpleDbCommand, pageInfo);
+            return result.Result;
         }
 
         /// <summary>
@@ -68,23 +52,15 @@ namespace Simply.Data
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowList(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
-
-            bool isPageableAndSkipAndTakeFormatEmpty = false;
 
             if (pageInfo != null)
             {
                 if (pageInfo.Take == 0)
                     return simpleDbRowListResult;
 
-                IQuerySetting querySetting = database.QuerySetting ?? connection.GetQuerySetting();
-                isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
+                IQuerySetting querySetting = database.QuerySetting;
+                bool isPageableAndSkipAndTakeFormatEmpty = querySetting.SkipAndTakeFormat.IsNullOrSpace();
                 if (!isPageableAndSkipAndTakeFormatEmpty)
                 {
                     string format = querySetting.SkipAndTakeFormat.CopyValue();
@@ -95,25 +71,7 @@ namespace Simply.Data
                 }
             }
 
-            InternalLogHelper.LogCommand(simpleDbCommand, database.LogSetting);
-
-            using (IDbCommand command =
-                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
-            {
-                InternalLogHelper.LogDbCommand(command, database.LogSetting);
-
-                using (IDataReader reader = command.ExecuteReader())
-                {
-                    simpleDbRowListResult.OutputParameters = command.GetOutParameters();
-                    simpleDbRowListResult.Result =
-                        (isPageableAndSkipAndTakeFormatEmpty ?
-                        reader.GetSimleRowListSkipAndTake(
-                            skip: pageInfo.Skip, take: pageInfo.Take, closeAtFinal: true)
-                        : reader.GetResultSetAsDbRow(closeAtFinal: true))
-                        ?? new List<SimpleDbRow>();
-                }
-            }
-
+            simpleDbRowListResult = database.GetDbRowListQuery(simpleDbCommand);
             return simpleDbRowListResult;
         }
 
@@ -131,18 +89,8 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues, IPageInfo pageInfo = null, CommandType? commandType = null)
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                connection.GetDbRowList(simpleDbCommand, transaction,
-                pageInfo, logSetting: database.LogSetting);
-
-            List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
-            return simpleDbRowList;
+            IDbCommandResult<List<SimpleDbRow>> result = database.GetDbRowList(simpleDbCommand, pageInfo);
+            return result.Result;
         }
 
         #endregion [ Page Info methods ]

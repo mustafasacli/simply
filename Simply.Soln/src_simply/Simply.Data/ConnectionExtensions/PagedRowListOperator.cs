@@ -115,7 +115,7 @@ namespace Simply.Data
                     simpleDbRowListResult.OutputParameters = command.GetOutParameters();
                     simpleDbRowListResult.Result =
                         (isPageableAndSkipAndTakeFormatEmpty ?
-                        reader.GetSimleRowListSkipAndTake(
+                        reader.GetSimpleRowListSkipAndTake(
                             skip: pageInfo.Skip, take: pageInfo.Take, closeAtFinal: true)
                         : reader.GetResultSetAsDbRow(closeAtFinal: true))
                         ?? new List<SimpleDbRow>();

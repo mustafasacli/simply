@@ -1,11 +1,9 @@
 ﻿using Simply.Common;
 using Simply.Common.Objects;
-using Simply.Data.DatabaseExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace Simply.Data
 {
@@ -38,15 +36,7 @@ namespace Simply.Data
             string sqlQuery, object parameterObject, IPageInfo pageInfo = null, CommandType? commandType = null) where T : class, new()
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo, logSetting: database.LogSetting);
-
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.GetDbRowList(simpleDbCommand, pageInfo);
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;
         }
@@ -63,11 +53,10 @@ namespace Simply.Data
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null)
             where T : class, new()
         {
-            IDbCommandResult<List<T>> instanceListResult = new DbCommandResult<List<T>>();
-
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 database.GetDbRowList(simpleDbCommand, pageInfo);
 
+            IDbCommandResult<List<T>> instanceListResult = new DbCommandResult<List<T>>();
             instanceListResult.Result =
                 simpleDbRowListResult.Result.ConvertRowsToList<T>()
                 ?? new List<T>();
@@ -90,15 +79,8 @@ namespace Simply.Data
            IPageInfo pageInfo = null, CommandType? commandType = null) where T : class
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand,
-                transaction, pageInfo, logSetting: database.LogSetting);
+                database.GetDbRowList(simpleDbCommand, pageInfo);
 
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;

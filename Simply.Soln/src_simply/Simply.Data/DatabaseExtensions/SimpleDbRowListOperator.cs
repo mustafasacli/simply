@@ -1,7 +1,5 @@
 ﻿using Simply.Common.Objects;
-using Simply.Data.DatabaseExtensions;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
@@ -34,15 +32,22 @@ namespace Simply.Data
             string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
+            List<List<SimpleDbRow>> multiSimpleDbRowList;
 
-            if (transaction == null)
-                connection.OpenIfNot();
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            {
+                using (IDataReader dataReader = command.ExecuteDataReader())
+                {
+                    try
+                    {
+                        multiSimpleDbRowList = dataReader.GetMultiDbRowList(closeAtFinal: true);
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
+                }
+            }
 
-            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult =
-                connection.GetMultiDbRowListQuery(simpleDbCommand, transaction, logSetting: database.LogSetting);
-            return multiSimpleDbRowListResult.Result;
+            return multiSimpleDbRowList;
         }
 
         /// <summary>
@@ -55,27 +60,20 @@ namespace Simply.Data
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowListQuery(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand, CommandBehavior? behavior = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
 
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult;
-
-            InternalLogHelper.LogCommand(simpleDbCommand, database.LogSetting);
-
-            using (IDbCommand command =
-                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
             {
-                InternalLogHelper.LogDbCommand(command, database.LogSetting);
-
-                using (IDataReader reader = command.ExecuteDataReader(behavior))
+                using (IDataReader dataReader = command.ExecuteDataReader(behavior))
                 {
-                    simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
-                    simpleDbRowListResult.OutputParameters = command.GetOutParameters();
-                    simpleDbRowListResult.Result = reader.GetResultSetAsDbRow(closeAtFinal: true) ??
-                        new List<SimpleDbRow>();
+                    try
+                    {
+                        simpleDbRowListResult.OutputParameters = command.GetOutParameters();
+                        simpleDbRowListResult.ExecutionResult = dataReader.RecordsAffected;
+                        simpleDbRowListResult.Result = dataReader.GetResultSetAsDbRow(closeAtFinal: true);
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
             }
 
@@ -92,27 +90,20 @@ namespace Simply.Data
         public static IDbCommandResult<List<List<SimpleDbRow>>> GetMultiDbRowListQuery(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand, CommandBehavior? behavior = null)
         {
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
+            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();
 
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult;
-
-            InternalLogHelper.LogCommand(simpleDbCommand, database.LogSetting);
-
-            using (IDbCommand command =
-                connection.CreateCommandWithOptions(simpleDbCommand, transaction))
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
             {
-                InternalLogHelper.LogDbCommand(command, database.LogSetting);
-
-                using (IDataReader reader = command.ExecuteDataReader(behavior))
+                using (IDataReader dataReader = command.ExecuteDataReader(behavior))
                 {
-                    multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();
-                    multiSimpleDbRowListResult.OutputParameters = command.GetOutParameters();
-                    multiSimpleDbRowListResult.Result = reader.GetMultiDbRowList(closeAtFinal: true) ??
-                        new List<List<SimpleDbRow>>();
+                    try
+                    {
+                        multiSimpleDbRowListResult.OutputParameters = command.GetOutParameters();
+                        multiSimpleDbRowListResult.ExecutionResult = dataReader.RecordsAffected;
+                        multiSimpleDbRowListResult.Result = dataReader.GetMultiDbRowList(closeAtFinal: true);
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
             }
 

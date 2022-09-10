@@ -1,11 +1,9 @@
 ﻿using Simply.Common;
 using Simply.Common.Objects;
-using Simply.Data.DatabaseExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simply.Data
@@ -25,20 +23,11 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns as object list.</returns>
-        public static List<T> GetList<T>(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues, IPageInfo pageInfo = null, CommandType? commandType = null) where T : class
+        public static List<T> GetList<T>(this ISimpleDatabase database, string odbcSqlQuery,
+            object[] parameterValues, IPageInfo pageInfo = null, CommandType? commandType = null) where T : class
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
-            IDbConnection connection = database.GetDbConnection();
-            IDbTransaction transaction = database.GetDbTransaction();
-
-            if (transaction == null)
-                connection.OpenIfNot();
-
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand,
-                transaction, pageInfo, logSetting: database.LogSetting);
-
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.GetDbRowList(simpleDbCommand, pageInfo);
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;
         }
@@ -62,7 +51,8 @@ namespace Simply.Data
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns as object list.</returns>
         public static async Task<List<T>> QueryListAsync<T>(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, IPageInfo pageInfo = null, CommandType? commandType = null) where T : class, new()
+            string sqlQuery, object parameterObject, IPageInfo pageInfo = null,
+            CommandType? commandType = null) where T : class, new()
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {

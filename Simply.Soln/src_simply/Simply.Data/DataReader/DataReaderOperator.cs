@@ -83,7 +83,7 @@ namespace Simply.Data
         /// <param name="take">Count for Take.</param>
         /// <param name="closeAtFinal">if true datareader will be closed at final else not.</param>
         /// <returns>Returns dynamic object list.</returns>
-        public static List<SimpleDbRow> GetSimleRowListSkipAndTake(this IDataReader reader,
+        public static List<SimpleDbRow> GetSimpleRowListSkipAndTake(this IDataReader reader,
            uint skip = 0, uint take = 0, bool closeAtFinal = false)
         {
             if (reader == null)
