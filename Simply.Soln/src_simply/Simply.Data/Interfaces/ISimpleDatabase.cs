@@ -52,17 +52,17 @@ namespace Simply.Data.Interfaces
         /// Begins the transaction.
         /// </summary>
         /// <param name="isolationLevel">The isolation level.</param>
-        void BeginTransaction(IsolationLevel? isolationLevel = null);
+        void Begin(IsolationLevel? isolationLevel = null);
 
         /// <summary>
         /// Commits the transaction.
         /// </summary>
-        void CommitTransaction();
+        void Commit();
 
         /// <summary>
         /// Rollbacks the transaction.
         /// </summary>
-        void RollbackTransaction();
+        void Rollback();
 
         /// <summary>
         /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
@@ -99,7 +99,7 @@ namespace Simply.Data.Interfaces
         DbDataAdapter CreateDataAdapter();
 
         /// <summary>
-        /// Applies the paging.
+        /// Applies the paging info into simple db command.
         /// </summary>
         /// <param name="dbCommand">The database command.</param>
         /// <param name="pageInfo">The page information.</param>

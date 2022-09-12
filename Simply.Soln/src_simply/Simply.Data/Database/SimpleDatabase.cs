@@ -34,12 +34,12 @@ namespace Simply.Data.Database
         protected bool disposed = false;
 
         /// <summary>
-        /// The is transaction handled.
+        /// The transaction state.
         /// 0; transaction state empty.
         /// 1; transaction can be committed/rollbacked.
         /// 2; transaction has been committed/rollbacked.
         /// </summary>
-        protected sbyte isTransactionHandled = 0;
+        protected sbyte transactionState = 0;
 
         /// <summary>
         /// The connection
@@ -154,10 +154,10 @@ namespace Simply.Data.Database
                     // Dispose managed resources.
                 }
 
-                if (isTransactionHandled == 1)
+                if (transactionState == 1)
                 {
                     transaction?.CommitAndDispose();
-                    isTransactionHandled = 0;
+                    transactionState = 0;
                 }
                 connection?.CloseAndDispose();
 
@@ -180,37 +180,37 @@ namespace Simply.Data.Database
         /// Begins the transaction.
         /// </summary>
         /// <param name="isolationLevel">The isolation level.</param>
-        public void BeginTransaction(IsolationLevel? isolationLevel = null)
+        public void Begin(IsolationLevel? isolationLevel = null)
         {
             if (transaction == null)
                 transaction = connection.OpenAndBeginTransaction(isolationLevel);
 
-            isTransactionHandled = 1;
+            transactionState = 1;
         }
 
         /// <summary>
         /// Commits the transaction.
         /// </summary>
-        public void CommitTransaction()
+        public void Commit()
         {
-            if (isTransactionHandled == 1)
+            if (transactionState == 1)
             {
                 transaction.CommitAndDispose();
+                transactionState = 2;
                 transaction = null;
-                isTransactionHandled = 2;
             }
         }
 
         /// <summary>
         /// Rollbacks the transaction.
         /// </summary>
-        public void RollbackTransaction()
+        public void Rollback()
         {
-            if (isTransactionHandled == 1)
+            if (transactionState == 1)
             {
                 transaction.RollbackAndDispose();
+                transactionState = 2;
                 transaction = null;
-                isTransactionHandled = 2;
             }
         }
 
@@ -508,6 +508,8 @@ namespace Simply.Data.Database
         /// <returns>Returns DbDataAdapter instance.</returns>
         public virtual DbDataAdapter CreateDataAdapter()
         {
+            // Alternative
+            // connection.CreateAdapter();
             Type adapterType = null;
 
             IEnumerable<Type> adapterTypes =
@@ -537,7 +539,7 @@ namespace Simply.Data.Database
         }
 
         /// <summary>
-        /// Applies the paging.
+        /// Applies the paging info into simple db command.
         /// </summary>
         /// <param name="dbCommand">The database command.</param>
         /// <param name="pageInfo">The page information.</param>

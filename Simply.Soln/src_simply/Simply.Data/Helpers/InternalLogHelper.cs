@@ -21,13 +21,11 @@ namespace Simply.Data.Helpers
             if (logSetting == null || simpleDbCommand == null)
                 return;
 
-            if (!logSetting.LogCommand && logSetting.CommandLogAction == null)
-                return;
-
             if (logSetting.CommandLogAction == null)
                 throw new Exception(DbAppMessages.CommandLogActionNotDefined);
 
-            logSetting.CommandLogAction(simpleDbCommand);
+            if (logSetting.LogCommand)
+                logSetting.CommandLogAction(simpleDbCommand);
         }
 
         /// <summary>
@@ -41,13 +39,11 @@ namespace Simply.Data.Helpers
             if (logSetting == null || dbCommand == null)
                 return;
 
-            if (!logSetting.LogCommand && logSetting.CommandLogAction == null)
-                return;
-
-            if (logSetting.CommandLogAction == null)
+            if (logSetting.DbCommandLogAction == null)
                 throw new Exception(DbAppMessages.CommandLogActionNotDefined);
 
-            logSetting.DbCommandLogAction(dbCommand);
+            if (logSetting.LogCommand)
+                logSetting.DbCommandLogAction(dbCommand);
         }
     }
 }

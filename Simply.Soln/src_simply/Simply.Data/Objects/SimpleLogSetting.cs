@@ -20,9 +20,8 @@ namespace Simply.Data.Objects
         /// </summary>
         /// <param name="logCommand">If true, log command.</param>
         /// <param name="logCommandAction">The log command action.</param>
-        /// <param name="logError">If true, log error.</param>
-        /// <param name="logErrorAction">The log error action.</param>
-        /// <param name="reThrowError">If true, re throw error.</param>
+        /// <param name="logDbCommand">If true, log idbcommand object.</param>
+        /// <param name="dbCommandLogAction">The log idbcommand action.</param>
         /// <returns>Returns ILogSetting object instance.</returns>
         public static ILogSetting Create(bool logCommand = false,
             Action<SimpleDbCommand> logCommandAction = null,
