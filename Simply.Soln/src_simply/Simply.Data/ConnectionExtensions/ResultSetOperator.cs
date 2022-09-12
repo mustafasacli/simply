@@ -30,7 +30,7 @@ namespace Simply.Data
             DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
             DbDataAdapter dataAdapter = connection.CreateAdapter();
-            if (dataAdapter == null)
+            if (dataAdapter is null)
                 throw new Exception(DbAppMessages.DataAdapterNotFound);
 
             using (IDbCommand command =

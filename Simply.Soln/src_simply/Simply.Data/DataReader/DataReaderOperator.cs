@@ -86,7 +86,7 @@ namespace Simply.Data
         public static List<SimpleDbRow> GetSimpleRowListSkipAndTake(this IDataReader reader,
            uint skip = 0, uint take = 0, bool closeAtFinal = false)
         {
-            if (reader == null)
+            if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
             List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
@@ -126,7 +126,7 @@ namespace Simply.Data
         public static List<SimpleDbRow> GetResultSetAsDbRow(
             this IDataReader reader, bool closeAtFinal = false)
         {
-            if (reader == null)
+            if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
             List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
@@ -214,7 +214,7 @@ namespace Simply.Data
         /// <returns>An dynamic object.</returns>
         public static SimpleDbRow FirstDbRow(this IDataReader reader, bool closeAtFinal = false)
         {
-            if (reader == null)
+            if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
             SimpleDbRow row = SimpleDbRow.NewRow();
@@ -243,7 +243,7 @@ namespace Simply.Data
         /// <returns>An dynamic object.</returns>
         public static SimpleDbRow LastDbRow(this IDataReader reader, bool closeAtFinal = false)
         {
-            if (reader == null)
+            if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
             SimpleDbRow simpleDbRow = SimpleDbRow.NewRow();
@@ -271,7 +271,7 @@ namespace Simply.Data
         /// <returns>An dynamic object.</returns>
         public static SimpleDbRow SingleDbRow(this IDataReader reader)
         {
-            if (reader == null)
+            if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
             SimpleDbRow simpleDbRow = SimpleDbRow.NewRow();

@@ -182,7 +182,7 @@ namespace Simply.Data.Database
         /// <param name="isolationLevel">The isolation level.</param>
         public void Begin(IsolationLevel? isolationLevel = null)
         {
-            if (transaction == null)
+            if (transaction is null)
                 transaction = connection.OpenAndBeginTransaction(isolationLevel);
 
             transactionState = 1;
@@ -230,7 +230,7 @@ namespace Simply.Data.Database
         protected virtual List<DbCommandParameter> TranslateParametersFromObject(object obj)
         {
             List<DbCommandParameter> parameters = ArrayHelper.EmptyList<DbCommandParameter>();
-            if (obj == null)
+            if (obj is null)
                 return parameters;
 
             //
@@ -257,7 +257,7 @@ namespace Simply.Data.Database
             bool isOdbc = this.ConnectionType.IsOdbcConn();
             IEnumerable objects = obj as IEnumerable;
 
-            if (objects == null)
+            if (objects is null)
             {
                 parameters = obj.GetType()
                     .GetProperties()
@@ -479,7 +479,7 @@ namespace Simply.Data.Database
         /// <returns>Returns DbCommand object instance <see cref="IDbCommand"/>.</returns>
         public virtual IDbCommand CreateCommand(SimpleDbCommand simpleDbCommand, bool connectionShouldBeOpened = true)
         {
-            if (simpleDbCommand == null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
+            if (simpleDbCommand is null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
                 throw new ArgumentNullException(nameof(simpleDbCommand));
 
             InternalLogHelper.LogCommand(simpleDbCommand, this.LogSetting);
@@ -496,7 +496,7 @@ namespace Simply.Data.Database
 
             InternalLogHelper.LogDbCommand(command, this.LogSetting);
 
-            if (connectionShouldBeOpened && transaction == null)
+            if (connectionShouldBeOpened && transaction is null)
                 connection.OpenIfNot();
 
             return command;
@@ -546,7 +546,7 @@ namespace Simply.Data.Database
         /// <returns>Applies paging and return simpledbcommand instance.</returns>
         public virtual SimpleDbCommand ApplyPageInfo(SimpleDbCommand dbCommand, IPageInfo pageInfo = null)
         {
-            if (pageInfo == null) return dbCommand;
+            if (pageInfo is null) return dbCommand;
 
             if (!pageInfo.IsPageable) return dbCommand;
 

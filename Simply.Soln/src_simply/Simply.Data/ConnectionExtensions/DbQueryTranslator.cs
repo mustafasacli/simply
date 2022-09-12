@@ -40,7 +40,7 @@ namespace Simply.Data
         /// </returns>
         public static string[] TranslateOdbcQuery(this IDbConnection connection, string odbcSqlQuery)
         {
-            if (connection == null)
+            if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
             string[] queryAndParameters = TranslateOdbcQuery(connection.GetDbConnectionType(), odbcSqlQuery);
@@ -348,7 +348,7 @@ namespace Simply.Data
         public static DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)
         {
             DbCommandParameter[] parameters = ArrayHelper.Empty<DbCommandParameter>();
-            if (obj == null)
+            if (obj is null)
                 return parameters;
 
             //

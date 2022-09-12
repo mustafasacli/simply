@@ -24,7 +24,7 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand,
           IDbTransaction transaction = null)
         {
-            if (simpleDbCommand == null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
+            if (simpleDbCommand is null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
                 throw new ArgumentNullException(nameof(simpleDbCommand));
 
             // TODO : WILL BE CHECKED AND TESTED.

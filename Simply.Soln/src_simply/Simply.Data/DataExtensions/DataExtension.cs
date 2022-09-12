@@ -137,7 +137,7 @@ namespace Simply.Data
         /// <returns>The page of data table.</returns>
         public static DataTable GetPageOfDataTable(this DataTable datatable, int pageNumber, int rowCount)
         {
-            if (datatable == null)
+            if (datatable is null)
                 throw new NullReferenceException(DbAppMessages.DatatableIsNull);
 
             if (pageNumber < 0)
@@ -357,7 +357,7 @@ namespace Simply.Data
         /// <returns>   A DataTable.</returns>
         public static DataTable CopyDatatable(this DataTable datatable, IPageInfo pageInfo = null)
         {
-            if (pageInfo == null)
+            if (pageInfo is null)
             {
                 return datatable.Copy();
             }
@@ -394,10 +394,10 @@ namespace Simply.Data
         public static DataTable GetSomeColumnsAsTable(this DataTable datatable, string[] columnList)
         {
             DataTable dtNew = new DataTable();
-            if (datatable == null)
+            if (datatable is null)
                 return dtNew;
 
-            if (columnList == null)
+            if (columnList is null)
                 return dtNew;
 
             if (columnList.Length == 0)
@@ -433,12 +433,12 @@ namespace Simply.Data
         public static T RowToObject<T>(this DataRow row, DataColumnCollection columns = null)
             where T : new()
         {
-            if (row == null)
+            if (row is null)
                 throw new ArgumentNullException(nameof(row));
 
             T instance = Activator.CreateInstance<T>();
 
-            if (columns == null)
+            if (columns is null)
                 columns = row.Table.Columns;
 
             PropertyInfo[] props = typeof(T).GetProperties();
@@ -465,7 +465,7 @@ namespace Simply.Data
         /// <returns>The column as unique list.</returns>
         public static List<T> GetColumnAsUniqueList<T>(this DataTable dataTable, string columnName)
         {
-            if (dataTable == null)
+            if (dataTable is null)
                 throw new ArgumentNullException(nameof(dataTable));
 
             if (string.IsNullOrWhiteSpace(columnName))
@@ -491,7 +491,7 @@ namespace Simply.Data
         {
             List<dynamic> list = new List<dynamic>();
 
-            if (table == null)
+            if (table is null)
                 return list;
 
             if (table.Rows.Count < 1)

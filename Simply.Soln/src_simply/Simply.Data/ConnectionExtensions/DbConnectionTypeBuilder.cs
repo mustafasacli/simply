@@ -88,7 +88,7 @@ namespace Simply.Data
         /// <returns>returns DbConnectionTypes enum.</returns>
         public static DbConnectionTypes GetDbConnectionType(this IDbConnection connection)
         {
-            if (connection == null)
+            if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
             DbConnectionTypes connectionType = GetConnectionType(connection);
@@ -319,7 +319,7 @@ namespace Simply.Data
         /// <returns>returns DbConnectionTypes enum.</returns>
         public static DbConnectionTypes GetDbConnectionType<T>(this T connection) where T : class, IDbConnection
         {
-            if (connection == null)
+            if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
             DbConnectionTypes connectionType = GetConnectionType(connection);

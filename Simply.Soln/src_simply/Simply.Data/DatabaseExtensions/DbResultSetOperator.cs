@@ -26,7 +26,7 @@ namespace Simply.Data
             DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
             DbDataAdapter dataAdapter = database.CreateDataAdapter();
-            if (dataAdapter == null)
+            if (dataAdapter is null)
                 throw new Exception(DbAppMessages.DataAdapterNotFound);
 
             using (IDbCommand command = database.CreateCommand(simpleDbCommand, false))

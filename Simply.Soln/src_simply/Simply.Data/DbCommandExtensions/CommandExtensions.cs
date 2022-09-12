@@ -76,7 +76,7 @@ namespace Simply.Data.DbCommandExtensions
         /// <param name="command">The command <see cref="IDbCommand"/>.</param>
         public static void SetCommandValuesToNull(this IDbCommand command)
         {
-            if (command == null) return;
+            if (command is null) return;
 
             int parameterCount = (command.Parameters?.Count).GetValueOrDefault();
 
@@ -96,7 +96,7 @@ namespace Simply.Data.DbCommandExtensions
         internal static void AddCommandParameters(this IDbCommand command,
             List<DbCommandParameter> commandParameters)
         {
-            if (commandParameters == null || commandParameters.Count < 1)
+            if (!(commandParameters?.Any() ?? false)) //is null || commandParameters.Count < 1)
                 return;
 
             IQuerySetting querySetting = command.Connection.GetQuerySetting();
@@ -117,7 +117,8 @@ namespace Simply.Data.DbCommandExtensions
         public static void AddCommandParameters(this IDbCommand command,
            object[] parameters)
         {
-            if (parameters == null || parameters.Length < 1)
+            // if (parameters == null || parameters.Length < 1)
+            if (!(parameters?.Any() ?? false))
                 return;
 
             foreach (object parameter in parameters)
@@ -135,7 +136,7 @@ namespace Simply.Data.DbCommandExtensions
         {
             List<DbCommandParameter> parameters = ArrayHelper.EmptyList<DbCommandParameter>();
 
-            if (command.Parameters == null || command.Parameters.Count < 1) return parameters.ToArray();
+            if (command.Parameters is null || command.Parameters.Count < 1) return parameters.ToArray();
 
             foreach (object item in command.Parameters)
             {
@@ -237,7 +238,7 @@ namespace Simply.Data.DbCommandExtensions
         /// <returns>Returns IDataReader object instance.</returns>
         public static IDataReader ExecuteDataReader(this IDbCommand command, CommandBehavior? behavior = null)
         {
-            IDataReader reader = behavior == null ? command.ExecuteReader() : command.ExecuteReader(behavior.Value);
+            IDataReader reader = behavior is null ? command.ExecuteReader() : command.ExecuteReader(behavior.Value);
             return reader;
         }
 
@@ -304,7 +305,7 @@ namespace Simply.Data.DbCommandExtensions
         internal static IDbCommand IncludeCommandParameters(this IDbCommand command,
             List<DbCommandParameter> commandParameters)
         {
-            if (commandParameters == null || commandParameters.Count < 1)
+            if (commandParameters is null || commandParameters.Count < 1)
                 return command;
 
             IQuerySetting querySetting = command.Connection.GetQuerySetting();
@@ -336,7 +337,7 @@ namespace Simply.Data.DbCommandExtensions
 
             foreach (object parameter in commandParameters)
             {
-                if (parameter == null)
+                if (parameter is null)
                     throw new ArgumentNullException(string.Format(DbAppMessages.ParameterCanNotBeNullFormat, nameof(parameter)));
 
                 DbParameter dbParameter = null;
@@ -393,7 +394,7 @@ namespace Simply.Data.DbCommandExtensions
         [Obsolete("Method is depreated. it will be removed later versions.")]
         public static IDbCommand IncludeCommandParameters(this IDbCommand command, object[] parameters)
         {
-            if (parameters == null || parameters.Length < 1)
+            if (parameters is null || parameters.Length < 1)
                 return command;
 
             foreach (object parameter in parameters)

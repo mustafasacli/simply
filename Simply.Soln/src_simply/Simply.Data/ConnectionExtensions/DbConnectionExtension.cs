@@ -376,7 +376,7 @@ namespace Simply.Data
         /// <exception cref="ArgumentNullException">if connection parameter is null, throws exception, else not.</exception>
         private static void CheckConnectionIsNull(IDbConnection connection)
         {
-            if (connection == null)
+            if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
         }
     }

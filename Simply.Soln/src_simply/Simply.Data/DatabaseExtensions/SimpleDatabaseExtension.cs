@@ -25,7 +25,7 @@ namespace Simply.Data.DatabaseExtensions
 
             IDbConnection connection = fieldInfo.GetValue(database) as IDbConnection;
 
-            if (connection == null)
+            if (connection is null)
                 throw new Exception(DbAppMessages.DbConnectionNotDefined);
 
             return connection;
