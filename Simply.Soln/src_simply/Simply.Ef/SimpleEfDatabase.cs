@@ -50,12 +50,6 @@ namespace Simply.Ef
             ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
             : base(connection, transaction, commandSetting, querySetting)
         {
-            logSetting = SimpleLogSetting.New();
-            this.connection = connection;
-            this.transaction = transaction;
-            CommandSetting = commandSetting;
-            ConnectionType = connection.GetDbConnectionType();
-            QuerySetting = querySetting ?? connection.GetQuerySetting();
         }
 
         /// <summary>

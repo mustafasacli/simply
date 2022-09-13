@@ -31,6 +31,7 @@ namespace Simply.Data.Interfaces
         /// <summary>
         /// Gets, sets command setting.
         /// </summary>
+        [Obsolete("This property will be removed.")]
         ICommandSetting CommandSetting { get; set; }
 
         /// <summary>

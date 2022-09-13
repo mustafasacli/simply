@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -20,7 +21,8 @@ namespace Simply.Data.Database
     /// <summary>
     ///
     /// </summary>
-    /// <seealso cref="Simply.Data.Interfaces.ISimpleDatabase" />
+    /// <seealso cref="ISimpleDatabase" />
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     public class SimpleDatabase : ISimpleDatabase
     {
         /// <summary>
@@ -121,6 +123,7 @@ namespace Simply.Data.Database
         /// <summary>
         /// Gets, sets command setting.
         /// </summary>
+        [Obsolete("This property will be removed.")]
         public ICommandSetting CommandSetting
         { get; set; }
 
@@ -157,17 +160,23 @@ namespace Simply.Data.Database
         {
             if (!disposed)
             {
-                if (disposing)
+                try
                 {
-                    // Dispose managed resources.
-                }
+                    if (disposing)
+                    {
+                        // Dispose managed resources.
+                    }
 
-                if (transactionState == 1)
-                {
-                    transaction?.CommitAndDispose();
-                    transactionState = 0;
+                    if (transactionState == 1)
+                    {
+                        transaction?.CommitAndDispose();
+                        transactionState = 0;
+                    }
                 }
-                connection?.CloseAndDispose();
+                finally
+                {
+                    connection?.CloseAndDispose();
+                }
 
                 // There are no unmanaged resources to release, but
                 // if we add them, they need to be released here.
@@ -567,6 +576,11 @@ namespace Simply.Data.Database
             }
 
             return dbCommand;
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
         }
     }
 }
