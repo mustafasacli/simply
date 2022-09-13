@@ -1,11 +1,11 @@
-﻿using Coddie.Common;
+﻿using Simply.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 
-namespace Coddie.Ef
+namespace Simply.Ef
 {
     /// <summary>
     ///
@@ -17,18 +17,18 @@ namespace Coddie.Ef
         /// </summary>
         /// <typeparam name="TContext">DbContext class</typeparam>
         /// <param name="context">DbContext class instance.</param>
-        /// <returns></returns>
+        /// <returns>Returns Keyless Entity Type list.</returns>
         public static List<Type> GetKeylessEntityTypes<TContext>(this TContext context)
             where TContext : DbContext
         {
             var types = new List<Type>();
 
-            typeof(TContext)
+            (context?.GetType() ?? typeof(TContext))
             .GetRuntimeProperties()
             .Where(o =>
                 o.PropertyType.IsGenericType &&
                 o.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>) &&
-                o.PropertyType.GenericTypeArguments.Count() > 0)
+                o.PropertyType.GenericTypeArguments.Any())
                 .Select(q => q.PropertyType.GenericTypeArguments)
                 .ToList()
                 .ForEach(q =>

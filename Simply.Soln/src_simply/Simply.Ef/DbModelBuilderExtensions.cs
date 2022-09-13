@@ -1,7 +1,7 @@
-﻿using Coddie.Common;
+﻿using Simply.Common;
 using System.Data.Entity;
 
-namespace Coddie.Ef
+namespace Simply.Ef
 {
     /// <summary>
     ///
