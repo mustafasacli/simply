@@ -19,10 +19,10 @@ namespace Simply.Data
         /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns exection result as int.</returns>
-        public static int Execute(this ISimpleDatabase database, string sqlQuery, 
+        public static int Execute(this ISimpleDatabase database, string sqlQuery,
             object parameterObject, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = 
+            SimpleDbCommand simpleDbCommand =
                 database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
             IDbCommandResult<int> commandResult = database.ExecuteQuery(simpleDbCommand);
             return commandResult.Result;
@@ -59,7 +59,7 @@ namespace Simply.Data
         public static int ExecuteAsOdbc(this ISimpleDatabase database,
             string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = 
+            SimpleDbCommand simpleDbCommand =
                 database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
             IDbCommandResult<int> commandResult = database.ExecuteQuery(simpleDbCommand);
             return commandResult.Result;

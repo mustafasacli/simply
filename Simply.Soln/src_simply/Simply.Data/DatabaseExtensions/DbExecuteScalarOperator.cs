@@ -66,10 +66,10 @@ namespace Simply.Data
         /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
         /// <returns>Returns execute scalar result as object.</returns>
-        public static object ExecuteScalar(this ISimpleDatabase database, 
+        public static object ExecuteScalar(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = 
+            SimpleDbCommand simpleDbCommand =
                 database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
             IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
             return commandResult.Result;
@@ -102,7 +102,7 @@ namespace Simply.Data
         public static object ExecuteScalarOdbc(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
         {
-            SimpleDbCommand simpleDbCommand = 
+            SimpleDbCommand simpleDbCommand =
                 database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
             IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
             return commandResult.Result;
