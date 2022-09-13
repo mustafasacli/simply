@@ -59,6 +59,14 @@ namespace Simply.Data.Database
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleDatabase"/> class.
         /// </summary>
+        public SimpleDatabase()
+        {
+            throw new NotImplementedException("Empty contructor can not be implemented.");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleDatabase"/> class.
+        /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="transaction">The transaction.</param>
         /// <param name="commandSetting">The command setting.</param>

@@ -60,11 +60,20 @@
     <Compile Include="..\..\src_simply\Simply.Ef\DbModelBuilderExtensions.cs">
       <Link>DbModelBuilderExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Ef\SimpleEfDatabase.cs">
+      <Link>SimpleEfDatabase.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simply.Data\Simply.Data.csproj">
+      <Project>{f374850b-07d2-4e3c-a3ec-bff273dee3c7}</Project>
+      <Name>Simply.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
