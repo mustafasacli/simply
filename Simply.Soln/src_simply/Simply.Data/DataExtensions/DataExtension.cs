@@ -514,46 +514,5 @@ namespace Simply.Data
 
             return list;
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="table">datatable convert to dynamic object.</param>
-        /// <returns>returns IEnumerable{dynamic} objects instances.</returns>
-        public static IEnumerable<dynamic> AsDynamicEnumerable(this DataTable table)
-        {
-            // https://stackoverflow.com/questions/7794818/how-can-i-convert-a-datatable-into-a-dynamic-object
-            return table.AsEnumerable().Select(row => new DynamicRow(row));
-        }
-    }
-
-    internal sealed class DynamicRow : DynamicObject
-    {
-        // https://stackoverflow.com/questions/7794818/how-can-i-convert-a-datatable-into-a-dynamic-object
-        private readonly DataRow _row;
-
-        internal DynamicRow(DataRow row)
-        { _row = row; }
-
-        // Interprets a member-access as an indexer-access on the
-        // contained DataRow.
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
-        {
-            bool returnValue = _row.Table.Columns.Contains(binder.Name);
-            result = returnValue ? _row[binder.Name] : null;
-            return returnValue;
-        }
-
-        public override bool TrySetMember(SetMemberBinder binder, object value)
-        {
-            bool returnValue = _row.Table.Columns.Contains(binder.Name);
-            if (returnValue)
-            {
-                _row[binder.Name] = value;
-            }
-
-            return returnValue;
-            //return base.TrySetMember(binder, value);
-        }
     }
 }
