@@ -1,6 +1,7 @@
 ﻿using Simply.Common;
 using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
+using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
 using System.Data;
@@ -19,10 +20,11 @@ namespace Simply.Data
         /// <param name="connection">Database connection <see cref="IDbConnection"/>.</param>
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/>.</param>
-        /// <returns>The <see cref="IDbCommand"/>.</returns>
+        /// <param name="querySetting">Query setting object instance.</param>
+        /// <returns>Returns A Database command instance. <see cref="IDbCommand"/>.</returns>
         public static IDbCommand CreateCommandWithOptions(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand,
-          IDbTransaction transaction = null)
+          IDbTransaction transaction = null, IQuerySetting querySetting = null)
         {
             if (simpleDbCommand is null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
                 throw new ArgumentNullException(nameof(simpleDbCommand));
@@ -35,7 +37,7 @@ namespace Simply.Data
                 .SetCommandText(simpleDbCommand.CommandText)
                 .SetCommandTimeout(simpleDbCommand.CommandTimeout)
                 .SetTransaction(transaction)
-                .IncludeCommandParameters(simpleDbCommand.CommandParameters);
+                .IncludeCommandParameters(simpleDbCommand.CommandParameters, querySetting: querySetting);
 
             return command;
         }
