@@ -206,7 +206,7 @@ namespace Simply.Data
                 return GetCommandParameterFromConnection(connection);
             });
 
-            if (commandParameterType == null)
+            if (commandParameterType is null)
                 throw new Exception(DbAppMessages.AdapterNotContainsDbParameterType);
 
             DbParameter parameter = Activator.CreateInstance(commandParameterType) as DbParameter;
@@ -272,6 +272,7 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandTimeout">command Timeout (value as second)</param>
         /// <returns>Returns DbCommand instance.</returns>
+        [Obsolete("This method is not being used. Will be removed later versions.")]
         public static DbCommand BuildDbCommand(this IDbConnection connection, string sql,
             DbParameter[] parameters = null, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null, int? commandTimeout = null)
@@ -312,6 +313,7 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns DbCommand instance.</returns>
+        [Obsolete("This method is not being used. Will be removed later versions.")]
         public static DbCommand BuildDbCommand(this IDbConnection connection,
             string sql, DbParameter[] parameters = null,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)

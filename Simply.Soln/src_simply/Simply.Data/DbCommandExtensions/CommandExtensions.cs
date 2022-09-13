@@ -117,7 +117,6 @@ namespace Simply.Data.DbCommandExtensions
         public static void AddCommandParameters(this IDbCommand command,
            object[] parameters)
         {
-            // if (parameters == null || parameters.Length < 1)
             if (!(parameters?.Any() ?? false))
                 return;
 
@@ -305,7 +304,7 @@ namespace Simply.Data.DbCommandExtensions
         internal static IDbCommand IncludeCommandParameters(this IDbCommand command,
             List<DbCommandParameter> commandParameters)
         {
-            if (commandParameters is null || commandParameters.Count < 1)
+            if (!(commandParameters?.Any() ?? false))
                 return command;
 
             IQuerySetting querySetting = command.Connection.GetQuerySetting();
@@ -325,15 +324,16 @@ namespace Simply.Data.DbCommandExtensions
         /// </summary>
         /// <param name="command">The command <see cref="IDbCommand"/>.</param>
         /// <param name="commandParameters">database command parameters<see cref="List{System.Object}"/>.</param>
+        /// <param name="querySetting">Query setting object instance.</param>
         /// <returns>Returns IDbCommand object instance.</returns>
         internal static IDbCommand IncludeCommandParameters(
-            this IDbCommand command, List<object> commandParameters)
+            this IDbCommand command, List<object> commandParameters, IQuerySetting querySetting = null)
         {
             if (!(commandParameters?.Any() ?? false))
                 return command;
 
-            IQuerySetting querySetting = command.Connection.GetQuerySetting();
-            string parameterPrefix = querySetting.ParameterPrefix;
+            IQuerySetting qSetting = querySetting ?? command.Connection.GetQuerySetting();
+            string parameterPrefix = qSetting.ParameterPrefix;
 
             foreach (object parameter in commandParameters)
             {
@@ -369,7 +369,7 @@ namespace Simply.Data.DbCommandExtensions
                     dbParameter.Value = parameter;
                 }
 
-                if (dbParameter == null)
+                if (dbParameter is null)
                     throw new ArgumentNullException(
                         string.Format(DbAppMessages.ParameterCanNotBeNullFormat, nameof(dbParameter))
                          + parameter.ToString());
@@ -394,7 +394,7 @@ namespace Simply.Data.DbCommandExtensions
         [Obsolete("Method is depreated. it will be removed later versions.")]
         public static IDbCommand IncludeCommandParameters(this IDbCommand command, object[] parameters)
         {
-            if (parameters is null || parameters.Length < 1)
+            if (!(parameters?.Any() ?? false))
                 return command;
 
             foreach (object parameter in parameters)

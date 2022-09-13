@@ -484,15 +484,12 @@ namespace Simply.Data.Database
 
             InternalLogHelper.LogCommand(simpleDbCommand, this.LogSetting);
 
-            // TODO : WILL BE CHECKED AND TESTED.
-            // LIST AND BULK INSERT TEST OK.
-
             IDbCommand command = connection.CreateCommand()
                 .SetCommandType(simpleDbCommand.CommandType)
                 .SetCommandText(simpleDbCommand.CommandText)
                 .SetCommandTimeout(simpleDbCommand.CommandTimeout)
                 .SetTransaction(transaction)
-                .IncludeCommandParameters(simpleDbCommand.CommandParameters);
+                .IncludeCommandParameters(simpleDbCommand.CommandParameters, this.QuerySetting);
 
             InternalLogHelper.LogDbCommand(command, this.LogSetting);
 
