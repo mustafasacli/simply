@@ -2,7 +2,6 @@
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
-using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -149,17 +148,17 @@ namespace Simply.Data
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
         public static List<SimpleDbRow> QueryDbRowList(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null,
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null,
             IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             List<SimpleDbRow> simpleDbRowList = database.GetDbRowList(simpleDbCommand, pageInfo, behavior);
             return simpleDbRowList;
         }
@@ -170,16 +169,16 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static List<SimpleDbRow> GetDbRowList(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
-           CommandType? commandType = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             List<SimpleDbRow> simpleDbRowList = database.GetDbRowList(simpleDbCommand, pageInfo, behavior);
             return simpleDbRowList;
         }
@@ -198,17 +197,17 @@ namespace Simply.Data
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<SimpleDbRow>> QueryDbRowListWithResult(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null,
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null,
             IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.GetDbRowListWithResult(simpleDbCommand, pageInfo, behavior);
             return simpleDbRowListResult;
         }
@@ -219,16 +218,16 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowListWithResult(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
-           CommandType? commandType = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.GetDbRowListWithResult(simpleDbCommand, pageInfo, behavior);
             return simpleDbRowListResult;
         }
@@ -247,14 +246,14 @@ namespace Simply.Data
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
         public static List<List<SimpleDbRow>> QueryMultiDbRowList(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null, CommandBehavior? behavior = null)
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             List<List<SimpleDbRow>> multiSimpleDbRowList = database.GetMultiDbRowList(simpleDbCommand, behavior);
             return multiSimpleDbRowList;
         }
@@ -265,14 +264,14 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static List<List<SimpleDbRow>> GetMultiDbRowList(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
-           CommandType? commandType = null, CommandBehavior? behavior = null)
+           ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             List<List<SimpleDbRow>> multiSimpleDbRowList = database.GetMultiDbRowList(simpleDbCommand, behavior);
             return multiSimpleDbRowList;
         }
@@ -291,14 +290,14 @@ namespace Simply.Data
         /// parameterNamePrefix will be set in ICommandSetting property of database instance.
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<List<SimpleDbRow>>> QueryMultiDbRowListWithResult(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null, CommandBehavior? behavior = null)
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = database.GetMultiDbRowListWithResult(simpleDbCommand, behavior);
             return multiSimpleDbRowListResult;
         }
@@ -309,14 +308,14 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static IDbCommandResult<List<List<SimpleDbRow>>> GetMultiDbRowListWithResult(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
-           CommandType? commandType = null, CommandBehavior? behavior = null)
+           ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowList = database.GetMultiDbRowListWithResult(simpleDbCommand, behavior);
             return multiSimpleDbRowList;
         }

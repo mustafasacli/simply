@@ -27,15 +27,12 @@ namespace Simply.EfCore
         /// Initializes a new instance of the <see cref="SimpleEfCoreDatabase"/> class.
         /// </summary>
         /// <param name="dbContext">DbContext instance.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
-        public SimpleEfCoreDatabase(DbContext dbContext,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
+        public SimpleEfCoreDatabase(DbContext dbContext, IQuerySetting querySetting = null)
         {
             logSetting = SimpleLogSetting.New();
             this.connection = dbContext.Database.GetDbConnection();
             ConnectionType = connection.GetDbConnectionType();
-            CommandSetting = commandSetting;
             QuerySetting = querySetting ?? connection.GetQuerySetting();
         }
 
@@ -44,18 +41,11 @@ namespace Simply.EfCore
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="transaction">The transaction.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
-        public SimpleEfCoreDatabase(IDbConnection connection, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
-            : base(connection, transaction, commandSetting, querySetting)
+        public SimpleEfCoreDatabase(IDbConnection connection, 
+            IDbTransaction transaction = null, IQuerySetting querySetting = null)
+            : base(connection, transaction, querySetting)
         {
-            logSetting = SimpleLogSetting.New();
-            this.connection = connection;
-            this.transaction = transaction;
-            CommandSetting = commandSetting;
-            ConnectionType = connection.GetDbConnectionType();
-            QuerySetting = querySetting ?? connection.GetQuerySetting();
         }
 
         /// <summary>
@@ -63,11 +53,10 @@ namespace Simply.EfCore
         /// </summary>
         /// <param name="providerFactory">The provider factory.</param>
         /// <param name="connectionString">The connection string.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
-        public SimpleEfCoreDatabase(DbProviderFactory providerFactory, string connectionString,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
-            : base(providerFactory, connectionString, commandSetting, querySetting)
+        public SimpleEfCoreDatabase(DbProviderFactory providerFactory, 
+            string connectionString, IQuerySetting querySetting = null)
+            : base(providerFactory, connectionString, querySetting)
         { }
     }
 }

@@ -29,12 +29,6 @@ namespace Simply.Data.Interfaces
         DbConnectionTypes ConnectionType { get; }
 
         /// <summary>
-        /// Gets, sets command setting.
-        /// </summary>
-        [Obsolete("This property will be removed.")]
-        ICommandSetting CommandSetting { get; set; }
-
-        /// <summary>
         /// Gets the action for command logging.
         /// </summary>
         Action<SimpleDbCommand> CommandLogAction { get; set; }
@@ -70,20 +64,20 @@ namespace Simply.Data.Interfaces
         /// </summary>
         /// <param name="odbcSqlQuery">The query <see cref="string"/>.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns>Returns simple database command object instance <see cref="SimpleDbCommand" />.</returns>
         SimpleDbCommand BuildSimpleDbCommandForOdbcQuery(string odbcSqlQuery,
-            object[] parameterValues, CommandType? commandType = null, bool setOverratedParametersToOutput = false);
+            object[] parameterValues, ICommandSetting commandSetting = null, bool setOverratedParametersToOutput = false);
 
         /// <summary>
         /// Builds the simple database command for SQL query.
         /// </summary>
         /// <param name="sqlQuery">The SQL query.</param>
         /// <param name="parameterObject">The parameter object.</param>
-        /// <param name="commandType">Type of the command.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns simple database command object instance <see cref="SimpleDbCommand" />.</returns>
-        SimpleDbCommand BuildSimpleDbCommandForQuery(string sqlQuery, object parameterObject, CommandType? commandType = null);
+        SimpleDbCommand BuildSimpleDbCommandForQuery(string sqlQuery, object parameterObject, ICommandSetting commandSetting = null);
 
         /// <summary>
         /// Create IDbCommand instance with database command and db transaction for given db connection.

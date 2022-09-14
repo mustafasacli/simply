@@ -47,12 +47,12 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameters.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static DataSet GetOdbcResultSet(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
+           string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
             return resultSet.Result;
         }
@@ -63,12 +63,12 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">The SQL query.</param>
         /// <param name="parameterObject">Sql command parameters.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns result set in a dataset instance.</returns>
         public static DataSet GetResultSet(this ISimpleDatabase database,
-           string sqlQuery, object parameterObject, CommandType? commandType = null)
+           string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
             return resultSet.Result;
         }

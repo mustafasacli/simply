@@ -4,7 +4,6 @@ using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
-using System;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -47,13 +46,13 @@ namespace Simply.Data
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns last record as object instance.</returns>
         public static T QueryLast<T>(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null) where T : class, new()
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : class, new()
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             IDbCommandResult<T> commandResult = database.QueryLast<T>(simpleDbCommand);
             return commandResult.Result;
         }
@@ -66,13 +65,13 @@ namespace Simply.Data
         /// The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).
         /// </param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns last record as object instance.</returns>
         public static T GetLast<T>(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : class, new()
+           string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<T> commandResult = database.QueryLast<T>(simpleDbCommand);
             return commandResult.Result;
         }
@@ -110,14 +109,14 @@ namespace Simply.Data
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>An asynchronous result that yields a T.</returns>
         public static async Task<T> QueryLastAsync<T>(this ISimpleDatabase database,
-           string sqlQuery, object parameterObject, CommandType? commandType = null) where T : class, new()
+           string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QueryLast<T>(sqlQuery, parameterObject, commandType);
+                return database.QueryLast<T>(sqlQuery, parameterObject, commandSetting);
             });
 
             return await resultTask;
@@ -132,14 +131,14 @@ namespace Simply.Data
         /// The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).
         /// </param>
         /// <param name="parameterValues">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>An asynchronous result that yields a T.</returns>
         public static async Task<T> GetLastAsync<T>(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : class, new()
+           string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.GetLast<T>(odbcSqlQuery, parameterValues, commandType);
+                return database.GetLast<T>(odbcSqlQuery, parameterValues, commandSetting);
             });
 
             return await resultTask;
@@ -172,18 +171,16 @@ namespace Simply.Data
             IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
 
             using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            using (IDataReader dataReader = command.ExecuteDataReader(commandBehavior))
             {
-                using (IDataReader dataReader = command.ExecuteDataReader(commandBehavior))
+                try
                 {
-                    try
-                    {
-                        simpleDbRowResult.OutputParameters = command.GetOutParameters();
-                        simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
-                        simpleDbRowResult.Result = dataReader.LastDbRow(closeAtFinal: true);
-                    }
-                    finally
-                    { dataReader?.CloseIfNot(); }
+                    simpleDbRowResult.OutputParameters = command.GetOutParameters();
+                    simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
+                    simpleDbRowResult.Result = dataReader.LastDbRow(closeAtFinal: true);
                 }
+                finally
+                { dataReader?.CloseIfNot(); }
             }
 
             return simpleDbRowResult;
@@ -203,13 +200,13 @@ namespace Simply.Data
         /// parameterNamePrefix will be set in ICommandSetting instance.
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns last record as SimpleDbRow instance.</returns>
         public static SimpleDbRow QueryLastDbRow(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null)
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             IDbCommandResult<SimpleDbRow> commandResult = database.QueryLastAsDbRow(simpleDbCommand);
             return commandResult.Result;
         }
@@ -222,13 +219,13 @@ namespace Simply.Data
         /// The ODBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ? ).
         /// </param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns last record as SimpleDbRow instance.</returns>
         public static SimpleDbRow GetLastAsDbRow(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
+           string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<SimpleDbRow> commandResult = database.QueryLastAsDbRow(simpleDbCommand);
             return commandResult.Result;
         }

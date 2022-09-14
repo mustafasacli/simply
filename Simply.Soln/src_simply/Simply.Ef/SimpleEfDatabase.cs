@@ -27,15 +27,12 @@ namespace Simply.Ef
         /// Initializes a new instance of the <see cref="SimpleEfDatabase"/> class.
         /// </summary>
         /// <param name="dbContext">DbContext instance.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
-        public SimpleEfDatabase(DbContext dbContext,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
+        public SimpleEfDatabase(DbContext dbContext, IQuerySetting querySetting = null)
         {
             logSetting = SimpleLogSetting.New();
             this.connection = dbContext.Database.Connection;
             ConnectionType = connection.GetDbConnectionType();
-            CommandSetting = commandSetting;
             QuerySetting = querySetting ?? connection.GetQuerySetting();
         }
 
@@ -44,11 +41,10 @@ namespace Simply.Ef
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="transaction">The transaction.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
-        public SimpleEfDatabase(IDbConnection connection, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
-            : base(connection, transaction, commandSetting, querySetting)
+        public SimpleEfDatabase(IDbConnection connection,
+            IDbTransaction transaction = null, IQuerySetting querySetting = null)
+            : base(connection, transaction, querySetting)
         {
         }
 
@@ -57,11 +53,10 @@ namespace Simply.Ef
         /// </summary>
         /// <param name="providerFactory">The provider factory.</param>
         /// <param name="connectionString">The connection string.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
-        public SimpleEfDatabase(DbProviderFactory providerFactory, string connectionString,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
-            : base(providerFactory, connectionString, commandSetting, querySetting)
+        public SimpleEfDatabase(DbProviderFactory providerFactory,
+            string connectionString, IQuerySetting querySetting = null)
+            : base(providerFactory, connectionString, querySetting)
         { }
     }
 }

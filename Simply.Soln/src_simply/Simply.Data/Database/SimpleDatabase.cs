@@ -71,15 +71,13 @@ namespace Simply.Data.Database
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="transaction">The transaction.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
         public SimpleDatabase(IDbConnection connection, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
+            IQuerySetting querySetting = null)
         {
             logSetting = SimpleLogSetting.New();
             this.connection = connection;
             this.transaction = transaction;
-            CommandSetting = commandSetting;
             ConnectionType = connection.GetDbConnectionType();
             QuerySetting = querySetting ?? connection.GetQuerySetting();
         }
@@ -89,15 +87,13 @@ namespace Simply.Data.Database
         /// </summary>
         /// <param name="providerFactory">The provider factory.</param>
         /// <param name="connectionString">The connection string.</param>
-        /// <param name="commandSetting">The command setting.</param>
         /// <param name="querySetting">Query Setting instance.</param>
         public SimpleDatabase(DbProviderFactory providerFactory, string connectionString,
-            ICommandSetting commandSetting = null, IQuerySetting querySetting = null)
+            IQuerySetting querySetting = null)
         {
             logSetting = SimpleLogSetting.New();
             this.connection = providerFactory.CreateConnection();
             this.connection.ConnectionString = connectionString;
-            CommandSetting = commandSetting;
             ConnectionType = connection.GetDbConnectionType();
             QuerySetting = querySetting ?? connection.GetQuerySetting();
         }
@@ -119,13 +115,6 @@ namespace Simply.Data.Database
         /// </value>
         public DbConnectionTypes ConnectionType
         { get; protected set; }
-
-        /// <summary>
-        /// Gets, sets command setting.
-        /// </summary>
-        [Obsolete("This property will be removed.")]
-        public ICommandSetting CommandSetting
-        { get; set; }
 
         /// <summary>
         /// Gets the action for command logging.
@@ -385,12 +374,11 @@ namespace Simply.Data.Database
         /// </summary>
         /// <param name="odbcSqlQuery">The query <see cref="string"/>.</param>
         /// <param name="commandParameters">The commandParameters <see cref="DbCommandParameter[]"/>.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns>Returns database command object instance <see cref="SimpleDbCommand" />.</returns>
-        protected virtual SimpleDbCommand BuildSimpleDbCommandForTranslate(
-            string odbcSqlQuery, DbCommandParameter[] commandParameters,
-            CommandType? commandType = null, bool setOverratedParametersToOutput = false)
+        protected virtual SimpleDbCommand BuildSimpleDbCommandForTranslate(string odbcSqlQuery, 
+            DbCommandParameter[] commandParameters, ICommandSetting commandSetting = null, bool setOverratedParametersToOutput = false)
         {
             string[] queryAndParameters = TranslateOdbcQuery(odbcSqlQuery);
             commandParameters = commandParameters ?? ArrayHelper.Empty<DbCommandParameter>();
@@ -398,8 +386,8 @@ namespace Simply.Data.Database
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand
             {
                 CommandText = queryAndParameters[0],
-                CommandType = commandType,
-                CommandTimeout = this.CommandSetting?.CommandTimeout
+                CommandType = commandSetting?.CommandType,
+                CommandTimeout = commandSetting?.CommandTimeout
             };
             List<string> paramStringArray = queryAndParameters.Skip(1).ToList() ?? ArrayHelper.EmptyList<string>();
 
@@ -444,11 +432,11 @@ namespace Simply.Data.Database
         /// </summary>
         /// <param name="odbcSqlQuery">The query <see cref="string"/>.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns>Returns simple database command object instance <see cref="SimpleDbCommand" />.</returns>
         public virtual SimpleDbCommand BuildSimpleDbCommandForOdbcQuery(string odbcSqlQuery,
-            object[] parameterValues, CommandType? commandType = null, bool setOverratedParametersToOutput = false)
+            object[] parameterValues, ICommandSetting commandSetting = null, bool setOverratedParametersToOutput = false)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
             .Select(p => new DbCommandParameter
@@ -458,7 +446,7 @@ namespace Simply.Data.Database
             }).ToArray() ?? ArrayHelper.Empty<DbCommandParameter>();
 
             SimpleDbCommand simpleDbCommand =
-               BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandType: commandType,
+               BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting,
                setOverratedParametersToOutput: setOverratedParametersToOutput);
 
             return simpleDbCommand;
@@ -469,19 +457,19 @@ namespace Simply.Data.Database
         /// </summary>
         /// <param name="sqlQuery">The SQL query.</param>
         /// <param name="parameterObject">The parameter object.</param>
-        /// <param name="commandType">Type of the command.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns simple database command object instance <see cref="SimpleDbCommand" />.</returns>
         public virtual SimpleDbCommand BuildSimpleDbCommandForQuery(string sqlQuery,
-            object parameterObject, CommandType? commandType = null)
+            object parameterObject, ICommandSetting commandSetting = null)
         {
             List<DbCommandParameter> parameters = TranslateParametersFromObject(parameterObject);
 
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
             {
                 CommandText = sqlQuery,
-                CommandTimeout = this.CommandSetting?.CommandTimeout,
-                ParameterNamePrefix = this.CommandSetting?.ParameterNamePrefix,
-                CommandType = commandType ?? CommandType.Text,
+                CommandTimeout = commandSetting?.CommandTimeout,
+                ParameterNamePrefix = commandSetting?.ParameterNamePrefix,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
             };
 
             simpleDbCommand.RecompileQuery(this.QuerySetting, parameters);

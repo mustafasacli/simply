@@ -53,20 +53,20 @@ metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL 
 10-09-2022 Notlar;
 - DbFirstOperator, DbLastOperator ve diðer sýnýflarda async metotlar eklenecek.(DONE)
 - SimpleDatabase yapýsý kuruldu. Metodlarýn çoðu ona göre düzenlenecek.(DONE)
-- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT SURE)
+- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT CERTAIN)
 - DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
 metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL BE TESTED.)
 
 11-09-2022 Notlar;
-- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT SURE)
+- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT CERTAIN)
 - DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
 metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL BE TESTED.)
 
 14-09-2022 Notlar;
 - object XXX object[] parametrelerini alan metotlarýn isimlerinde düzenlemeye gidilecek. (ÇOK ÖNEMLÝ)
-- SimpleDatabase sýnýfýndan ve interfaceden CommandSetting property kaldýrýlacak. ICommandSetting nesnesi metotlara parametre olarak gönderielecek.
+- SimpleDatabase sýnýfýndan ve interfaceden CommandSetting property kaldýrýlacak. ICommandSetting nesnesi metotlara parametre olarak gönderilecek.(DONE)
 - SimpleDatabase Log yapýsý en baþtan düzenlenecek.
 - IQuerySetting yapýsý yeniden düzenlenecek. YugobyteDb için düzenleme yapýlacak.
-- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT SURE)
+- LogSetting ve PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT CERTAIN)
 - DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
 metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL BE TESTED.)

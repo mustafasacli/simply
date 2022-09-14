@@ -16,13 +16,13 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">Sql Query<see cref="string"/>.</param>
         /// <param name="parameterObject">parameter Value object <see cref="object"/>.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this ISimpleDatabase database, string sqlQuery,
-            object parameterObject, CommandType? commandType = null)
+            object parameterObject, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             bool any = database.Any(simpleDbCommand);
             return any;
         }
@@ -57,13 +57,13 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The odbcSqlQuery <see cref="string"/>.</param>
         /// <param name="parameterValues">The parameterValues <see cref="object[]"/>.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this ISimpleDatabase database, string odbcSqlQuery,
-            object[] parameterValues, CommandType? commandType = null)
+            object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             bool any = database.Any(simpleDbCommand);
             return any;
         }

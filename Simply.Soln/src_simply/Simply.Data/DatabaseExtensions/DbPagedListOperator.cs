@@ -1,6 +1,5 @@
 ﻿using Simply.Data.Interfaces;
 using Simply.Data.Objects;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -28,16 +27,16 @@ namespace Simply.Data
         /// </param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns as object list async.</returns>
         public static async Task<List<T>> QueryListAsync<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, IPageInfo pageInfo = null,
-            CommandType? commandType = null, CommandBehavior? behavior = null) where T : class, new()
+            ICommandSetting commandSetting = null, CommandBehavior? behavior = null) where T : class, new()
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QueryList<T>(sqlQuery, parameterObject, commandType, pageInfo, behavior);
+                return database.QueryList<T>(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
             });
 
             return await resultTask;
@@ -49,18 +48,18 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
         public static async Task<List<T>> GetListAsync<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
-           CommandType? commandType = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.GetList<T>(odbcSqlQuery, parameterValues, commandType, pageInfo, behavior);
+                return database.GetList<T>(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
             });
 
             return await resultTask;

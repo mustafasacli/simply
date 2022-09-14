@@ -2,7 +2,6 @@
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
-using System;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -64,13 +63,13 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">Sql query.</param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns execute scalar result as object.</returns>
         public static object ExecuteScalar(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null)
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
             return commandResult.Result;
         }
@@ -82,12 +81,12 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">The SQL text.</param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns execute scalar result as T instance.</returns>
         public static T ExecuteScalarAs<T>(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null) where T : struct
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : struct
         {
-            object value = database.ExecuteScalar(sqlQuery, parameterObject, commandType);
+            object value = database.ExecuteScalar(sqlQuery, parameterObject, commandSetting);
             return !value.IsNullOrDbNull() ? (T)value : default;
         }
 
@@ -97,13 +96,13 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameters.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns execute scalar result as object.</returns>
         public static object ExecuteScalarOdbc(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null)
+           string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
             return commandResult.Result;
         }
@@ -114,12 +113,12 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameters.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
         public static T ExecuteScalarOdbcAs<T>(this ISimpleDatabase database,
-            string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : struct
+            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
         {
-            object value = database.ExecuteScalarOdbc(odbcSqlQuery, parameterValues, commandType);
+            object value = database.ExecuteScalarOdbc(odbcSqlQuery, parameterValues, commandSetting);
             return !value.IsNullOrDbNull() ? (T)value : default;
         }
 
@@ -131,14 +130,14 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
         /// <param name="parameterValues">Sql command parameters.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
         public static async Task<T> ExecuteScalarOdbcAsnc<T>(this ISimpleDatabase database,
-            string odbcSqlQuery, object[] parameterValues, CommandType? commandType = null) where T : struct
+            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
         {
             return await Task.Factory.StartNew(() =>
             {
-                return database.ExecuteScalarOdbcAs<T>(odbcSqlQuery, parameterValues, commandType);
+                return database.ExecuteScalarOdbcAs<T>(odbcSqlQuery, parameterValues, commandSetting);
             });
         }
 
@@ -149,14 +148,14 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">Sql query.</param>
         /// <param name="parameterObject">object contains db parameters as property.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
         public static async Task<T> ExecuteScalarAsAsync<T>(this ISimpleDatabase database,
-            string sqlQuery, object parameterObject, CommandType? commandType = null) where T : struct
+            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : struct
         {
             return await Task.Factory.StartNew(() =>
             {
-                return database.ExecuteScalarAs<T>(sqlQuery, parameterObject, commandType);
+                return database.ExecuteScalarAs<T>(sqlQuery, parameterObject, commandSetting);
             });
         }
 

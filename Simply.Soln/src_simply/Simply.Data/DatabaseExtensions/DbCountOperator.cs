@@ -1,7 +1,6 @@
 ﻿using Simply.Common;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
-using System.Data;
 
 namespace Simply.Data
 {
@@ -42,13 +41,13 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">Sql query <see cref="string"/>.</param>
         /// <param name="parameterObject">object which has parameters as property <see cref="object"/>.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
         public static int Count(this ISimpleDatabase database, string sqlQuery,
-            object parameterObject, CommandType? commandType = null)
+            object parameterObject, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             int result = database.Count(simpleDbCommand);
             return result;
         }
@@ -59,13 +58,13 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">Sql query <see cref="string"/>.</param>
         /// <param name="parameterObject">object which has parameters as property <see cref="object"/>.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
         public static long CountLong(this ISimpleDatabase database, string sqlQuery,
-            object parameterObject, CommandType? commandType = null)
+            object parameterObject, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandType);
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
             long result = database.CountLong(simpleDbCommand);
             return result;
         }
@@ -78,13 +77,13 @@ namespace Simply.Data
         /// The ODBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ? AND COLUMN3 = TRUNC(?)
         /// </param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
         public static int Count(this ISimpleDatabase database, string odbcSqlQuery,
-            object[] parameterValues, CommandType? commandType = null)
+            object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             int result = database.Count(simpleDbCommand);
             return result;
         }
@@ -97,13 +96,13 @@ namespace Simply.Data
         /// The ODBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ? AND COLUMN3 = TRUNC(?)
         /// </param>
         /// <param name="parameterValues">Sql command parameter values.</param>
-        /// <param name="commandType">The db command type <see cref="Nullable{CommandType}"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns count value as long.</returns>
         public static long CountLong(this ISimpleDatabase database, string odbcSqlQuery,
-            object[] parameterValues, CommandType? commandType = null)
+            object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandType);
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             long result = database.CountLong(simpleDbCommand);
             return result;
         }
