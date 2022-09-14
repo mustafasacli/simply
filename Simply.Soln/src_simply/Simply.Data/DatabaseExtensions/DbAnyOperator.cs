@@ -38,14 +38,12 @@ namespace Simply.Data
             bool any;
 
             using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            using (IDataReader dataReader = command.ExecuteDataReader())
             {
-                using (IDataReader dataReader = command.ExecuteDataReader())
-                {
-                    try
-                    { any = dataReader.Any(closeAtFinal: true); }
-                    finally
-                    { dataReader?.CloseIfNot(); }
-                }
+                try
+                { any = dataReader.Any(closeAtFinal: true); }
+                finally
+                { dataReader?.CloseIfNot(); }
             }
 
             return any;
@@ -59,7 +57,7 @@ namespace Simply.Data
         /// <param name="parameterValues">The parameterValues <see cref="object[]"/>.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        public static bool Any(this ISimpleDatabase database, string odbcSqlQuery,
+        public static bool AnyOdbc(this ISimpleDatabase database, string odbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =

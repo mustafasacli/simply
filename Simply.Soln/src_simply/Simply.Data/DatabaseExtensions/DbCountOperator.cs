@@ -17,8 +17,8 @@ namespace Simply.Data
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
         public static int Count(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
-            int result = commandResult.Result.ToInt();
+            object commandResult = database.ExecuteScalar(simpleDbCommand);
+            int result = commandResult.ToInt();
             return result;
         }
 
@@ -30,8 +30,8 @@ namespace Simply.Data
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
         public static long CountLong(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbCommandResult<object> commandResult = database.ExecuteScalarQuery(simpleDbCommand);
-            long result = commandResult.Result.ToLong();
+            object commandResult = database.ExecuteScalar(simpleDbCommand);
+            long result = commandResult.ToLong();
             return result;
         }
 
@@ -79,7 +79,7 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
-        public static int Count(this ISimpleDatabase database, string odbcSqlQuery,
+        public static int CountOdbc(this ISimpleDatabase database, string odbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
@@ -98,7 +98,7 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns count value as long.</returns>
-        public static long CountLong(this ISimpleDatabase database, string odbcSqlQuery,
+        public static long CountLongOdbc(this ISimpleDatabase database, string odbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =

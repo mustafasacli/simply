@@ -20,16 +20,12 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <returns>Returns single record as dynamic object instance.</returns>
-        public static IDbCommandResult<T> QuerySingle<T>(
+        public static T Single<T>(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand) where T : class, new()
         {
-            IDbCommandResult<SimpleDbRow> simpleDbRowResult = database.QuerySingleAsDbRow(simpleDbCommand);
-
-            IDbCommandResult<T> instanceResult = new DbCommandResult<T>();
-            instanceResult.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
-            instanceResult.AdditionalValues = simpleDbRowResult.AdditionalValues;
-
-            return instanceResult;
+            SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
+            T instance = simpleRow.ConvertRowTo<T>();
+            return instance;
         }
 
         /// <summary>
@@ -49,12 +45,12 @@ namespace Simply.Data
         /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns single record as object instance.</returns>
-        public static T QuerySingle<T>(this ISimpleDatabase database,
+        public static T Single<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : class, new()
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            IDbCommandResult<T> commandResult = database.QuerySingle<T>(simpleDbCommand);
-            return commandResult.Result;
+            T instance = database.Single<T>(simpleDbCommand);
+            return instance;
         }
 
         /// <summary>
@@ -65,41 +61,39 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns single record as object instance.</returns>
-        public static T GetSingle<T>(this ISimpleDatabase database,
+        public static T SingleOdbc<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<T> commandResult = database.QuerySingle<T>(simpleDbCommand);
-            return commandResult.Result;
+            T instance = database.Single<T>(simpleDbCommand);
+            return instance;
         }
 
         #region [ SimpleDbRow methods ]
 
         /// <summary>
-        /// Get Single Row of the Resultset as dynamic object instance.
+        /// Get Single Row of the Resultset as simple db row instance.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
-        /// <returns>Returns single record as dynamic object instance.</returns>
-        public static IDbCommandResult<SimpleDbRow> QuerySingleAsDbRow(this ISimpleDatabase database,
+        /// <returns>Returns single record as simple db row instance.</returns>
+        public static SimpleDbRow SingleRow(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand)
         {
-            IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
+            SimpleDbRow simpleRow;
 
             using (IDbCommand command = database.CreateCommand(simpleDbCommand))
             using (IDataReader dataReader = command.ExecuteDataReader())
             {
                 try
                 {
-                    simpleDbRowResult.OutputParameters = command.GetOutParameters();
-                    simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
-                    simpleDbRowResult.Result = dataReader.SingleDbRow();
+                    simpleRow = dataReader.SingleDbRow();
                 }
                 finally
                 { dataReader?.CloseIfNot(); }
             }
 
-            return simpleDbRowResult;
+            return simpleRow;
         }
 
         /// <summary>
@@ -118,12 +112,12 @@ namespace Simply.Data
         /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns single record as dynamic object.</returns>
-        public static SimpleDbRow QuerySingleAsDbRow(this ISimpleDatabase database,
+        public static SimpleDbRow SingleRow(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand =
                 database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            SimpleDbRow simpleDbRow = database.QuerySingleAsDbRow(simpleDbCommand).Result;
+            SimpleDbRow simpleDbRow = database.SingleRow(simpleDbCommand);
             return simpleDbRow;
         }
 
@@ -135,12 +129,12 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>Returns single record as object instance.</returns>
-        public static SimpleDbRow GetSingleAsDbRow(this ISimpleDatabase database,
+        public static SimpleDbRow SingleOdbcRow(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<SimpleDbRow> commandResult = database.QuerySingleAsDbRow(simpleDbCommand);
-            return commandResult.Result;
+            SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
+            return simpleRow;
         }
 
         #endregion [ SimpleDbRow methods ]
@@ -153,12 +147,12 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
         /// <returns>An asynchronous result that yields the single as object instance.</returns>
-        public static async Task<T> QuerySingleAsync<T>(this ISimpleDatabase database,
+        public static async Task<T> SingleAsync<T>(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QuerySingle<T>(simpleDbCommand).Result;
+                return database.Single<T>(simpleDbCommand);
             });
 
             return await resultTask;
@@ -184,7 +178,7 @@ namespace Simply.Data
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QuerySingle<T>(sqlQuery, parameterObject, commandSetting);
+                return database.Single<T>(sqlQuery, parameterObject, commandSetting);
             });
 
             return await resultTask;
@@ -198,17 +192,44 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>s
         /// <returns>An asynchronous result that yields the single as object instance.</returns>
-        public static async Task<T> GetSingleAsync<T>(this ISimpleDatabase database,
+        public static async Task<T> SingleOdbcAsync<T>(this ISimpleDatabase database,
             string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.GetSingle<T>(odbcSqlQuery, parameterValues, commandSetting);
+                return database.SingleOdbc<T>(odbcSqlQuery, parameterValues, commandSetting);
             });
 
             return await resultTask;
         }
 
         #endregion [ Task methods ]
+
+        /// <summary>
+        /// Get Single Row of the Resultset as simple db row instance.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
+        /// <returns>Returns single record as simple db row instance.</returns>
+        public static IDbCommandResult<SimpleDbRow> SingleRowResult(this ISimpleDatabase database,
+            SimpleDbCommand simpleDbCommand)
+        {
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
+
+            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            using (IDataReader dataReader = command.ExecuteDataReader())
+            {
+                try
+                {
+                    simpleDbRowResult.OutputParameters = command.GetOutParameters();
+                    simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
+                    simpleDbRowResult.Result = dataReader.SingleDbRow();
+                }
+                finally
+                { dataReader?.CloseIfNot(); }
+            }
+
+            return simpleDbRowResult;
+        }
     }
 }
