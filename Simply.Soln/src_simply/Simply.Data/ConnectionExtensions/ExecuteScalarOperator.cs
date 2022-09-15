@@ -3,6 +3,7 @@ using Simply.Data.DbCommandExtensions;
 using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,11 +23,11 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as object.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static object ExecuteScalar(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -40,13 +41,12 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             object result;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 
@@ -62,14 +62,14 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as T instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T ExecuteScalarAs<T>(this IDbConnection connection,
            string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null) where T : struct
+            ICommandSetting commandSetting = null) where T : struct
         {
             object value =
-                ExecuteScalar(connection, sqlText, obj, transaction, commandSetting, logSetting: logSetting);
+                ExecuteScalar(connection, sqlText, obj, transaction, commandSetting);
 
             return !value.IsNullOrDbNull() ? (T)value : default;
         }
@@ -82,11 +82,11 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as object.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static object QueryExecuteScalar(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -97,13 +97,12 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(parameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             object result;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 
@@ -116,18 +115,17 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as object.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<object> ExecuteScalarQuery(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
             IDbCommandResult<object> commandResult;
 
             using (IDbCommand command =
                     connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 commandResult = new DbCommandResult<object>();
                 commandResult.Result = command.ExecuteScalar();
                 commandResult.OutputParameters = command.GetOutParameters();
@@ -143,13 +141,13 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<T> ExecuteScalarQueryAs<T>(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             IDbCommandResult<object> commandResult =
-                ExecuteScalarQuery(connection, simpleDbCommand, transaction, logSetting: logSetting)
+                ExecuteScalarQuery(connection, simpleDbCommand, transaction)
                 ?? new DbCommandResult<object>();
 
             T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
@@ -170,11 +168,11 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameters.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as object.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static object ExecuteScalarOdbc(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
-           IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -186,13 +184,12 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandSetting);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             object result;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 
@@ -207,11 +204,11 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameters.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T ExecuteScalarOdbcAs<T>(
             this IDbConnection connection, string odbcSqlQuery, object[] parameterValues,
-           IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null) where T : struct
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null) where T : struct
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -223,13 +220,12 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(
                     odbcSqlQuery, commandParameters, commandSetting);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             object result;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteScalar();
             }
 
@@ -247,17 +243,17 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<T> ExecuteScalarAsAsync<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null) where T : struct
+            ICommandSetting commandSetting = null) where T : struct
         {
             return await Task.Factory.StartNew(() =>
             {
                 return
                 ExecuteScalarAs<T>(connection, sqlText, obj,
-                transaction, commandSetting, logSetting: logSetting);
+                transaction, commandSetting);
             });
         }
 
@@ -269,16 +265,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute scalar.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<object> ExecuteScalarAsync(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             Task<object> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteScalar(connection, sql, obj, transaction, commandSetting, logSetting: logSetting);
+                ExecuteScalar(connection, sql, obj, transaction, commandSetting);
             });
 
             return await resultTask;

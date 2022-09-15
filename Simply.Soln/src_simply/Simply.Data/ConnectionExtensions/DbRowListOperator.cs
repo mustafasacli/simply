@@ -1,9 +1,9 @@
 ﻿using Simply.Common;
 using Simply.Common.Objects;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -31,11 +31,11 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<List<SimpleDbRow>> QueryMultiDbRowList(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
@@ -53,7 +53,7 @@ namespace Simply.Data
             simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult =
-                connection.GetMultiDbRowListQuery(simpleDbCommand, transaction, logSetting: logSetting);
+                connection.GetMultiDbRowListQuery(simpleDbCommand, transaction);
             return multiSimpleDbRowListResult.Result;
         }
 
@@ -64,21 +64,17 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowListQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
-            CommandBehavior? behavior = null, ILogSetting logSetting = null)
+            CommandBehavior? behavior = null)
         {
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult;
-
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command,logSetting);
-
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
                     simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
@@ -98,21 +94,17 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns multi SimpleDbRow list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<List<List<SimpleDbRow>>> GetMultiDbRowListQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
-            CommandBehavior? behavior = null, ILogSetting logSetting = null)
+            CommandBehavior? behavior = null)
         {
             IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult;
-
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
-
                 using (IDataReader reader = command.ExecuteDataReader(behavior))
                 {
                     multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();
@@ -133,11 +125,11 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<SimpleDbRow> GetListAsDbRow(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+           ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -150,7 +142,7 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                connection.GetDbRowListQuery(simpleDbCommand, transaction, logSetting: logSetting);
+                connection.GetDbRowListQuery(simpleDbCommand, transaction);
 
             List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
             return simpleDbRowList;

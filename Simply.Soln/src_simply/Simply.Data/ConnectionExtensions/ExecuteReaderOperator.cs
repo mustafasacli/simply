@@ -3,6 +3,7 @@ using Simply.Data.DbCommandExtensions;
 using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -21,23 +22,21 @@ namespace Simply.Data
         /// <param name="outputParameters"></param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">Db Command Behavior.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDataReader ExecuteReaderQuery(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             out DbCommandParameter[] outputParameters, IDbTransaction transaction = null,
-            CommandBehavior? commandBehavior = null, ILogSetting logSetting = null)
+            CommandBehavior? commandBehavior = null)
         {
             outputParameters = ArrayHelper.Empty<DbCommandParameter>();
             IDataReader dataReader;
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
-
                 if (!commandBehavior.HasValue)
                     dataReader = command.ExecuteReader();
                 else
@@ -59,12 +58,12 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
         /// <param name="commandTimeout">db command timeout(optional).</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDataReader ExecuteReader(this IDbConnection connection,
             string sqlQuery, object parameterObject, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null,
-            int? commandTimeout = null, ILogSetting logSetting = null)
+            int? commandTimeout = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(parameterObject);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -75,14 +74,12 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(parameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             IDataReader dataReader;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
-
                 if (!commandBehavior.HasValue)
                     dataReader = command.ExecuteReader();
                 else
@@ -101,12 +98,11 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDataReader ExecuteReader(this IDbConnection connection,
             string sqlQuery, object parameterObject, IDbTransaction transaction = null,
-             ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null,
-             ILogSetting logSetting = null)
+             ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(parameterObject);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -120,14 +116,12 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), parameterObject);
             simpleDbCommand.AddCommandParameters(parameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             IDataReader dataReader;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
-
                 if (!commandBehavior.HasValue)
                     dataReader = command.ExecuteReader();
                 else
@@ -148,18 +142,17 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">Db Command Behavior</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute reader.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<IDataReader> ExecuteReaderAsync(this IDbConnection connection,
             string sqlQuery, object parameterObject, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null,
-            ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null)
         {
             Task<IDataReader> resultTask = Task.Factory.StartNew(() =>
             {
                 return
                 ExecuteReader(connection, sqlQuery, parameterObject, transaction,
-                commandSetting, commandBehavior, logSetting);
+                commandSetting, commandBehavior);
             });
 
             return await resultTask;

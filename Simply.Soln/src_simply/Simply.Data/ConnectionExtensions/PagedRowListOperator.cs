@@ -5,6 +5,7 @@ using Simply.Data.DbCommandExtensions;
 using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -37,11 +38,11 @@ namespace Simply.Data
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.
         /// </param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<SimpleDbRow> QueryDbRowList(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
@@ -59,11 +60,11 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 GetDbRowList(connection, simpleDbCommand,
-                transaction, pageInfo, logSetting: logSetting);
+                transaction, pageInfo);
             List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
 
             return simpleDbRowList;
@@ -76,11 +77,11 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowList(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
+            IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
 
@@ -103,13 +104,11 @@ namespace Simply.Data
                 }
             }
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
-
                 using (IDataReader reader = command.ExecuteReader())
                 {
                     simpleDbRowListResult.OutputParameters = command.GetOutParameters();
@@ -135,11 +134,11 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns as SimpleDbRow object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<SimpleDbRow> SelectDbRowList(this IDbConnection connection,
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
         {
             DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -154,7 +153,7 @@ namespace Simply.Data
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 GetDbRowList(connection, simpleDbCommand, transaction,
-                pageInfo, logSetting: logSetting);
+                pageInfo);
 
             List<SimpleDbRow> simpleDbRowList = simpleDbRowListResult.Result;
             return simpleDbRowList;

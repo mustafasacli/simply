@@ -1,7 +1,6 @@
 ﻿using Simply.Common;
 using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -22,10 +21,10 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns result set in a dataset instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<DataSet> GetResultSetQuery(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
@@ -36,7 +35,6 @@ namespace Simply.Data
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 dataAdapter.SelectCommand = (DbCommand)command;
                 DataSet dataSet = new DataSet();
                 result.ExecutionResult = dataAdapter.Fill(dataSet);
@@ -55,11 +53,12 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameters.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
+
         /// <returns>Returns result set in a dataset instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static DataSet GetOdbcResultSet(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
-           IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+           IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -73,7 +72,7 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery, commandParameters, commandSetting);
 
             IDbCommandResult<DataSet> resultSet =
-                GetResultSetQuery(connection, simpleDbCommand, transaction, logSetting: logSetting);
+                GetResultSetQuery(connection, simpleDbCommand, transaction);
             return resultSet.Result;
         }
 
@@ -84,11 +83,11 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns dynamic object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<DataTable> GetResultSet(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
+            IDbTransaction transaction = null, IPageInfo pageInfo = null)
         {
             IDbCommandResult<DataTable> dataTableResult = new DbCommandResult<DataTable>();
 
@@ -112,7 +111,7 @@ namespace Simply.Data
             }
 
             IDbCommandResult<DataSet> tempResultSet =
-                GetResultSetQuery(connection, simpleDbCommand, transaction, logSetting: logSetting);
+                GetResultSetQuery(connection, simpleDbCommand, transaction);
             dataTableResult = new DbCommandResult<DataTable>
             {
                 ExecutionResult = tempResultSet.ExecutionResult,

@@ -2,6 +2,7 @@
 using Simply.Common.Objects;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,11 +31,11 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns single record as object instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T QuerySingle<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null) where T : class, new()
+            ICommandSetting commandSetting = null) where T : class, new()
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
@@ -52,8 +53,8 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            IDbCommandResult<SimpleDbRow> commandResult = 
-                connection.QuerySingleAsDbRow(simpleDbCommand, transaction, logSetting: logSetting);
+            IDbCommandResult<SimpleDbRow> commandResult =
+                connection.QuerySingleAsDbRow(simpleDbCommand, transaction);
             T instance = commandResult.Result.ConvertRowTo<T>();
             return instance;
         }
@@ -65,14 +66,15 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
-        /// <param name="logSetting">Log Setting</param>
+
         /// <returns>Returns single record as dynamic object instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<T> QuerySingle<T>(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null, ILogSetting logSetting = null) where T : class, new()
+            IDbTransaction transaction = null) where T : class, new()
         {
-            IDbCommandResult<SimpleDbRow> simpleDbRowResult = 
-                connection.QuerySingleAsDbRow(simpleDbCommand, transaction, logSetting: logSetting);
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult =
+                connection.QuerySingleAsDbRow(simpleDbCommand, transaction);
 
             IDbCommandResult<T> instanceResult = new DbCommandResult<T>();
             instanceResult.Result = simpleDbRowResult.Result.ConvertRowTo<T>();
@@ -88,11 +90,11 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns single record as object instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T GetSingle<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, ILogSetting logSetting = null) where T : class
+           ICommandSetting commandSetting = null) where T : class
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter { Value = p })
@@ -100,8 +102,8 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand = connection.BuildSimpleDbCommandForTranslate(
                 odbcSqlQuery, commandParameters, commandSetting);
 
-            IDbCommandResult<SimpleDbRow> simpleDbRowResult = 
-                QuerySingleAsDbRow(connection, simpleDbCommand, transaction, logSetting: logSetting);
+            IDbCommandResult<SimpleDbRow> simpleDbRowResult =
+                QuerySingleAsDbRow(connection, simpleDbCommand, transaction);
             T instance = simpleDbRowResult.Result.ConvertRowTo<T>();
             return instance;
         }
@@ -122,16 +124,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the single as dynamic.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<SimpleDbRow> QuerySingleDynamicAsync(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             Task<SimpleDbRow> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                connection.QuerySingleAsDbRow(sqlText, obj, transaction, commandSetting, logSetting: logSetting);
+                connection.QuerySingleAsDbRow(sqlText, obj, transaction, commandSetting);
             });
 
             return await resultTask;
@@ -152,16 +154,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields a T.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<T> SingleAsync<T>(this IDbConnection connection,
            string sqlText, object obj, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, ILogSetting logSetting = null) where T : class, new()
+           ICommandSetting commandSetting = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
                 return
-                connection.QuerySingle<T>(sqlText, obj, transaction, commandSetting, logSetting: logSetting);
+                connection.QuerySingle<T>(sqlText, obj, transaction, commandSetting);
             });
 
             return await resultTask;
@@ -187,11 +189,11 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns single record as dynamic object.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static SimpleDbRow QuerySingleAsDbRow(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
@@ -206,8 +208,8 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            SimpleDbRow simpleDbRow = 
-                connection.QuerySingleAsDbRow(simpleDbCommand, transaction, logSetting: logSetting).Result;
+            SimpleDbRow simpleDbRow =
+                connection.QuerySingleAsDbRow(simpleDbCommand, transaction).Result;
             return simpleDbRow;
         }
 
@@ -217,10 +219,10 @@ namespace Simply.Data
         /// <param name="connection">Database connection.</param>
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns single record as dynamic object instance.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<SimpleDbRow> QuerySingleAsDbRow(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
             IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
 
@@ -231,7 +233,7 @@ namespace Simply.Data
                 DbCommandParameter[] outputValues;
 
                 reader = connection.ExecuteReaderQuery(
-                    simpleDbCommand, out outputValues, transaction, commandBehavior: null, logSetting: logSetting);
+                    simpleDbCommand, out outputValues, transaction, commandBehavior: null);
 
                 simpleDbRowResult.OutputParameters = outputValues;
                 simpleDbRowResult.Result = reader.SingleDbRow();

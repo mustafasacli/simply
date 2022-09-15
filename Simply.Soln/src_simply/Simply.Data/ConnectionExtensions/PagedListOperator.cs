@@ -2,6 +2,7 @@
 using Simply.Common.Objects;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -34,10 +35,10 @@ namespace Simply.Data
         /// <param name="commandSetting">Command setting</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
         /// <returns>Returns as object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<T> QueryList<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
-            ILogSetting logSetting = null) where T : class, new()
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
         {
             DbCommandParameter[] commandParameters = connection.TranslateParametersFromObject(obj);
             IQuerySetting querySetting = connection.GetQuerySetting();
@@ -56,7 +57,7 @@ namespace Simply.Data
             simpleDbCommand.AddCommandParameters(commandParameters);
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo, logSetting: logSetting);
+                PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction, pageInfo);
 
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;
@@ -71,16 +72,17 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
         /// <returns>Returns as object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<List<T>> GetList<T>(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
-            IDbTransaction transaction = null, IPageInfo pageInfo = null, ILogSetting logSetting = null)
+            IDbTransaction transaction = null, IPageInfo pageInfo = null)
             where T : class, new()
         {
             IDbCommandResult<List<T>> instanceListResult = new DbCommandResult<List<T>>();
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 PagedRowListOperator.GetDbRowList(connection, simpleDbCommand, transaction,
-                pageInfo, logSetting: logSetting);
+                pageInfo);
 
             instanceListResult.Result =
                 simpleDbRowListResult.Result.ConvertRowsToList<T>()
@@ -100,9 +102,10 @@ namespace Simply.Data
         /// <param name="commandSetting">Command setting</param>
         /// <param name="transaction">Database transaction.</param>
         /// <returns>Returns as object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<T> SelectList<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null) where T : class
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
         {
             DbCommandParameter[] commandParameters = (values ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -117,7 +120,7 @@ namespace Simply.Data
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 PagedRowListOperator.GetDbRowList(connection, simpleDbCommand,
-                transaction, pageInfo, logSetting: logSetting);
+                transaction, pageInfo);
 
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;

@@ -2,6 +2,7 @@
 using Simply.Common.Objects;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -25,9 +26,10 @@ namespace Simply.Data
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
         /// <returns>Returns as object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<T> GetList<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, ILogSetting logSetting = null) where T : class
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -42,7 +44,7 @@ namespace Simply.Data
 
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 PagedRowListOperator.GetDbRowList(connection, simpleDbCommand,
-                transaction, pageInfo, logSetting: logSetting);
+                transaction, pageInfo);
 
             List<T> instanceList = simpleDbRowListResult.Result.ConvertRowsToList<T>();
             return instanceList;
@@ -67,16 +69,16 @@ namespace Simply.Data
         /// <param name="commandSetting">Command setting</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
         /// <returns>Returns as object list.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, IPageInfo pageInfo = null,
-            ILogSetting logSetting = null) where T : class, new()
+            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {
                 return
                 connection.QueryList<T>(sqlText, obj,
-                transaction, commandSetting, pageInfo, logSetting: logSetting);
+                transaction, commandSetting, pageInfo);
             });
 
             return await resultTask;

@@ -3,6 +3,7 @@ using Simply.Data.DbCommandExtensions;
 using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,10 +23,10 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns exection result as int.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static int Execute(this IDbConnection connection, string sqlQuery,
-            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] parameters = connection.TranslateParametersFromObject(obj);
             SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
@@ -39,13 +40,12 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             int result;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 result = command.ExecuteNonQuery();
             }
 
@@ -60,13 +60,13 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as long.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static long ExecuteAsLong(this IDbConnection connection, string sqlQuery,
-            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            object obj, IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             long value =
-                Execute(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
+                Execute(connection, sqlQuery, obj, transaction, commandSetting);
 
             return value;
         }
@@ -79,14 +79,14 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as decimal.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static decimal ExecuteAsDecimal(this IDbConnection connection,
            string sqlQuery, object obj, IDbTransaction transaction = null,
-           ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+           ICommandSetting commandSetting = null)
         {
             decimal value =
-                Execute(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
+                Execute(connection, sqlQuery, obj, transaction, commandSetting);
 
             return value;
         }
@@ -97,18 +97,17 @@ namespace Simply.Data
         /// <param name="connection">Database connection <see cref="IDbConnection"/></param>
         /// <param name="simpleDbCommand">Db database command <see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as int. <see cref="IDbCommandResult{System.Int32}"/></returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<int> ExecuteQuery(this IDbConnection connection,
-            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null, ILogSetting logSetting = null)
+            SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
             IDbCommandResult<int> commandResult = new DbCommandResult<int>(-1);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 commandResult.ExecutionResult = command.ExecuteNonQuery();
                 commandResult.Result = commandResult.ExecutionResult;
                 commandResult.OutputParameters = command.GetOutParameters();
@@ -125,11 +124,11 @@ namespace Simply.Data
         /// <param name="parameterValues">Sql command parameters.</param>
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>Returns execution result as int.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static int ExecuteAsOdbc(this IDbConnection connection,
             string odbcSqlQuery, object[] parameterValues,
-            IDbTransaction transaction = null, ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
             DbCommandParameter[] commandParameters = (parameterValues ?? ArrayHelper.Empty<object>())
                 .Select(p => new DbCommandParameter
@@ -143,13 +142,12 @@ namespace Simply.Data
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandSetting);
 
-            InternalLogHelper.LogCommand(simpleDbCommand, logSetting);
+            InternalLogHelper.LogCommand(simpleDbCommand);
 
             int executeResult;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
             {
-                InternalLogHelper.LogDbCommand(command, logSetting);
                 executeResult = command.ExecuteNonQuery();
             }
 
@@ -166,16 +164,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) The transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<int> ExecuteAsync(this IDbConnection connection,
             string sqlQuery, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return Execute(connection,
-                    sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
+                    sqlQuery, obj, transaction, commandSetting);
             });
         }
 
@@ -188,16 +186,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<long> ExecuteAsLongAsync(this IDbConnection connection,
             string sqlQuery, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteAsLong(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
+                ExecuteAsLong(connection, sqlQuery, obj, transaction, commandSetting);
             });
         }
 
@@ -210,16 +208,16 @@ namespace Simply.Data
         /// <param name="obj">object contains db parameters as property.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
-        /// <param name="logSetting">Log Setting</param>
         /// <returns>An asynchronous result that yields the execute.</returns>
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<decimal> ExecuteAsDecimalAsync(this IDbConnection connection,
             string sqlQuery, object obj, IDbTransaction transaction = null,
-            ICommandSetting commandSetting = null, ILogSetting logSetting = null)
+            ICommandSetting commandSetting = null)
         {
             return await Task.Factory.StartNew(() =>
             {
                 return
-                ExecuteAsDecimal(connection, sqlQuery, obj, transaction, commandSetting, logSetting: logSetting);
+                ExecuteAsDecimal(connection, sqlQuery, obj, transaction, commandSetting);
             });
         }
 
