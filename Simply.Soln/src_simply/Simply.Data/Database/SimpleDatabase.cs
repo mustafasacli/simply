@@ -53,11 +53,6 @@ namespace Simply.Data.Database
         protected IDbTransaction transaction;
 
         /// <summary>
-        /// The log setting
-        /// </summary>
-        protected ILogSetting logSetting = null;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SimpleDatabase"/> class.
         /// </summary>
         public SimpleDatabase()
@@ -74,7 +69,6 @@ namespace Simply.Data.Database
         public SimpleDatabase(IDbConnection connection, IDbTransaction transaction = null,
             IQuerySetting querySetting = null)
         {
-            logSetting = SimpleLogSetting.New();
             this.connection = connection;
             this.transaction = transaction;
             ConnectionType = connection.GetDbConnectionType();
@@ -90,7 +84,6 @@ namespace Simply.Data.Database
         public SimpleDatabase(DbProviderFactory providerFactory, string connectionString,
             IQuerySetting querySetting = null)
         {
-            logSetting = SimpleLogSetting.New();
             this.connection = providerFactory.CreateConnection();
             this.connection.ConnectionString = connectionString;
             ConnectionType = connection.GetDbConnectionType();
@@ -119,19 +112,13 @@ namespace Simply.Data.Database
         /// Gets the action for command logging.
         /// </summary>
         public Action<SimpleDbCommand> CommandLogAction
-        {
-            get { return logSetting.CommandLogAction; }
-            set { logSetting.SetCommandLogAction(value); }
-        }
+        { get; set; }
 
         /// <summary>
         /// Gets the action for command logging.
         /// </summary>
         public Action<IDbCommand> DbCommandLogAction
-        {
-            get { return logSetting.DbCommandLogAction; }
-            set { logSetting.SetDbCommandLogAction(value); }
-        }
+        { get; set; }
 
         /// <summary>
         /// Gets, sets value for SimpleDbCommand logging.
@@ -144,12 +131,6 @@ namespace Simply.Data.Database
         /// </summary>
         public bool LogDbCommand
         { get; set; }
-
-        /// <summary>
-        /// Gets the log setting.
-        /// </summary>
-        public ILogSetting LogSetting
-        { get { return this.logSetting; } }
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.

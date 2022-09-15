@@ -1,7 +1,6 @@
 ﻿using Simply.Data;
 using Simply.Data.Database;
 using Simply.Data.Interfaces;
-using Simply.Data.Objects;
 using System;
 using System.Data;
 using System.Data.Common;
@@ -30,7 +29,6 @@ namespace Simply.Ef
         /// <param name="querySetting">Query Setting instance.</param>
         public SimpleEfDatabase(DbContext dbContext, IQuerySetting querySetting = null)
         {
-            logSetting = SimpleLogSetting.New();
             this.connection = dbContext.Database.Connection;
             ConnectionType = connection.GetDbConnectionType();
             QuerySetting = querySetting ?? connection.GetQuerySetting();

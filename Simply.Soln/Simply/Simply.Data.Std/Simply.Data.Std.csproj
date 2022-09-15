@@ -44,10 +44,8 @@
         <Compile Include="..\..\src_simply\Simply.Data\DbCommandExtensions\CommandExtensions.cs" Link="DbCommandExtensions\CommandExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DbTransactionExtensions\TransactionExtensions.cs" Link="DbTransactionExtensions\TransactionExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Enums\DbConnectionTypes.cs" Link="Enums\DbConnectionTypes.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\Helpers\InternalLogHelper.cs" Link="Helpers\InternalLogHelper.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IDbCommandResult.cs" Link="Interfaces\IDbCommandResult.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ICommandSetting.cs" Link="Interfaces\ICommandSetting.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ILogSetting.cs" Link="Interfaces\ILogSetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IPageInfo.cs" Link="Interfaces\IPageInfo.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ISimpleDatabase.cs" Link="Interfaces\ISimpleDatabase.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\BaseDbCommand.cs" Link="Objects\BaseDbCommand.cs" />
@@ -56,7 +54,6 @@
         <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandResult.cs" Link="Objects\DbCommandResult.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\PageInfo.cs" Link="Objects\PageInfo.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleCommandSetting.cs" Link="Objects\SimpleCommandSetting.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleLogSetting.cs" Link="Objects\SimpleLogSetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs" Link="QuerySettings\Core\IQuerySetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\DB2QuerySetting.cs" Link="QuerySettings\DB2QuerySetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Factory\QuerySettingsFactory.cs" Link="QuerySettings\Factory\QuerySettingsFactory.cs" />
