@@ -14,6 +14,26 @@ namespace Simply.Data
         #region [ Task methods ]
 
         /// <summary>
+        /// GetDbRowListQuery Gets query result set as object instance list.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="simpleDbCommand">database command.</param>
+        /// <param name="pageInfo">page info for skip and take counts. it is optional.
+        /// if it is null then paging will be disabled.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static async Task<List<T>> GetListAsync<T>(this ISimpleDatabase database,
+            SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
+        {
+            Task<List<T>> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.List<T>(simpleDbCommand, pageInfo, behavior);
+            });
+
+            return await resultTask;
+        }
+
+        /// <summary>
         /// Gets Resultset of query as object instance list with async operation.
         /// </summary>
         /// <typeparam name="T">T class.</typeparam>
@@ -36,7 +56,7 @@ namespace Simply.Data
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.QueryList<T>(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
+                return database.List<T>(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
             });
 
             return await resultTask;
@@ -59,27 +79,7 @@ namespace Simply.Data
         {
             Task<List<T>> resultTask = Task.Factory.StartNew(() =>
             {
-                return database.GetList<T>(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
-            });
-
-            return await resultTask;
-        }
-
-        /// <summary>
-        /// GetDbRowListQuery Gets query result set as object instance list.
-        /// </summary>
-        /// <param name="database">The simple database object instance.</param>
-        /// <param name="simpleDbCommand">database command.</param>
-        /// <param name="pageInfo">page info for skip and take counts. it is optional.
-        /// if it is null then paging will be disabled.</param>
-        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
-        /// <returns>Returns SimpleDbRow object list.</returns>
-        public static async Task<List<T>> GetListAsync<T>(this ISimpleDatabase database,
-            SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
-        {
-            Task<List<T>> resultTask = Task.Factory.StartNew(() =>
-            {
-                return database.GetList<T>(simpleDbCommand, pageInfo, behavior);
+                return database.ListOdbc<T>(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
             });
 
             return await resultTask;

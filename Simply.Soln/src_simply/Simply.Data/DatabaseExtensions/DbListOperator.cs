@@ -21,22 +21,17 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        public static IDbCommandResult<List<T>> GetListWithResult<T>(this ISimpleDatabase database,
+        public static List<T> List<T>(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-            database.GetDbRowListWithResult(simpleDbCommand, pageInfo, behavior);
-            IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
-
-            commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
-            commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
-            commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
-            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
-            return commandResult;
+            List<SimpleDbRow> simpleDbRowListResult =
+            database.ListRow(simpleDbCommand, pageInfo, behavior);
+            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+            return instanceList;
         }
 
         /// <summary>
-        /// Gets query multi result set as multi simpledbrow list.
+        /// Gets query result set as object instance list.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
         /// <param name="sqlQuery">Sql query.
@@ -54,19 +49,14 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
-        public static IDbCommandResult<List<T>> QueryListWithResult<T>(this ISimpleDatabase database,
+        public static List<T> List<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null,
             IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-            database.QueryDbRowListWithResult(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
-            IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
-
-            commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
-            commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
-            commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
-            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
-            return commandResult;
+            List<SimpleDbRow> simpleDbRowListResult =
+            database.ListRow(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
+            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+            return instanceList;
         }
 
         /// <summary>
@@ -80,19 +70,14 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        public static IDbCommandResult<List<T>> GetListWithResult<T>(this ISimpleDatabase database,
+        public static List<T> ListOdbc<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
-            database.GetDbRowListWithResult(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
-            IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
-
-            commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
-            commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
-            commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
-            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
-            return commandResult;
+            List<SimpleDbRow> simpleDbRowListResult =
+            database.ListRowOdbc(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
+            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+            return instanceList;
         }
 
         /// <summary>
@@ -104,13 +89,18 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        public static List<T> GetList<T>(this ISimpleDatabase database,
+        public static IDbCommandResult<List<T>> ListResult<T>(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            List<SimpleDbRow> simpleDbRowListResult =
-            database.GetDbRowList(simpleDbCommand, pageInfo, behavior);
-            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
-            return instanceList;
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
+            database.ListRowResult(simpleDbCommand, pageInfo, behavior);
+            IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
+
+            commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
+            commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
+            commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
+            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            return commandResult;
         }
 
         /// <summary>
@@ -132,14 +122,19 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
-        public static List<T> QueryList<T>(this ISimpleDatabase database,
+        public static IDbCommandResult<List<T>> ListResult<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null,
             IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            List<SimpleDbRow> simpleDbRowListResult =
-            database.QueryDbRowList(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
-            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
-            return instanceList;
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
+            database.MultiListRowResult(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
+            IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
+
+            commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
+            commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
+            commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
+            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            return commandResult;
         }
 
         /// <summary>
@@ -153,14 +148,19 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        public static List<T> GetList<T>(this ISimpleDatabase database,
+        public static IDbCommandResult<List<T>> ListOdbcResult<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            List<SimpleDbRow> simpleDbRowListResult =
-            database.GetDbRowList(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
-            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
-            return instanceList;
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
+            database.MultiListRowOdbcResult(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
+            IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
+
+            commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
+            commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
+            commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
+            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            return commandResult;
         }
     }
 }
