@@ -39,9 +39,14 @@ namespace Simply.Data.Interfaces
         Action<IDbCommand> DbCommandLogAction { get; set; }
 
         /// <summary>
-        /// Gets the log setting.
+        /// Gets, sets value for simpledbcommand logging.
         /// </summary>
-        ILogSetting LogSetting { get; }
+        bool LogCommand { get; set; }
+
+        /// <summary>
+        /// Gets, sets value for IDbCommand logging.
+        /// </summary>
+        bool LogDbCommand { get; set; }
 
         /// <summary>
         /// Begins the transaction.

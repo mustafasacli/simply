@@ -1,6 +1,5 @@
 ﻿using Simply.Common;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -31,8 +30,6 @@ namespace Simply.Data
         {
             outputParameters = ArrayHelper.Empty<DbCommandParameter>();
             IDataReader dataReader;
-
-            InternalLogHelper.LogCommand(simpleDbCommand);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
@@ -74,8 +71,6 @@ namespace Simply.Data
             };
             simpleDbCommand.AddCommandParameters(parameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand);
-
             IDataReader dataReader;
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))
@@ -115,8 +110,6 @@ namespace Simply.Data
 
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), parameterObject);
             simpleDbCommand.AddCommandParameters(parameters);
-
-            InternalLogHelper.LogCommand(simpleDbCommand);
 
             IDataReader dataReader;
             using (IDbCommand command =

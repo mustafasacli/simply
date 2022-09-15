@@ -3,7 +3,6 @@ using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.DbTransactionExtensions;
 using Simply.Data.Enums;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using Simply.Data.QuerySettings;
@@ -19,7 +18,7 @@ using System.Text;
 namespace Simply.Data.Database
 {
     /// <summary>
-    ///
+    /// Simple Database object for database operations.
     /// </summary>
     /// <seealso cref="ISimpleDatabase" />
     [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
@@ -133,6 +132,18 @@ namespace Simply.Data.Database
             get { return logSetting.DbCommandLogAction; }
             set { logSetting.SetDbCommandLogAction(value); }
         }
+
+        /// <summary>
+        /// Gets, sets value for SimpleDbCommand logging.
+        /// </summary>
+        public bool LogCommand
+        { get; set; }
+
+        /// <summary>
+        /// Gets, sets value for IDbCommand logging.
+        /// </summary>
+        public bool LogDbCommand
+        { get; set; }
 
         /// <summary>
         /// Gets the log setting.
@@ -355,7 +366,8 @@ namespace Simply.Data.Database
 
                 do
                 {
-                    parameterName = querySetting.ParameterPrefix + InternalAppValues.ParameterChar.ToString() + parameterCounter.ToString();
+                    parameterName = string.Concat(querySetting.ParameterPrefix,
+                        InternalAppValues.ParameterChar.ToString(), parameterCounter.ToString());
                     parameterCounter++;
                 } while (!(queryParts.All(q => !q.Contains(parameterName)) && queryAndParameters.IndexOf(parameterName) == -1));
 
@@ -377,7 +389,7 @@ namespace Simply.Data.Database
         /// <param name="commandSetting">The command setting.</param>
         /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
         /// <returns>Returns database command object instance <see cref="SimpleDbCommand" />.</returns>
-        protected virtual SimpleDbCommand BuildSimpleDbCommandForTranslate(string odbcSqlQuery, 
+        protected virtual SimpleDbCommand BuildSimpleDbCommandForTranslate(string odbcSqlQuery,
             DbCommandParameter[] commandParameters, ICommandSetting commandSetting = null, bool setOverratedParametersToOutput = false)
         {
             string[] queryAndParameters = TranslateOdbcQuery(odbcSqlQuery);
@@ -469,7 +481,7 @@ namespace Simply.Data.Database
                 CommandText = sqlQuery,
                 CommandTimeout = commandSetting?.CommandTimeout,
                 ParameterNamePrefix = commandSetting?.ParameterNamePrefix,
-                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text
             };
 
             simpleDbCommand.RecompileQuery(this.QuerySetting, parameters);
@@ -487,7 +499,7 @@ namespace Simply.Data.Database
             if (simpleDbCommand is null || string.IsNullOrWhiteSpace(simpleDbCommand.CommandText))
                 throw new ArgumentNullException(nameof(simpleDbCommand));
 
-            InternalLogHelper.LogCommand(simpleDbCommand, this.LogSetting);
+            CommandLog(simpleDbCommand);
 
             IDbCommand command = connection.CreateCommand()
                 .SetCommandType(simpleDbCommand.CommandType)
@@ -496,7 +508,7 @@ namespace Simply.Data.Database
                 .SetTransaction(transaction)
                 .IncludeCommandParameters(simpleDbCommand.CommandParameters, this.QuerySetting);
 
-            InternalLogHelper.LogDbCommand(command, this.LogSetting);
+            DbCommandLog(command);
 
             if (connectionShouldBeOpened && transaction is null)
                 connection.OpenIfNot();
@@ -564,6 +576,32 @@ namespace Simply.Data.Database
             }
 
             return dbCommand;
+        }
+
+        /// <summary>
+        /// Logs the command.
+        /// </summary>
+        /// <param name="simpleDbCommand">The simple db command.</param>
+        protected virtual void CommandLog(SimpleDbCommand simpleDbCommand)
+        {
+            if (simpleDbCommand == null)
+                return;
+
+            if (this.LogCommand && this.CommandLogAction != null)
+                this.CommandLogAction(simpleDbCommand);
+        }
+
+        /// <summary>
+        /// Logs the database command.
+        /// </summary>
+        /// <param name="dbCommand">The database command.</param>
+        protected virtual void DbCommandLog(IDbCommand dbCommand)
+        {
+            if (dbCommand == null)
+                return;
+
+            if (this.LogDbCommand && this.DbCommandLogAction != null)
+                this.DbCommandLogAction(dbCommand);
         }
 
         private string GetDebuggerDisplay()

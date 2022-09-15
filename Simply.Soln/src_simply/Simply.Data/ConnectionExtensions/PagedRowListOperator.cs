@@ -2,7 +2,6 @@
 using Simply.Common.Objects;
 using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -60,8 +59,6 @@ namespace Simply.Data
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(commandParameters);
 
-            InternalLogHelper.LogCommand(simpleDbCommand);
-
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
                 GetDbRowList(connection, simpleDbCommand,
                 transaction, pageInfo);
@@ -103,8 +100,6 @@ namespace Simply.Data
                     simpleDbCommand.CommandText = format.CopyValue();
                 }
             }
-
-            InternalLogHelper.LogCommand(simpleDbCommand);
 
             using (IDbCommand command =
                 connection.CreateCommandWithOptions(simpleDbCommand, transaction))

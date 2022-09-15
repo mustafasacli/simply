@@ -1,6 +1,5 @@
 ﻿using Simply.Common;
 using Simply.Data.DbCommandExtensions;
-using Simply.Data.Helpers;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System;
@@ -39,8 +38,6 @@ namespace Simply.Data
 
             simpleDbCommand.RecompileQuery(connection.GetQuerySetting(), obj);
             simpleDbCommand.AddCommandParameters(parameters);
-
-            InternalLogHelper.LogCommand(simpleDbCommand);
 
             int result;
             using (IDbCommand command =
@@ -102,7 +99,6 @@ namespace Simply.Data
         public static IDbCommandResult<int> ExecuteQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
-            InternalLogHelper.LogCommand(simpleDbCommand);
             IDbCommandResult<int> commandResult = new DbCommandResult<int>(-1);
 
             using (IDbCommand command =
@@ -141,8 +137,6 @@ namespace Simply.Data
             SimpleDbCommand simpleDbCommand =
                 connection.BuildSimpleDbCommandForTranslate(odbcSqlQuery,
                 commandParameters, commandSetting);
-
-            InternalLogHelper.LogCommand(simpleDbCommand);
 
             int executeResult;
             using (IDbCommand command =
