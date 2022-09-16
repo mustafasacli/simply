@@ -1,6 +1,7 @@
 ﻿using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace Simply.Data
         }
 
         /// <summary>
-        /// Executes query and returns result as int.
+        /// Executes db command and returns result as int.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
         /// <param name="simpleDbCommand">Db database command <see cref="SimpleDbCommand"/></param>
@@ -166,6 +167,24 @@ namespace Simply.Data
                 database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
             return commandResult;
+        }
+
+        /// <summary>
+        /// Executes db command list and returns result as int.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="dbCommands">Db database command list. <see cref="SimpleDbCommand"/></param>
+        /// <returns>Returns execution result as int.</returns>
+        public static int Execute(this ISimpleDatabase database, List<SimpleDbCommand> dbCommands)
+        {
+            int executionResult = 0;
+
+            dbCommands.ForEach(q =>
+            {
+                executionResult += database.Execute(q);
+            });
+
+            return executionResult;
         }
     }
 }

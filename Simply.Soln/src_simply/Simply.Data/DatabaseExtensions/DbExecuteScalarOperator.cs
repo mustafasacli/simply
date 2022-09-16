@@ -2,7 +2,9 @@
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simply.Data
@@ -288,6 +290,25 @@ namespace Simply.Data
                 AdditionalValues = commandResult.AdditionalValues,
                 ExecutionResult = commandResult.ExecutionResult
             };
+        }
+
+        /// <summary>
+        /// Executes db command list and returns result as object array.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="dbCommands">Db database command list. <see cref="SimpleDbCommand" /></param>
+        /// <returns>Returns object array.</returns>
+        public static IEnumerable<object> ExecuteScalar(this ISimpleDatabase database, List<SimpleDbCommand> dbCommands)
+        {
+            List<object> valuesList = new List<object>();
+
+            dbCommands.ForEach(q =>
+            {
+                object value = database.ExecuteScalar(q);
+                valuesList.Add(value);
+            });
+
+            return valuesList.AsEnumerable();
         }
     }
 }
