@@ -200,6 +200,9 @@
     <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleCommandSetting.cs">
       <Link>Objects\SimpleCommandSetting.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\BaseQuerySetting.cs">
+      <Link>QuerySettings\Core\BaseQuerySetting.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs">
       <Link>QuerySettings\Core\IQuerySetting.cs</Link>
     </Compile>

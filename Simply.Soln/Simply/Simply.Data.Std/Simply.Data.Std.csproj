@@ -54,7 +54,8 @@
         <Compile Include="..\..\src_simply\Simply.Data\Objects\DbCommandResult.cs" Link="Objects\DbCommandResult.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\PageInfo.cs" Link="Objects\PageInfo.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Objects\SimpleCommandSetting.cs" Link="Objects\SimpleCommandSetting.cs" />
-        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs" Link="QuerySettings\Core\IQuerySetting.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\BaseQuerySetting.cs" Link="QuerySettings\Core\BaseQuerySetting.cs" />
+		<Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Core\IQuerySetting.cs" Link="QuerySettings\Core\IQuerySetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\DB2QuerySetting.cs" Link="QuerySettings\DB2QuerySetting.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\Factory\QuerySettingsFactory.cs" Link="QuerySettings\Factory\QuerySettingsFactory.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\FirebirdQuerySetting.cs" Link="QuerySettings\FirebirdQuerySetting.cs" />
