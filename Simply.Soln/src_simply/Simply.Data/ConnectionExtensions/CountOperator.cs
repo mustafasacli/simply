@@ -20,7 +20,7 @@ namespace Simply.Data.ConnectionExtensions
         /// <param name="simpleDbCommand">database command<see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static int Count(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
@@ -39,7 +39,7 @@ namespace Simply.Data.ConnectionExtensions
         /// <param name="simpleDbCommand">database command <see cref="SimpleDbCommand"/></param>
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/></param>
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static long CountLong(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
@@ -61,7 +61,7 @@ namespace Simply.Data.ConnectionExtensions
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/>.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static int Count(this IDbConnection connection, string sql, object obj,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
@@ -83,7 +83,7 @@ namespace Simply.Data.ConnectionExtensions
         /// <param name="transaction">Database transaction <see cref="IDbTransaction"/>.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static long CountLong(this IDbConnection connection, string sql, object obj,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
@@ -107,7 +107,7 @@ namespace Simply.Data.ConnectionExtensions
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static int Count(this IDbConnection connection, string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
@@ -139,7 +139,7 @@ namespace Simply.Data.ConnectionExtensions
         /// <param name="transaction">Database transaction(optional).</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns count value as long.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static long CountLong(this IDbConnection connection, string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
