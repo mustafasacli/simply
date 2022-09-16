@@ -179,9 +179,9 @@ namespace Simply.Data
         {
             int executionResult = 0;
 
-            dbCommands.ForEach(q =>
+            dbCommands.ForEach(command =>
             {
-                executionResult += database.Execute(q);
+                executionResult += database.Execute(command);
             });
 
             return executionResult;

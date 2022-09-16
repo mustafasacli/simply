@@ -302,9 +302,9 @@ namespace Simply.Data
         {
             List<object> valuesList = new List<object>();
 
-            dbCommands.ForEach(q =>
+            dbCommands.ForEach(command =>
             {
-                object value = database.ExecuteScalar(q);
+                object value = database.ExecuteScalar(command);
                 valuesList.Add(value);
             });
 
