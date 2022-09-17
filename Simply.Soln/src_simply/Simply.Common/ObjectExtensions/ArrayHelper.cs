@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Simply.Common
 {
@@ -52,7 +53,7 @@ namespace Simply.Common
         /// <returns>if array is null or empty returns true else return false.</returns>
         public static bool IsNullOrEmpty<T>(this T[] array) where T : class
         {
-            bool isEmpty = array == null || array.Length < 1;
+            bool isEmpty = !(array?.Any() ?? false);
             return isEmpty;
         }
 
@@ -64,7 +65,7 @@ namespace Simply.Common
         /// <returns>if list is null or empty returns true else return false.</returns>
         public static bool IsNullOrEmpty<T>(this List<T> list) where T : class
         {
-            bool isEmpty = list == null || list.Count < 1;
+            bool isEmpty = !(list?.Any() ?? false);
             return isEmpty;
         }
     }

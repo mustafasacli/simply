@@ -52,7 +52,7 @@ namespace Simply.Common
                    .Where(q => q.GetCustomAttribute<KeyAttribute>() != null)
                    .ToArray() ?? ArrayHelper.Empty<PropertyInfo>();
 
-            if (keyProperties.Length == 0 && includeIdentityPropertiesHasNoKey)
+            if (!keyProperties.Any() && includeIdentityPropertiesHasNoKey)
             {
                 keyProperties = properties.GetIdentityProperties();
             }
@@ -110,7 +110,7 @@ namespace Simply.Common
         /// <returns>.</returns>
         public static PropertyInfo[] GetNotIdentityProperties(this PropertyInfo[] properties)
         {
-            if (properties == null || properties.Length == 0)
+            if (properties.IsNullOrEmpty())
                 return ArrayHelper.Empty<PropertyInfo>();
 
             PropertyInfo[] notIdentityProperties = properties
@@ -129,7 +129,7 @@ namespace Simply.Common
         /// <returns>.</returns>
         public static PropertyInfo[] GetPropertiesByGeneratedOption(this PropertyInfo[] properties, DatabaseGeneratedOption option)
         {
-            if (properties == null || properties.Length == 0)
+            if (properties.IsNullOrEmpty())
                 return ArrayHelper.Empty<PropertyInfo>();
 
             PropertyInfo[] generatedOptionProperties = properties
@@ -148,7 +148,7 @@ namespace Simply.Common
         /// <returns></returns>
         public static PropertyInfo[] GetReadWriteProperties(this PropertyInfo[] properties)
         {
-            if (properties == null || properties.Length == 0)
+            if (properties.IsNullOrEmpty())
                 return ArrayHelper.Empty<PropertyInfo>();
 
             PropertyInfo[] result = properties

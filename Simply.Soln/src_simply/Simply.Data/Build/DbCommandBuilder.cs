@@ -55,7 +55,7 @@ namespace Simply.Data
         {
             string sql = sqlText.CopyValue(true);
 
-            if (parameters.IsEmpty())
+            if (parameters.IsNullOrEmpty())
                 return sql;
 
             char spaceChar = InternalAppValues.OneSpace[0];
