@@ -129,8 +129,8 @@ namespace Simply.Data.DbCommandExtensions
         /// <summary>
         /// Gets Output Parameters Of Command.
         /// </summary>
-        /// <param name="command">Db command instance<see cref="IDbCommand"/>.</param>
-        /// <returns>Db command parameters<see cref="DbCommandParameter[]"/>.</returns>
+        /// <param name="command">Db command instance <see cref="IDbCommand"/>.</param>
+        /// <returns>Db command parameters <see cref="DbCommandParameter[]"/>.</returns>
         public static DbCommandParameter[] GetOutParameters(this IDbCommand command)
         {
             List<DbCommandParameter> parameters = ArrayHelper.EmptyList<DbCommandParameter>();

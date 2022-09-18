@@ -172,5 +172,14 @@ namespace Simply.Data.Objects
         {
             DbType = DbType.Object;
         }
+
+        /// <summary>
+        /// Gets or sets the name of the property.
+        /// </summary>
+        /// <value>
+        /// The name of the property.
+        /// </value>
+        public string PropertyName
+        { get; set; }
     }
 }
