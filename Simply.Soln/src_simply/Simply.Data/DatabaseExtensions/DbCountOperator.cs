@@ -106,5 +106,43 @@ namespace Simply.Data
             long result = database.CountLong(simpleDbCommand);
             return result;
         }
+
+        /// <summary>
+        /// counts rows for given jdbc sql query and parameters.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">
+        /// The JDBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ?1 AND COLUMN3 = TRUNC(?2)
+        /// </param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns row count as int value <see cref="int"/>.</returns>
+        public static int CountJdbc(this ISimpleDatabase database, string jdbcSqlQuery,
+            object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            int result = database.Count(simpleDbCommand);
+            return result;
+        }
+
+        /// <summary>
+        /// counts rows as long value for given jdbc sql query and parameters.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">
+        /// The JDBC SQL query.Like SELECT * FROM TABLE_NAME WHERE COLUMN2 &gt; ?1 AND COLUMN3 = TRUNC(?2)
+        /// </param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns count value as long.</returns>
+        public static long CountLongJdbc(this ISimpleDatabase database, string jdbcSqlQuery,
+            object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            long result = database.CountLong(simpleDbCommand);
+            return result;
+        }
     }
 }

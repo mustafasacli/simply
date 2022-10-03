@@ -71,6 +71,23 @@ namespace Simply.Data
             return instance;
         }
 
+        /// <summary>
+        /// Get First Row of the Jdbc Sql Query Resultset as object instance.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ?1 ).</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns first record as object instance.</returns>
+        public static T FirstJdbc<T>(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            T instance = database.First<T>(simpleDbCommand);
+            return instance;
+        }
+
         #region [ Task methods ]
 
         /// <summary>
@@ -133,6 +150,25 @@ namespace Simply.Data
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
                 return database.FirstOdbc<T>(odbcSqlQuery, parameterValues, commandSetting);
+            });
+
+            return await resultTask;
+        }
+
+        /// <summary>
+        /// Get First Row of the Jdbc Sql Query Resultset as object instance with async operation.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ?1 ).</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>An asynchronous result that yields the first as T.</returns>
+        public static async Task<T> FirstJdbcAsync<T>(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
+        {
+            Task<T> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.FirstJdbc<T>(jdbcSqlQuery, parameterValues, commandSetting);
             });
 
             return await resultTask;
@@ -203,6 +239,23 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+            SimpleDbRow simpleRow = database.FirstRow(simpleDbCommand);
+            return simpleRow;
+        }
+
+        /// <summary>
+        /// Get First Row of the Jdbc Sql Query Resultset as object instance.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ?1 ).</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns first record as object instance.</returns>
+        public static SimpleDbRow FirstRowJdbc(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand = 
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
             SimpleDbRow simpleRow = database.FirstRow(simpleDbCommand);
             return simpleRow;
         }

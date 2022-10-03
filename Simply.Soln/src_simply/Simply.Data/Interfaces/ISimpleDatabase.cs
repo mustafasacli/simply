@@ -105,5 +105,17 @@ namespace Simply.Data.Interfaces
         /// <param name="pageInfo">The page information.</param>
         /// <returns>Applies paging and return simpledbcommand instance.</returns>
         SimpleDbCommand ApplyPageInfo(SimpleDbCommand dbCommand, IPageInfo pageInfo = null);
+
+        /// <summary>
+        /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
+        /// </summary>
+        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/> 
+        /// like #SELECT T1.* FROM TABLE T1 WHERE T1.INT_COLUMN = ?1 AND T2.DATE_COLUMN = ?2 #.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
+        /// <returns>Returns simple database command object instance <see cref="SimpleDbCommand" />.</returns>
+        SimpleDbCommand BuildSimpleDbCommandForJdbcQuery(string jdbcSqlQuery,
+            object[] parameterValues, ICommandSetting commandSetting = null, bool setOverratedParametersToOutput = false);
     }
 }

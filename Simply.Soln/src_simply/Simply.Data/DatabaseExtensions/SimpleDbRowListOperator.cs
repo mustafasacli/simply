@@ -95,6 +95,26 @@ namespace Simply.Data
         }
 
         /// <summary>
+        /// Gets jdbc sql query result set as SimpleDbRow object list.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <param name="pageInfo">page info for skip and take counts. it is optional.
+        /// if it is null then paging will be disabled.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static List<SimpleDbRow> ListRowJdbc(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues,
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
+        {
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            List<SimpleDbRow> simpleDbRowList = database.ListRow(simpleDbCommand, pageInfo, behavior);
+            return simpleDbRowList;
+        }
+
+        /// <summary>
         /// GetDbRowListQuery Gets query result set as SimpleDbRow object list.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
@@ -201,6 +221,24 @@ namespace Simply.Data
             return multiSimpleDbRowList;
         }
 
+        /// <summary>
+        /// Gets jdbc sql query result set as SimpleDbRow object list.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static List<List<SimpleDbRow>> MultiListRowJdbc(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues,
+           ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
+        {
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            List<List<SimpleDbRow>> multiSimpleDbRowList = database.MultiListRow(simpleDbCommand, behavior);
+            return multiSimpleDbRowList;
+        }
+
         /*******************************************************************/
 
         /// <summary>
@@ -276,6 +314,26 @@ namespace Simply.Data
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
             SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
+            return simpleDbRowListResult;
+        }
+
+        /// <summary>
+        /// Gets jdbc sql query result set as SimpleDbRow object list.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <param name="pageInfo">page info for skip and take counts. it is optional.
+        /// if it is null then paging will be disabled.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static IDbCommandResult<List<SimpleDbRow>> MultiListRowJdbcResult(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues,
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
+        {
+            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
             return simpleDbRowListResult;
         }

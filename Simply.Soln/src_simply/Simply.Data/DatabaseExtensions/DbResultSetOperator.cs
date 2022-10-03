@@ -15,6 +15,57 @@ namespace Simply.Data
     public static class DbResultSetOperator
     {
         /// <summary>
+        /// Get Resultset of the specified SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="sqlQuery">The SQL query.</param>
+        /// <param name="parameterObject">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns result set in a dataset instance.</returns>
+        public static DataSet GetDataSet(this ISimpleDatabase database,
+           string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
+            return resultSet.Result;
+        }
+
+        /// <summary>
+        /// Get Resultset of the specified ODBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns result set in a dataset instance.</returns>
+        public static DataSet GetDataSetOdbc(this ISimpleDatabase database,
+           string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
+            return resultSet.Result;
+        }
+
+        /// <summary>
+        /// Get Resultset of the specified JDBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns result set in a dataset instance.</returns>
+        public static DataSet GetDataSetJdbc(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
+            return resultSet.Result;
+        }
+
+        /// <summary>
         /// Get Resultset of the Command definition.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
@@ -42,45 +93,13 @@ namespace Simply.Data
         }
 
         /// <summary>
-        /// Get Resultset of the specified ODBC SQL query.
-        /// </summary>
-        /// <param name="database">The simple database object instance.</param>
-        /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
-        /// <param name="parameterValues">Sql command parameters.</param>
-        /// <param name="commandSetting">The command setting.</param>
-        /// <returns>Returns result set in a dataset instance.</returns>
-        public static DataSet GetOdbcResultSet(this ISimpleDatabase database,
-           string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
-        {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
-            return resultSet.Result;
-        }
-
-        /// <summary>
-        /// Get Resultset of the specified SQL query.
-        /// </summary>
-        /// <param name="database">The simple database object instance.</param>
-        /// <param name="sqlQuery">The SQL query.</param>
-        /// <param name="parameterObject">Sql command parameters.</param>
-        /// <param name="commandSetting">The command setting.</param>
-        /// <returns>Returns result set in a dataset instance.</returns>
-        public static DataSet GetResultSet(this ISimpleDatabase database,
-           string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
-        {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
-            return resultSet.Result;
-        }
-
-        /// <summary>
         /// GetDynamicResultSetSkipAndTake Gets query resultset as dynamic object list with skip and take.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
         /// <returns>Returns dynamic object list.</returns>
-        public static IDbCommandResult<DataTable> GetResultSet(this ISimpleDatabase database,
+        public static IDbCommandResult<DataTable> GetDataSetResult(this ISimpleDatabase database,
              SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null)
         {
             IDbCommandResult<DataTable> dataTableResult = new DbCommandResult<DataTable>();

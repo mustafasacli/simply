@@ -186,5 +186,39 @@ namespace Simply.Data
 
             return executionResult;
         }
+
+        /// <summary>
+        /// Executes the specified JDBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns execution result as int.</returns>
+        public static int ExecuteJdbc(this ISimpleDatabase database,
+            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            int executionResult = database.Execute(simpleDbCommand);
+            return executionResult;
+        }
+
+        /// <summary>
+        /// Executes the specified JDBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns execution result as int.</returns>
+        public static IDbCommandResult<int> ExecuteResultJdbc(this ISimpleDatabase database,
+            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting, setOverratedParametersToOutput: true);
+            IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
+            return commandResult;
+        }
     }
 }

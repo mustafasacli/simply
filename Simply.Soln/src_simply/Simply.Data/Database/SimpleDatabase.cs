@@ -14,6 +14,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using static System.String;
 
 namespace Simply.Data.Database
 {
@@ -405,14 +406,15 @@ namespace Simply.Data.Database
 
             if (setOverratedParametersToOutput && paramStringArray.Count > commandParameters.Length)
             {
-                int cnt = paramStringArray.Count - commandParameters.Length;
-                for (int counter = 0; counter < cnt; counter++)
+                int count = paramStringArray.Count - commandParameters.Length;
+                for (int counter = 0; counter < count; counter++)
                 {
                     simpleDbCommand.AddParameter(
                         new DbCommandParameter
                         {
                             Direction = ParameterDirection.Output,
-                            ParameterName = paramStringArray[commandParameters.Length + counter]
+                            ParameterName = paramStringArray[commandParameters.Length + counter],
+                            ParameterDbType = DbType.Object
                         });
                 }
             }
@@ -588,6 +590,70 @@ namespace Simply.Data.Database
         private string GetDebuggerDisplay()
         {
             return ToString();
+        }
+
+        /// <summary>
+        /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
+        /// </summary>
+        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/> 
+        /// like #SELECT T1.* FROM TABLE T1 WHERE T1.INT_COLUMN = ?1 AND T2.DATE_COLUMN = ?2 #.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <param name="setOverratedParametersToOutput">if it is true overrated parameters set as output else will be throw error.</param>
+        /// <returns>Returns simple database command object instance <see cref="SimpleDbCommand" />.</returns>
+        public virtual SimpleDbCommand BuildSimpleDbCommandForJdbcQuery(string jdbcSqlQuery,
+            object[] parameterValues, ICommandSetting commandSetting = null, bool setOverratedParametersToOutput = false)
+        {
+            int questionMarkCount = jdbcSqlQuery.Count(s => s == InternalAppValues.QuestionMark);
+            int parameterCount = parameterValues?.Length ?? 0;
+            if ((!setOverratedParametersToOutput && questionMarkCount != parameterCount) || questionMarkCount < parameterCount)
+                throw new ArgumentException(DbAppMessages.ParameterMismatchCompiledQueryAndCommand);
+
+            char parameterNamePrefix = commandSetting?.ParameterNamePrefix ?? InternalAppValues.ParameterChar;
+            string compiledSqlQuery = jdbcSqlQuery.Replace(InternalAppValues.QuestionMark.ToString(),
+                Concat(QuerySetting.ParameterPrefix, parameterNamePrefix, this.QuerySetting.ParameterSuffix));
+
+            SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
+            {
+                CommandText = compiledSqlQuery,
+                CommandTimeout = commandSetting?.CommandTimeout,
+                CommandType = commandSetting?.CommandType ?? CommandType.Text,
+                ParameterNamePrefix = parameterNamePrefix
+            };
+
+            List<DbCommandParameter> commandParameters = new List<DbCommandParameter>();
+
+            for (int counter = 0; counter < parameterCount; counter++)
+            {
+                DbCommandParameter parameter = new DbCommandParameter
+                {
+                    ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix, (counter + 1).ToString(), QuerySetting.ParameterSuffix),
+                    Value = parameterValues[counter],
+                    Direction = ParameterDirection.Input,
+                    DbType = parameterValues[counter].ToDbType() ?? DbType.Object
+                };
+                commandParameters.Add(parameter);
+            }
+
+            if (setOverratedParametersToOutput && questionMarkCount > parameterCount)
+            {
+                int count = questionMarkCount - parameterCount;
+                for (int counter = 0; counter < count; counter++)
+                {
+                    DbCommandParameter parameter = new DbCommandParameter
+                    {
+                        ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix,
+                        (counter + 1).ToString(), QuerySetting.ParameterSuffix),
+                        Direction = ParameterDirection.Input,
+                        DbType = parameterValues[counter].ToDbType() ?? DbType.Object
+                    };
+                    commandParameters.Add(parameter);
+                }
+            }
+
+            simpleDbCommand.AddCommandParameters(commandParameters);
+
+            return simpleDbCommand;
         }
     }
 }

@@ -65,5 +65,23 @@ namespace Simply.Data
             bool any = database.Any(simpleDbCommand);
             return any;
         }
+
+        /// <summary>
+        /// The Any for jdbc sql query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/> 
+        /// like #SELECT T1.* FROM TABLE T1 WHERE T1.INT_COLUMN = ?1 AND T2.DATE_COLUMN = ?2 #.</param>
+        /// <param name="parameterValues">The parameterValues <see cref="object[]"/>.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>The <see cref="bool"/>.</returns>
+        public static bool AnyJdbc(this ISimpleDatabase database, string jdbcSqlQuery,
+            object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            bool any = database.Any(simpleDbCommand);
+            return any;
+        }
     }
 }

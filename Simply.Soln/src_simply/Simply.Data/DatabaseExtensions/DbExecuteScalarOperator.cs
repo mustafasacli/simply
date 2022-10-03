@@ -310,5 +310,77 @@ namespace Simply.Data
 
             return valuesList.AsEnumerable();
         }
+
+        /// <summary>
+        /// Execute Scalar the specified JDBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns execute scalar result as object.</returns>
+        public static object ExecuteScalarJdbc(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            object commandResult = database.ExecuteScalar(simpleDbCommand);
+            return commandResult;
+        }
+
+        /// <summary>
+        /// Execute Scalar the specified JDBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns execute scalar result as object instance.</returns>
+        public static T ExecuteScalarJdbcAs<T>(this ISimpleDatabase database,
+            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
+        {
+            object commandResult = database.ExecuteScalarJdbc(jdbcSqlQuery, parameterValues, commandSetting);
+            T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
+            return instance;
+        }
+
+        /// <summary>
+        /// Execute Scalar the specified JDBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns execute scalar result as object.</returns>
+        public static IDbCommandResult<object> ExecuteScalarResultJdbc(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            IDbCommandResult<object> commandResult = database.ExecuteScalarResult(simpleDbCommand);
+            return commandResult;
+        }
+
+        /// <summary>
+        /// Execute Scalar the specified JDBC SQL query.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameters.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns execute scalar result as object instance.</returns>
+        public static IDbCommandResult<T> ExecuteScalarResultJdbcAs<T>(this ISimpleDatabase database,
+            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
+        {
+            IDbCommandResult<object> commandResult = database.ExecuteScalarResultJdbc(jdbcSqlQuery, parameterValues, commandSetting);
+
+            T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
+            return new DbCommandResult<T>()
+            {
+                Result = instance,
+                AdditionalValues = commandResult.AdditionalValues,
+                ExecutionResult = commandResult.ExecutionResult
+            };
+        }
     }
 }

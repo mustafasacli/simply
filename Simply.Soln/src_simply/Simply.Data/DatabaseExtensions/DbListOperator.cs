@@ -81,6 +81,27 @@ namespace Simply.Data
         }
 
         /// <summary>
+        /// Gets odbc sql query result set as SimpleDbRow object list.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="odbcSqlQuery">The ODBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <param name="pageInfo">page info for skip and take counts. it is optional.
+        /// if it is null then paging will be disabled.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static List<T> ListJdbc<T>(this ISimpleDatabase database,
+           string odbcSqlQuery, object[] parameterValues,
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
+        {
+            List<SimpleDbRow> simpleDbRowListResult =
+            database.ListRowJdbc(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
+            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+            return instanceList;
+        }
+
+        /// <summary>
         /// GetDbRowListQuery Gets query result set as object instance list.
         /// </summary>
         /// <param name="database">The simple database object instance.</param>
@@ -154,6 +175,32 @@ namespace Simply.Data
         {
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
             database.MultiListRowOdbcResult(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
+            IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
+
+            commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
+            commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
+            commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
+            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            return commandResult;
+        }
+
+        /// <summary>
+        /// Gets jdbc sql query result set as SimpleDbRow object list.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">The JDBC SQL query.</param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <param name="pageInfo">page info for skip and take counts. it is optional.
+        /// if it is null then paging will be disabled.</param>
+        /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
+        /// <returns>Returns SimpleDbRow object list.</returns>
+        public static IDbCommandResult<List<T>> ListJdbcResult<T>(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues,
+           ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
+        {
+            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult =
+            database.MultiListRowJdbcResult(jdbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
             IDbCommandResult<List<T>> commandResult = new DbCommandResult<List<T>>();
 
             commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;

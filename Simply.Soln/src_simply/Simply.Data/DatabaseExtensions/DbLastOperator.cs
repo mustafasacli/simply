@@ -74,6 +74,25 @@ namespace Simply.Data
             return instance;
         }
 
+        /// <summary>
+        /// Get Last Row of the Jdbc Sql query Resultset as object instance.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">
+        /// The JDBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ?1 ).
+        /// </param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns last record as object instance.</returns>
+        public static T LastJdbc<T>(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+            T instance = database.Last<T>(simpleDbCommand);
+            return instance;
+        }
+
         #region [ Task methods ]
 
         /// <summary>
@@ -83,7 +102,7 @@ namespace Simply.Data
         /// <param name="database">The simple database object instance.</param>
         /// <param name="simpleDbCommand">database command.</param>
         /// <returns>An asynchronous result that yields the last record as object instance.</returns>
-        public static async Task<T> QueryLastAsync<T>(this ISimpleDatabase database,
+        public static async Task<T> LastAsync<T>(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
@@ -109,7 +128,7 @@ namespace Simply.Data
         /// <param name="parameterObject">object contains db parameters as property.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>An asynchronous result that yields a T.</returns>
-        public static async Task<T> QueryLastAsync<T>(this ISimpleDatabase database,
+        public static async Task<T> LastAsync<T>(this ISimpleDatabase database,
            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
@@ -131,12 +150,34 @@ namespace Simply.Data
         /// <param name="parameterValues">object contains db parameters as property.</param>
         /// <param name="commandSetting">The command setting.</param>
         /// <returns>An asynchronous result that yields a T.</returns>
-        public static async Task<T> GetLastAsync<T>(this ISimpleDatabase database,
+        public static async Task<T> LastOdbcAsync<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
         {
             Task<T> resultTask = Task.Factory.StartNew(() =>
             {
                 return database.LastOdbc<T>(odbcSqlQuery, parameterValues, commandSetting);
+            });
+
+            return await resultTask;
+        }
+
+        /// <summary>
+        /// Get Last Row of the Resultset as object instance with async operation.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">
+        /// The JDBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ?1 ).
+        /// </param>
+        /// <param name="parameterValues">object contains db parameters as property.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>An asynchronous result that yields a T.</returns>
+        public static async Task<T> LastJdbcAsync<T>(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
+        {
+            Task<T> resultTask = Task.Factory.StartNew(() =>
+            {
+                return database.LastJdbc<T>(jdbcSqlQuery, parameterValues, commandSetting);
             });
 
             return await resultTask;
@@ -260,6 +301,25 @@ namespace Simply.Data
         {
             SimpleDbCommand simpleDbCommand =
                 database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+            SimpleDbRow simpleRow = database.LastRow(simpleDbCommand);
+            return simpleRow;
+        }
+
+        /// <summary>
+        /// Get Last Row of the Jdbc Sql query Resultset as object instance.
+        /// </summary>
+        /// <param name="database">The simple database object instance.</param>
+        /// <param name="jdbcSqlQuery">
+        /// The JDBC SQL query ( Example: SELECT * FROM TABLE_NAME WHERE ID_COLUMN = ?1 ).
+        /// </param>
+        /// <param name="parameterValues">Sql command parameter values.</param>
+        /// <param name="commandSetting">The command setting.</param>
+        /// <returns>Returns last record as SimpleDbRow instance.</returns>
+        public static SimpleDbRow LastRowJdbc(this ISimpleDatabase database,
+           string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
+        {
+            SimpleDbCommand simpleDbCommand =
+                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
             SimpleDbRow simpleRow = database.LastRow(simpleDbCommand);
             return simpleRow;
         }
