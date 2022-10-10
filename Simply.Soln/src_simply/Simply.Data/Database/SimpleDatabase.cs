@@ -468,6 +468,8 @@ namespace Simply.Data.Database
             };
 
             simpleDbCommand.RecompileQuery(this.QuerySetting, parameters);
+            simpleDbCommand.AddParameters(parameters);
+
             return simpleDbCommand;
         }
 
