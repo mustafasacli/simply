@@ -1,4 +1,5 @@
 ﻿using Simply.Common;
+using Simply.Data.Constants;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 
@@ -17,6 +18,9 @@ namespace Simply.Data
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
         public static int Count(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
+            string format = database.QuerySetting.CountFormat;
+            simpleDbCommand.CommandText =
+                format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
             object commandResult = database.ExecuteScalar(simpleDbCommand);
             int result = commandResult.ToInt();
             return result;
@@ -30,6 +34,9 @@ namespace Simply.Data
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
         public static long CountLong(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
+            string format = database.QuerySetting.CountFormat;
+            simpleDbCommand.CommandText =
+                format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
             object commandResult = database.ExecuteScalar(simpleDbCommand);
             long result = commandResult.ToLong();
             return result;
