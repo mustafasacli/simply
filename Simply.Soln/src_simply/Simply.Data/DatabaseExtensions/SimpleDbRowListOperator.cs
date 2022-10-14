@@ -4,6 +4,7 @@ using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Simply.Data
 {
@@ -36,7 +37,7 @@ namespace Simply.Data
             {
                 try
                 {
-                    simpleDbRowList = dataReader.GetResultSetAsDbRow(closeAtFinal: true);
+                    simpleDbRowList = dataReader.GetResultSetAsDbRow(closeAtFinal: true)?.ToList() ?? new List<SimpleDbRow>();
                 }
                 finally
                 { dataReader?.CloseIfNot(); }
@@ -140,7 +141,7 @@ namespace Simply.Data
                 {
                     simpleDbRowListResult.OutputParameters = command.GetOutParameters();
                     simpleDbRowListResult.ExecutionResult = dataReader.RecordsAffected;
-                    simpleDbRowListResult.Result = dataReader.GetResultSetAsDbRow(closeAtFinal: true);
+                    simpleDbRowListResult.Result = dataReader.GetResultSetAsDbRow(closeAtFinal: true)?.ToList() ?? new List<SimpleDbRow>();
                 }
                 finally
                 { dataReader?.CloseIfNot(); }

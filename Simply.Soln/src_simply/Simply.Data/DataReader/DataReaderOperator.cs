@@ -3,6 +3,7 @@ using Simply.Data.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Simply.Data
 {
@@ -83,38 +84,41 @@ namespace Simply.Data
         /// <param name="take">Count for Take.</param>
         /// <param name="closeAtFinal">if true datareader will be closed at final else not.</param>
         /// <returns>Returns dynamic object list.</returns>
-        public static List<SimpleDbRow> GetSimpleRowListSkipAndTake(this IDataReader reader,
+        public static IEnumerable<SimpleDbRow> GetSimpleRowListSkipAndTake(this IDataReader reader,
            uint skip = 0, uint take = 0, bool closeAtFinal = false)
         {
             if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
-            List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
+            //IEnumerable<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
 
             try
             {
-                if (reader.IsClosed || take == 0)
-                    return simpleDbRowListlist;
+                //if (reader.IsClosed || take == 0)
+                //    return simpleDbRowListlist;
 
                 uint cntr = 0;
-
-                while (reader.Read())
+                if (!reader.IsClosed && take != 0)
                 {
-                    if (cntr <= skip)
-                        continue;
+                    while (reader.Read())
+                    {
+                        if (cntr <= skip)
+                            continue;
 
-                    if (cntr > (skip + take))
-                        break;
+                        if (cntr > (skip + take))
+                            break;
 
-                    cntr++;
-                    SimpleDbRow row = reader.GetSimpleDbRow();
-                    simpleDbRowListlist.Add(row);
+                        yield return reader.GetSimpleDbRow();
+                        //cntr++;
+                        //SimpleDbRow row = reader.GetSimpleDbRow();
+                        //simpleDbRowListlist.Add(row);
+                    }
                 }
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
 
-            return simpleDbRowListlist;
+            //return simpleDbRowListlist;
         }
 
         /// <summary>
@@ -123,29 +127,33 @@ namespace Simply.Data
         /// <param name="reader">.</param>
         /// <param name="closeAtFinal">(Optional) .</param>
         /// <returns>Returns dynamic object list.</returns>
-        public static List<SimpleDbRow> GetResultSetAsDbRow(
+        public static IEnumerable<SimpleDbRow> GetResultSetAsDbRow(
             this IDataReader reader, bool closeAtFinal = false)
         {
             if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
-            List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
+            //List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
 
-            if (reader.IsClosed)
-                return simpleDbRowListlist;
+            //if (reader.IsClosed)
+            //    return simpleDbRowListlist;
 
             try
             {
-                while (reader.Read())
+                if (!reader.IsClosed)
                 {
-                    SimpleDbRow expando = reader.GetSimpleDbRow();
-                    simpleDbRowListlist.Add(expando);
+                    while (reader.Read())
+                    {
+                        yield return reader.GetSimpleDbRow(); ;
+                        //SimpleDbRow expando = reader.GetSimpleDbRow();
+                        //simpleDbRowListlist.Add(expando);
+                    }
                 }
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
 
-            return simpleDbRowListlist;
+            //return simpleDbRowListlist;
         }
 
         /// <summary>
@@ -196,7 +204,7 @@ namespace Simply.Data
             {
                 do
                 {
-                    List<SimpleDbRow> simpleDbRowListlist = reader.GetResultSetAsDbRow();
+                    List<SimpleDbRow> simpleDbRowListlist = reader.GetResultSetAsDbRow()?.ToList() ?? new List<SimpleDbRow>();
                     multiSimpleDbRowList.Add(simpleDbRowListlist);
                 } while (reader.NextResult());
             }
