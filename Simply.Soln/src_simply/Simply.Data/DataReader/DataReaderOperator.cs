@@ -97,19 +97,19 @@ namespace Simply.Data
                 //if (reader.IsClosed || take == 0)
                 //    return simpleDbRowListlist;
 
-                uint cntr = 0;
+                uint counter = 0;
                 if (!reader.IsClosed && take != 0)
                 {
                     while (reader.Read())
                     {
-                        if (cntr <= skip)
+                        if (counter < skip)
                             continue;
 
-                        if (cntr > (skip + take))
+                        if (counter > (skip + take))
                             break;
 
+                        counter++;
                         yield return reader.GetSimpleDbRow();
-                        //cntr++;
                         //SimpleDbRow row = reader.GetSimpleDbRow();
                         //simpleDbRowListlist.Add(row);
                     }
