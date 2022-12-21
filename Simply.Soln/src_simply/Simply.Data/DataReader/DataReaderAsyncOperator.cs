@@ -1,6 +1,7 @@
 ﻿using Simply.Common.Objects;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Simply.Data
@@ -51,7 +52,7 @@ namespace Simply.Data
         {
             Task<List<SimpleDbRow>> resultTask = Task.Factory.StartNew(() =>
             {
-                return DataReaderOperator.GetResultSetAsDbRow(reader, closeAtFinal);
+                return DataReaderOperator.GetResultSetAsDbRow(reader, closeAtFinal).ToList();
             });
 
             return await resultTask;

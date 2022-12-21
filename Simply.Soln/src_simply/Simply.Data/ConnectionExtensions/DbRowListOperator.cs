@@ -79,7 +79,7 @@ namespace Simply.Data
                 {
                     simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
                     simpleDbRowListResult.OutputParameters = command.GetOutParameters();
-                    simpleDbRowListResult.Result = reader.GetResultSetAsDbRow(closeAtFinal: true) ??
+                    simpleDbRowListResult.Result = reader.GetResultSetAsDbRow(closeAtFinal: true)?.ToList() ??
                         new List<SimpleDbRow>();
                 }
             }

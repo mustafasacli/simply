@@ -111,7 +111,7 @@ namespace Simply.Data
                         (isPageableAndSkipAndTakeFormatEmpty ?
                         reader.GetSimpleRowListSkipAndTake(
                             skip: pageInfo.Skip, take: pageInfo.Take, closeAtFinal: true)
-                        : reader.GetResultSetAsDbRow(closeAtFinal: true))
+                        : reader.GetResultSetAsDbRow(closeAtFinal: true)).ToList()
                         ?? new List<SimpleDbRow>();
                 }
             }
