@@ -23,7 +23,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execute scalar result as object.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static object ExecuteScalar(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)
@@ -60,7 +60,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execute scalar result as T instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T ExecuteScalarAs<T>(this IDbConnection connection,
            string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null) where T : struct
@@ -80,7 +80,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execute scalar result as object.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static object QueryExecuteScalar(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)
@@ -111,7 +111,7 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns execute scalar result as object.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<object> ExecuteScalarQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
@@ -136,7 +136,7 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<T> ExecuteScalarQueryAs<T>(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
@@ -163,7 +163,7 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execute scalar result as object.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static object ExecuteScalarOdbc(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
@@ -197,7 +197,7 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T ExecuteScalarOdbcAs<T>(
             this IDbConnection connection, string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null) where T : struct
@@ -234,7 +234,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns execute scalar result as object instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<T> ExecuteScalarAsAsync<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null) where T : struct
@@ -256,7 +256,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>An asynchronous result that yields the execute scalar.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<object> ExecuteScalarAsync(this IDbConnection connection,
             string sql, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)

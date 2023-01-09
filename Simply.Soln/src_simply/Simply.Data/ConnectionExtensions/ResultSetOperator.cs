@@ -22,7 +22,7 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns result set in a dataset instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<DataSet> GetResultSetQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
@@ -55,7 +55,7 @@ namespace Simply.Data
         /// <param name="commandSetting">Command setting</param>
 
         /// <returns>Returns result set in a dataset instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static DataSet GetOdbcResultSet(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
@@ -84,7 +84,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
         /// <returns>Returns dynamic object list.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<DataTable> GetResultSet(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)

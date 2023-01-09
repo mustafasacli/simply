@@ -33,7 +33,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns last record as object instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T QueryLast<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null) where T : class, new()
@@ -68,7 +68,7 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as object instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<T> QueryLast<T>(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null) where T : class, new()
         {
@@ -92,7 +92,7 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns last record as object instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static T GetLast<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null) where T : class
@@ -132,7 +132,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>An asynchronous result that yields the last as dynamic.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<SimpleDbRow> LastAsDynamicAsync(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)
@@ -162,7 +162,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>An asynchronous result that yields a T.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<T> LastAsync<T>(this IDbConnection connection,
            string sqlText, object obj, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null) where T : class, new()
@@ -185,7 +185,7 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">database command.</param>
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <returns>Returns last record as dynamic object instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<SimpleDbRow> QueryLastAsDbRow(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null)
@@ -237,7 +237,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns last record as SimpleDbRow instance.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static SimpleDbRow QueryLastDbRow(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)

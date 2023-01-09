@@ -26,7 +26,7 @@ namespace Simply.Data
         /// <param name="pageInfo">page info for skip and take counts. it is optional.
         /// if it is null then paging will be disabled.</param>
         /// <returns>Returns as object list.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<T> GetList<T>(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class
@@ -69,7 +69,7 @@ namespace Simply.Data
         /// <param name="commandSetting">Command setting</param>
         /// <param name="pageInfo">page info for skip and take counts.</param>
         /// <returns>Returns as object list.</returns>
-        //[Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null, IPageInfo pageInfo = null) where T : class, new()
