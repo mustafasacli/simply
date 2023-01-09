@@ -77,7 +77,7 @@ metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL 
 15-09-2022 Notlar;
 - IQuerySetting yapýsý yeniden düzenlenecek. YugobyteDb için düzenleme yapýlacak.
 BaseQuerySetting sýnýfý oluþturulup Dýþarýdan enjekte edilecek IQuerySetting nesneleri
-bu sýnýftan(BaseQuerySetting) kalýtým alarak sistem içine dahil edilecek.
+bu sýnýftan(BaseQuerySetting) kalýtým alarak sistem içine dahil edilecek.(DONE, WILL BE TESTED.)
 - PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT CERTAIN)
 - DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
 metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL BE TESTED.)

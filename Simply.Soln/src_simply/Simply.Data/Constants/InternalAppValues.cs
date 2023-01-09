@@ -128,6 +128,11 @@ namespace Simply.Data.Constants
         internal static readonly string OneSpace = " ";
 
         /// <summary>
+        /// Defines ' ' char.
+        /// </summary>
+        internal static readonly char SpaceChar = OneSpace[0];
+
+        /// <summary>
         /// Defines the Backquote as String ==> '`'.
         /// </summary>
         internal static readonly string BackquoteString = "`";

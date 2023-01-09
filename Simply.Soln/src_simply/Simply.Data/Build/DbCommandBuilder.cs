@@ -58,7 +58,7 @@ namespace Simply.Data
             if (parameters.IsNullOrEmpty())
                 return sql;
 
-            char spaceChar = InternalAppValues.OneSpace[0];
+            char spaceChar = InternalAppValues.SpaceChar;
             char prefixChar = parameterNamePrefix ?? spaceChar;
 
             if (prefixChar != spaceChar)
