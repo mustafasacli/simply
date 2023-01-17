@@ -141,11 +141,8 @@ namespace Simply.Common
         /// <returns>A string.</returns>
         public static string RemoveSpaces(this string text)
         {
-            if (string.IsNullOrEmpty(text))
-                return text;
-
-            text = text.Replace(" ", string.Empty);
-            return text;
+            string result = text?.Replace(" ", string.Empty) ?? string.Empty;
+            return result;
         }
 
         /// <summary>
