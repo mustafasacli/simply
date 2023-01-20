@@ -32,7 +32,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns list of SimpleDbRow object list.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<List<SimpleDbRow>> QueryMultiDbRowList(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null)
@@ -65,7 +65,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowListQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
@@ -95,7 +95,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="behavior">The behavior <see cref="System.Nullable{CommandBehavior}"/>.</param>
         /// <returns>Returns multi SimpleDbRow list.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<List<List<SimpleDbRow>>> GetMultiDbRowListQuery(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null,
             CommandBehavior? behavior = null)
@@ -126,7 +126,7 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<SimpleDbRow> GetListAsDbRow(this IDbConnection connection,
            string odbcSqlQuery, object[] parameterValues, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null)

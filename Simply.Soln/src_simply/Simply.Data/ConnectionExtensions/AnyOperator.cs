@@ -21,7 +21,7 @@ namespace Simply.Data
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static bool Any(this IDbConnection connection, string sqlText, object obj,
             IDbTransaction transaction = null, ICommandSetting commandSetting = null)
         {
@@ -48,7 +48,7 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">The simpleDbCommand <see cref="SimpleDbCommand"/>.</param>
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static bool Any(this IDbConnection connection,
             SimpleDbCommand simpleDbCommand, IDbTransaction transaction = null)
         {
@@ -70,7 +70,7 @@ namespace Simply.Data
         /// <param name="transaction">The transaction <see cref="IDbTransaction"/>.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static bool Any(this IDbConnection connection,
             string odbcSqlQuery, object[] parameterValues,
            IDbTransaction transaction = null, ICommandSetting commandSetting = null)
