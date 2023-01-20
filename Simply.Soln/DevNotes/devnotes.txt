@@ -81,3 +81,6 @@ bu sýnýftan(BaseQuerySetting) kalýtým alarak sistem içine dahil edilecek.(DONE, 
 - PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT CERTAIN)
 - DbQueryTranslator sýnýfýnda #DbCommandParameter[] TranslateParametersFromObject(this IDbConnection connection, object obj)#
 metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL BE TESTED.)
+
+20-01-20223 Notlar;
+- PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT CERTAIN)(REJECTED: IPageInfo nesnesi, ICommandSettings nesnesinden ayrý olarak bir çok yerde kullanýldýðý için þimdilik reddedildi.)
