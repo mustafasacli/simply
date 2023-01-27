@@ -9,7 +9,6 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Xml;
 
 namespace Simply.Definitor.Attribute
@@ -17,7 +16,7 @@ namespace Simply.Definitor.Attribute
     /// <summary>
     ///
     /// </summary>
-    public class AttributeDefinitor<T> : ISimpleDefinitor<T> where T : class
+    internal class AttributeDefinitor<T> : ISimpleDefinitor<T> where T : class
     {
         /// <summary>
         /// Defines the NumericTypes.
@@ -421,24 +420,6 @@ namespace Simply.Definitor.Attribute
             return schemaName;
         }
 
-        /// <summary>
-        /// Checks the ıf anonymous type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>A bool.</returns>
-        /*
-        public bool CheckIfAnonymousType(Type type)
-        {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
-
-            // HACK: The only way to detect anonymous types right now.
-            return Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false)
-                && type.IsGenericType && type.Name.Contains("AnonymousType")
-                && (type.Name.StartsWith("<>") || type.Name.StartsWith("VB$"))
-                && type.Attributes.HasFlag(TypeAttributes.NotPublic);
-        }
-        */
         /// <summary>
         /// Gets the column name.
         /// </summary>
