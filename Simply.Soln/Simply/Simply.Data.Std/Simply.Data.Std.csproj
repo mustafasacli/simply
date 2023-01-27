@@ -43,6 +43,7 @@
         <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderOperator.cs" Link="DataReader\DataReaderOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DbCommandExtensions\CommandExtensions.cs" Link="DbCommandExtensions\CommandExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DbTransactionExtensions\TransactionExtensions.cs" Link="DbTransactionExtensions\TransactionExtensions.cs" />
+        <Compile Include="..\..\src_simply\Simply.Data\Definitor\AttributeDefinitor.cs" Link="Definitor\AttributeDefinitor.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Enums\DbConnectionTypes.cs" Link="Enums\DbConnectionTypes.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\IDbCommandResult.cs" Link="Interfaces\IDbCommandResult.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\Interfaces\ICommandSetting.cs" Link="Interfaces\ICommandSetting.cs" />
