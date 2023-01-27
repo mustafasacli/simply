@@ -244,7 +244,7 @@ namespace Simply.Data.Database
             {
                 parameters.Add(new DbCommandParameter
                 {
-                    ParameterName = string.Concat(InternalAppValues.ParameterChar.ToString(), parameterCounter.ToString()),//string.Empty,
+                    ParameterName = string.Concat(InternalAppValues.ParameterChar.ToString(), parameterCounter.ToString()),
                     Value = obj,
                     Direction = ParameterDirection.Input,
                     ParameterDbType = DbType.String,
