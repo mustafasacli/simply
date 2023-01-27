@@ -21,10 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simply.Ef", "Simply\Simply.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simply.EfCore", "Simply\Simply.EfCore\Simply.EfCore.csproj", "{041EB4D4-381E-4D48-BA3F-D0B9ECBC7D34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simply.Definitor.Attribute.Std", "Simply\Simply.Definitor.Attribute.Std\Simply.Definitor.Attribute.Std.csproj", "{17D62791-BC4D-40DE-9E91-BEB43194188A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simply.Definitor.Attribute", "Simply\Simply.Definitor.Attribute\Simply.Definitor.Attribute.csproj", "{FE174F2B-AA9F-48A8-8F41-06EAFD297775}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,22 +77,6 @@ Global
 		{041EB4D4-381E-4D48-BA3F-D0B9ECBC7D34}.Release|Any CPU.Build.0 = Release|Any CPU
 		{041EB4D4-381E-4D48-BA3F-D0B9ECBC7D34}.Release|x86.ActiveCfg = Release|Any CPU
 		{041EB4D4-381E-4D48-BA3F-D0B9ECBC7D34}.Release|x86.Build.0 = Release|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Debug|x86.Build.0 = Debug|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Release|x86.ActiveCfg = Release|Any CPU
-		{17D62791-BC4D-40DE-9E91-BEB43194188A}.Release|x86.Build.0 = Release|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Debug|x86.Build.0 = Debug|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Release|x86.ActiveCfg = Release|Any CPU
-		{FE174F2B-AA9F-48A8-8F41-06EAFD297775}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
