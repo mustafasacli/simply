@@ -1,4 +1,5 @@
-﻿using Simply.Data.Enums;
+﻿using Simply.Common.Interfaces;
+using Simply.Data.Enums;
 using Simply.Data.Objects;
 using System;
 using System.Data;
@@ -47,6 +48,12 @@ namespace Simply.Data.Interfaces
         /// Gets, sets value for IDbCommand logging.
         /// </summary>
         bool LogDbCommand { get; set; }
+
+        /// <summary>
+        /// Gets the definitor factory.
+        /// </summary>
+        ISimpleDefinitorFactory DefinitorFactory
+        { get; }
 
         /// <summary>
         /// Begins the transaction.

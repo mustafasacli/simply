@@ -1,4 +1,5 @@
 ﻿using Simply.Common;
+using Simply.Common.Interfaces;
 using Simply.Data.Constants;
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.DbTransactionExtensions;
@@ -67,13 +68,15 @@ namespace Simply.Data.Database
         /// <param name="connection">The connection.</param>
         /// <param name="transaction">The transaction.</param>
         /// <param name="querySetting">Query Setting instance.</param>
+        /// <param name="definitorFactory">definitor factory instance for create definitor.</param>
         public SimpleDatabase(IDbConnection connection, IDbTransaction transaction = null,
-            IQuerySetting querySetting = null)
+            IQuerySetting querySetting = null, ISimpleDefinitorFactory definitorFactory = null)
         {
             this.connection = connection;
             this.transaction = transaction;
             ConnectionType = connection.GetDbConnectionType();
             QuerySetting = querySetting ?? connection.GetQuerySetting();
+            DefinitorFactory = definitorFactory;
         }
 
         /// <summary>
@@ -82,13 +85,15 @@ namespace Simply.Data.Database
         /// <param name="providerFactory">The provider factory.</param>
         /// <param name="connectionString">The connection string.</param>
         /// <param name="querySetting">Query Setting instance.</param>
+        /// <param name="definitorFactory">definitor factory instance for create definitor.</param>
         public SimpleDatabase(DbProviderFactory providerFactory, string connectionString,
-            IQuerySetting querySetting = null)
+            IQuerySetting querySetting = null, ISimpleDefinitorFactory definitorFactory = null)
         {
             this.connection = providerFactory.CreateConnection();
             this.connection.ConnectionString = connectionString;
             ConnectionType = connection.GetDbConnectionType();
             QuerySetting = querySetting ?? connection.GetQuerySetting();
+            DefinitorFactory = definitorFactory;
         }
 
         /// <summary>
@@ -132,6 +137,12 @@ namespace Simply.Data.Database
         /// </summary>
         public bool LogDbCommand
         { get; set; }
+
+        /// <summary>
+        /// Gets the definitor factory.
+        /// </summary>
+        public ISimpleDefinitorFactory DefinitorFactory
+        { get; protected set; }
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -629,7 +640,8 @@ namespace Simply.Data.Database
             {
                 DbCommandParameter parameter = new DbCommandParameter
                 {
-                    ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix, (counter + 1).ToString(), QuerySetting.ParameterSuffix),
+                    ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix, 
+                    (counter + 1).ToString(), QuerySetting.ParameterSuffix),
                     Value = parameterValues[counter],
                     Direction = ParameterDirection.Input,
                     DbType = parameterValues[counter].ToDbType() ?? DbType.Object
