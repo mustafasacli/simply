@@ -66,7 +66,7 @@ namespace Simply.Data
                 parameters.ToList()
                       .ForEach(p =>
                       {
-                          if (!sql.Contains(string.Format("{0}{1}", p.ParameterName.StartsWith(parameterPrefix) ? "" : parameterPrefix, p.ParameterName)))
+                          if (!sql.Contains(string.Format("{0}{1}", p.ParameterName.StartsWith(parameterPrefix) ? string.Empty : parameterPrefix, p.ParameterName)))
                           {
                               sql = sql.Replace(string.Format("{0}{1}{0}", prefixChar, p.ParameterName),
                                     string.Format("{0}{1}", parameterPrefix, p.ParameterName)).CopyValue(true);

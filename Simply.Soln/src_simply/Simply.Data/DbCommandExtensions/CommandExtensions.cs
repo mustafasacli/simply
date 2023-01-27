@@ -342,7 +342,7 @@ namespace Simply.Data.DbCommandExtensions
 
                 DbParameter dbParameter = null;
 
-                if (/*parameter == null && */parameter.GetRealType().IsSimpleTypeV2())
+                if (parameter.GetRealType().IsSimpleTypeV2())
                 {
                     dbParameter = command.CreateDbParameter();
                     dbParameter.Value = parameter ?? InternalAppValues.NullValue;
