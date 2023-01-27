@@ -14,7 +14,7 @@ using System.Xml;
 namespace Simply.Definitor.Attribute
 {
     /// <summary>
-    ///
+    /// Definitor class for Attribute mapping.
     /// </summary>
     internal class AttributeDefinitor<T> : ISimpleDefinitor<T> where T : class
     {

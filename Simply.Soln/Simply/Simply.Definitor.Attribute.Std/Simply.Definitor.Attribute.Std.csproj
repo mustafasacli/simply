@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,15 +6,12 @@
 
   <ItemGroup>
     <Compile Include="..\..\src_simply\Simply.Definitor.Attribute\AttributeDefinitor.cs" Link="AttributeDefinitor.cs" />
+    <Compile Include="..\..\src_simply\Simply.Definitor.Attribute\AttributeDefinitorFactory.cs" Link="AttributeDefinitorFactory.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Simply.Common" Version="1.4.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Simply.Common.Std\Simply.Common.Std.csproj" />
   </ItemGroup>
 
 </Project>

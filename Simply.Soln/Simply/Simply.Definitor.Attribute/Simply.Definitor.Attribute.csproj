@@ -48,6 +48,9 @@
     <Compile Include="..\..\src_simply\Simply.Definitor.Attribute\AttributeDefinitor.cs">
       <Link>AttributeDefinitor.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Definitor.Attribute\AttributeDefinitorFactory.cs">
+      <Link>AttributeDefinitorFactory.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
