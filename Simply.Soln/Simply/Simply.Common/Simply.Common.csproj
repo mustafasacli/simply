@@ -49,6 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src_simply\Simply.Common\Enums\DbGeneratedOption.cs">
+      <Link>Enums\DbGeneratedOption.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\Interfaces\ISimpleDefinitor.cs">
+      <Link>Interfaces\ISimpleDefinitor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\Interfaces\ISimpleDefinitorFactory.cs">
+      <Link>Interfaces\ISimpleDefinitorFactory.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ArrayHelper.cs">
       <Link>ObjectExtensions\ArrayHelper.cs</Link>
     </Compile>
@@ -90,6 +99,7 @@
   <ItemGroup>
     <None Include="simply.common.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>rd /s /q "$(ProjectDir)obj\Debug"

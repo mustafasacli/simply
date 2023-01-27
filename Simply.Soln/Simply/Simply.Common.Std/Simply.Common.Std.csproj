@@ -5,6 +5,9 @@
   </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="..\..\src_simply\Simply.Common\Enums\DbGeneratedOption.cs" Link="Enums\DbGeneratedOption.cs" />
+        <Compile Include="..\..\src_simply\Simply.Common\Interfaces\ISimpleDefinitor.cs" Link="Interfaces\ISimpleDefinitor.cs" />
+        <Compile Include="..\..\src_simply\Simply.Common\Interfaces\ISimpleDefinitorFactory.cs" Link="Interfaces\ISimpleDefinitorFactory.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ArrayHelper.cs" Link="ObjectExtensions\ArrayHelper.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\DatetimeExtensions.cs" Link="ObjectExtensions\DatetimeExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\DictionaryExtensions.cs" Link="ObjectExtensions\DictionaryExtensions.cs" />
@@ -21,6 +24,11 @@
 
     <ItemGroup>
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Interfaces\" />
+      <Folder Include="Enums\" />
     </ItemGroup>
 
 </Project>

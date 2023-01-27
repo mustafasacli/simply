@@ -15,7 +15,7 @@ namespace Simply.Common
         /// <typeparam name="T"></typeparam>
         /// <returns> Returns empty array.</returns>
         public static T[] Empty<T>() where T : class
-        { return new T[0]; }
+        { return Enumerable.Empty<T>().ToArray(); }
 
         /// <summary>
         /// Creates empty list.
@@ -23,7 +23,7 @@ namespace Simply.Common
         /// <typeparam name="T"></typeparam>
         /// <returns>Returns empty list.</returns>
         public static List<T> EmptyList<T>() where T : class
-        { return new List<T>(); }
+        { return Enumerable.Empty<T>().ToList(); }
 
         /// <summary>
         /// Array is null or empty returns true, else returns false.
@@ -43,7 +43,7 @@ namespace Simply.Common
         /// <typeparam name="T"></typeparam>
         /// <returns> Returns empty array.</returns>
         public static T[] EmptyEnum<T>() where T : Enum
-        { return new T[0]; }
+        { return Enumerable.Empty<T>().ToArray(); }
 
         /// <summary>
         /// Checks the array is null or empty
