@@ -260,6 +260,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Definitor\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
