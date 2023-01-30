@@ -42,7 +42,7 @@ namespace Simply.Data
                     foreach (DataColumn col in datatable.Columns)
                     {
                         rowCellValue = row[col.ColumnName];
-                        if (rowCellValue != null && rowCellValue != DBNull.Value)
+                        if (rowCellValue.IsNullOrDbNull() == false)
                         {
                             propertyInfo = properties.FirstOrDefault(p => p.Name == col.ColumnName);
                             propertyInfo?.SetValue(item, rowCellValue);

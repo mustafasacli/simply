@@ -16,7 +16,7 @@ namespace Simply.Definitor.Attribute
     /// <summary>
     /// Definitor class for Attribute mapping.
     /// </summary>
-    internal class AttributeDefinitor<T> : ISimpleDefinitor<T> where T : class
+    public class AttributeDefinitor<T> : ISimpleDefinitor<T> where T : class
     {
         /// <summary>
         /// Defines the NumericTypes.
