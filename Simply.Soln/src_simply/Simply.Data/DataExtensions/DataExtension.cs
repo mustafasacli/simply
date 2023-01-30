@@ -1,6 +1,8 @@
 ﻿using Simply.Common;
+using Simply.Common.Interfaces;
 using Simply.Data.Constants;
 using Simply.Data.Interfaces;
+using Simply.Definitor.Attribute;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -71,20 +73,24 @@ namespace Simply.Data
         /// convert datatable To List.
         /// </summary>
         /// <typeparam name="T">T object type.</typeparam>
+        /// <param name="database">simple database object</param>
         /// <param name="datatable">Datatable object.</param>
         /// <param name="unForceNullValueBind"></param>
         /// <returns>   Returns A List of T object.</returns>
-        public static List<T> ToList_V2<T>(this DataTable datatable, bool unForceNullValueBind = true) where T : new()
+        public static List<T> ToList_V2<T>(this ISimpleDatabase database, DataTable datatable, bool unForceNullValueBind = true) where T : class, new()
         {
-            PropertyInfo[] properties = typeof(T).GetValidPropertiesOfTypeV2();
-            IDictionary<string, string> column2PropertyMap = properties.GetColumnsReverse();
+            ISimpleDefinitor<T> definitor = database.DefinitorFactory?.GetDefinitor<T>() ?? new AttributeDefinitor<T>();
+            PropertyInfo[] properties = definitor.GetValidProperties();
+            IDictionary<string, string> column2PropertyMap = definitor.GetColumnsReverse();
             DataColumnCollection columnColection = datatable.Columns;
             List<string> columnNames = column2PropertyMap.Select(q => q.Key).Where(q => columnColection.Contains(q)).ToList() ?? new List<string>();
             List<string> propertyNames = column2PropertyMap.Where(q => columnNames.Contains(q.Key)).Select(q => q.Value).ToList() ?? new List<string>();
             PropertyInfo[] rowProperties = properties.Where(q => propertyNames.Contains(q.Name)).ToArray() ?? new PropertyInfo[0];
             column2PropertyMap = rowProperties.GetColumns();
 
-            List<T> liste = datatable.AsEnumerable().Select(row => Row2Instance<T>(row, rowProperties, column2PropertyMap, unForceNullValueBind: unForceNullValueBind)).ToList();
+            List<T> liste = datatable.AsEnumerable().Select(row =>
+            Row2Instance<T>(row, rowProperties, column2PropertyMap, unForceNullValueBind: unForceNullValueBind))
+                .ToList();
 
             return liste;
         }
@@ -112,7 +118,7 @@ namespace Simply.Data
         }
 
         /// <summary>
-        /// Copies datatable to a new datatble.
+        /// Copies datatable to a new datatable.
         /// </summary>
         /// <param name="datatable">DataTable object.</param>
         /// <returns>A DataTable.</returns>
@@ -249,7 +255,7 @@ namespace Simply.Data
         }
 
         /// <summary>
-        /// A DataTable extension method that export as excel with ınclude columns.
+        /// A DataTable extension method that export as excel with include columns.
         /// </summary>
         /// <param name="datatable">DataTable object.</param>
         /// <param name="fileName">Filename of the file.</param>
@@ -441,14 +447,14 @@ namespace Simply.Data
             if (columns is null)
                 columns = row.Table.Columns;
 
-            PropertyInfo[] props = typeof(T).GetProperties();
+            PropertyInfo[] properties = typeof(T).GetProperties();
 
-            props = props
+            properties = properties
                 .AsQueryable()
                 .Where(p => p.CanWrite && columns.Contains(p.Name))
                 .ToArray();
 
-            foreach (PropertyInfo p in props)
+            foreach (PropertyInfo p in properties)
             {
                 p.SetValue(instance, row[p.Name] == DBNull.Value ? null : row[p.Name]);
             }

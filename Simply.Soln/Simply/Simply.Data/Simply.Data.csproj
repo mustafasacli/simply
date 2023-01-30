@@ -167,9 +167,6 @@
     <Compile Include="..\..\src_simply\Simply.Data\DbTransactionExtensions\TransactionExtensions.cs">
       <Link>DbTransactionExtensions\TransactionExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\src_simply\Simply.Data\Definitor\AttributeDefinitor.cs">
-      <Link>Definitor\AttributeDefinitor.cs</Link>
-    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\Enums\DbConnectionTypes.cs">
       <Link>Enums\DbConnectionTypes.cs</Link>
     </Compile>
@@ -259,6 +256,9 @@
     </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\QuerySettings\VistaDbQuerySetting.cs">
       <Link>QuerySettings\VistaDbQuerySetting.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src_simply\Simply.Definitor.Attribute\AttributeDefinitor.cs">
+      <Link>Definitor\AttributeDefinitor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
