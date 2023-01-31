@@ -82,6 +82,9 @@
     <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\PropertyExtension.cs">
       <Link>ObjectExtensions\PropertyExtension.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\SimpleDbRowExtensions.cs">
+      <Link>ObjectExtensions\SimpleDbRowExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\StringExtension.cs">
       <Link>ObjectExtensions\StringExtension.cs</Link>
     </Compile>

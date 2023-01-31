@@ -16,6 +16,7 @@
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\GenericExtensions.cs" Link="ObjectExtensions\GenericExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ObjectExtension.cs" Link="ObjectExtensions\ObjectExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\PropertyExtension.cs" Link="ObjectExtensions\PropertyExtension.cs" />
+        <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\SimpleDbRowExtensions.cs" Link="ObjectExtensions\SimpleDbRowExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\StringExtension.cs" Link="ObjectExtensions\StringExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\TypeExtensions.cs" Link="ObjectExtensions\TypeExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\Objects\SimpleDbCell.cs" Link="Objects\SimpleDbCell.cs" />
