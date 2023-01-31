@@ -86,7 +86,7 @@ namespace Simply.Data
             List<string> columnNames = column2PropertyMap.Select(q => q.Key).Where(q => columnColection.Contains(q)).ToList() ?? new List<string>();
             List<string> propertyNames = column2PropertyMap.Where(q => columnNames.Contains(q.Key)).Select(q => q.Value).ToList() ?? new List<string>();
             PropertyInfo[] rowProperties = properties.Where(q => propertyNames.Contains(q.Name)).ToArray() ?? new PropertyInfo[0];
-            column2PropertyMap = rowProperties.GetColumns();
+            column2PropertyMap = definitor.GetPropertyColumns(rowProperties);
 
             List<T> liste = datatable.AsEnumerable().Select(row =>
             Row2Instance<T>(row, rowProperties, column2PropertyMap, unForceNullValueBind: unForceNullValueBind))

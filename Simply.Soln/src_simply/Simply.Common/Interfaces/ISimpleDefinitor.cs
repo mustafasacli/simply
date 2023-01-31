@@ -128,5 +128,12 @@ namespace Simply.Common.Interfaces
         /// <param name="keySelector">The key selector.</param>
         /// <returns>A string.</returns>
         string GetColumnName<TKey>(Expression<Func<T, TKey>> keySelector);
+
+        /// <summary>
+        /// Get Column Name-Property Name as dictionary.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <returns>The columns reverse.</returns>
+        IDictionary<string, string> GetColumnsReverse();
     }
 }

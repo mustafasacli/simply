@@ -19,6 +19,13 @@ namespace Simply.Definitor.Attribute
     public class AttributeDefinitor<T> : ISimpleDefinitor<T> where T : class
     {
         /// <summary>
+        /// create a new instance of ISimpleDefinitor.
+        /// </summary>
+        /// <returns>A ISimpleDefinitor.</returns>
+        public static ISimpleDefinitor<T> New<T>() where T : class
+        { return new AttributeDefinitor<T>(); }
+
+        /// <summary>
         /// Defines the NumericTypes.
         /// </summary>
         private readonly HashSet<Type> NumericTypes = new HashSet<Type>
@@ -430,6 +437,31 @@ namespace Simply.Definitor.Attribute
             string propertyName = keySelector.GetMemberName();
             string columnName = GetPropertyColumn(propertyName);
             return columnName;
+        }
+
+
+        /// <summary>
+        /// Get Column Name-Property Name as dictionary.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="instance">The t to act on.</param>
+        /// <returns>The columns reverse.</returns>
+        public IDictionary<string, string> GetColumnsReverse()
+        {
+            IDictionary<string, string> dict = new Dictionary<string, string>();
+
+            PropertyInfo[] properties = typeof(T).GetProperties();
+
+            properties = properties.Where(p => p.CanWrite && p.CanRead)
+                                    .Where(p => p.GetCustomAttribute<NotMappedAttribute>() == null)
+                                    .Where(p => p.PropertyType.IsSimpleTypeV2()).ToArray();
+
+            foreach (PropertyInfo property in properties)
+            {
+                dict.Add(property.GetColumnNameOfProperty(), property.Name);
+            }
+
+            return dict;
         }
     }
 }

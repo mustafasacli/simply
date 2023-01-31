@@ -342,9 +342,8 @@ namespace Simply.Common
         public static DateTime? ToDateTimeNullable(this object obj)
         {
             DateTime? value = null;
-            DateTime date;
 
-            if (DateTime.TryParse(obj.ToStr(), out date))
+            if (DateTime.TryParse(obj.ToStr(), out DateTime date))
                 value = date;
 
             return value;

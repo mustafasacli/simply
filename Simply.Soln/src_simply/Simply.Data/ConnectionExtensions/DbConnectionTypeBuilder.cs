@@ -1,4 +1,5 @@
 ﻿using Simply.Common;
+using Simply.Common.Interfaces;
 using Simply.Data.Constants;
 using Simply.Data.Enums;
 using Simply.Data.Interfaces;
@@ -395,16 +396,17 @@ namespace Simply.Data
         /// The connectionType <see cref="DbConnectionTypes"/> Db Connectype enum instance.
         /// </param>
         /// <param name="includeSchemaName">if true reuslt includes schema info else does not include.</param>
+        /// <param name="simpleDefinitor">Simmple Definitor for table-class, column-property mapping.</param>
         /// <returns>Returns Table Name with Schema includes connection type prefix-suffix.</returns>
-        public static string GetFullTableName<T>(this DbConnectionTypes connectionType, bool includeSchemaName = true) where T : class
+        public static string GetFullTableName<T>(this DbConnectionTypes connectionType, ISimpleDefinitor<T> simpleDefinitor, bool includeSchemaName = true) where T : class
         {
-            string tableName = typeof(T).GetTableNameOfType();
+            string tableName = simpleDefinitor.GetTableName();// typeof(T).GetTableNameOfType();
             IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
             string fullTableName = $"{querySetting.Prefix}{tableName}{querySetting.Suffix}";
 
             if (!includeSchemaName) return fullTableName;
 
-            string schema = typeof(T).GetSchemaNameOfType();
+            string schema = simpleDefinitor.GetSchemaName();// typeof(T).GetSchemaNameOfType();
             if (!string.IsNullOrWhiteSpace(schema))
             {
                 fullTableName = $"{querySetting.Prefix}{schema}{querySetting.Suffix}.{fullTableName}";

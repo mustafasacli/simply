@@ -102,6 +102,7 @@ namespace Simply.Common
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="instance">The t to act on.</param>
         /// <returns>The columns reverse.</returns>
+        [Obsolete("Method moved to ISimpleDefinitor interface and AttributeDefinitor class.")]
         public static IDictionary<string, string> GetColumnsReverse<T>(this T instance) where T : class
         {
             IDictionary<string, string> dict = new Dictionary<string, string>();
@@ -126,6 +127,7 @@ namespace Simply.Common
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="instance">The t to act on.</param>
         /// <returns>The columns.</returns>
+        [Obsolete("Method moved to ISimpleDefinitor interface and AttributeDefinitor class.")]
         public static IDictionary<string, string> GetColumns<T>(this T instance) where T : class
         {
             IDictionary<string, string> dictionary = new Dictionary<string, string>();
@@ -154,6 +156,7 @@ namespace Simply.Common
         /// (Optional) True if is first property key, false if not.
         /// </param>
         /// <returns>The key.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetKey<T>(this T instance, bool isFirstPropertyKey = false) where T : class
         {
             string key = string.Empty;
@@ -187,6 +190,7 @@ namespace Simply.Common
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="instance">The t to act on.</param>
         /// <returns>The table name.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetTableName<T>(this T instance) where T : class
         {
             string tableName = instance.GetRealType().GetTableNameOfType();
@@ -199,6 +203,7 @@ namespace Simply.Common
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="instance">The t to act on.</param>
         /// <returns>The schema name.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetSchemaName<T>(this T instance) where T : class
         {
             string schemaName = instance.GetRealType().GetSchemaNameOfType();
@@ -226,7 +231,10 @@ namespace Simply.Common
         /// <returns>.</returns>
         public static object GetPropertyValue<T>(this T instance, string propertyName)
         {
-            PropertyInfo property = instance.GetType().GetProperty(propertyName);
+            PropertyInfo property = typeof(T).GetProperty(propertyName);
+            if (property == null) 
+                throw new Exception($"{propertyName} property is not belong to class.");
+
             object value = property?.GetValue(instance, null);
 
             return value;

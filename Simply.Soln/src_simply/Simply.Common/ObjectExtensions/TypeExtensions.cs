@@ -227,6 +227,7 @@ namespace Simply.Common
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>The columns of type as reverse.</returns>
+        [Obsolete("Method is deprecated.")]
         public static IDictionary<string, string> GetColumnsOfTypeAsReverse(this Type type)
         {
             IDictionary<string, string> dictionary = new Dictionary<string, string>();
@@ -246,6 +247,7 @@ namespace Simply.Common
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>The key of type.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetKeyOfType(this Type type)
         {
             string keyPropertyName = string.Empty;
@@ -307,6 +309,7 @@ namespace Simply.Common
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>The key column of type.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetKeyColumnOfType(this Type type)
         {
             string keyColumnName = string.Empty;
@@ -328,6 +331,7 @@ namespace Simply.Common
         /// <param name="type">The type to act on.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The property column of type.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetPropertyColumnOfType(this Type type, string propertyName)
         {
             if (string.IsNullOrWhiteSpace(propertyName))
@@ -348,6 +352,7 @@ namespace Simply.Common
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>The table name of type.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetTableNameOfType(this Type type)
         {
             TableAttribute tableAttribute = type.GetCustomAttribute<TableAttribute>();
@@ -367,6 +372,7 @@ namespace Simply.Common
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>The schema name of type.</returns>
+        [Obsolete("Method is deprecated.")]
         public static string GetSchemaNameOfType(this Type type)
         {
             string schemaName = string.Empty;
@@ -390,6 +396,7 @@ namespace Simply.Common
         /// if true NotMapped Properties are included, else not.
         /// </param>
         /// <returns>The columns of type.</returns>
+        [Obsolete("Method is deprecated.")]
         public static IDictionary<string, string> GetColumnsOfType(this Type type, bool includeNotMappedProperties = false)
         {
             IDictionary<string, string> dictionary = new Dictionary<string, string>();
@@ -409,6 +416,7 @@ namespace Simply.Common
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>The columns reverse of type.</returns>
+        [Obsolete("Method is deprecated.")]
         public static IDictionary<string, string> GetPropertyColumnsAsReverse(this Type type)
         {
             IDictionary<string, string> dictionary = new Dictionary<string, string>();
@@ -428,6 +436,7 @@ namespace Simply.Common
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>True if it succeeds, false if it fails.</returns>
+        [Obsolete("Method is deprecated.")]
         public static bool IsKeyColumnNumeric(this Type type)
         {
             bool isIdColumnNumeric = false;
@@ -452,6 +461,7 @@ namespace Simply.Common
         /// </param>
         /// <param name="includeReadonlyProperties"></param>
         /// <returns>An array of property İnformation.</returns>
+        [Obsolete("Method is deprecated.")]
         public static PropertyInfo[] GetValidPropertiesOfType(this Type type, bool includeNotMappedProperties = false, bool includeReadonlyProperties = false)
         {
             PropertyInfo[] properties = type.GetProperties();
