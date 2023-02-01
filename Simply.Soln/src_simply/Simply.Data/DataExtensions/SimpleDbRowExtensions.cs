@@ -34,8 +34,8 @@ namespace Simply.Data
 
             ISimpleDefinitor<T> definitor = database.DefinitorFactory?.GetDefinitor<T>() ?? AttributeDefinitor<T>.New();
             // TODO :
-            IDictionary<string, string> columns = definitor.GetColumns();// type.GetColumnsOfType(includeNotMappedProperties: true);
-            PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true, includeComputedProperties: true); // type.GetValidPropertiesOfType(includeNotMappedProperties: true);
+            IDictionary<string, string> columns = definitor.GetColumns();
+            PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true, includeComputedProperties: true);
 
             properties = properties
                 .Where(q => columns.Keys.Contains(q.Name))
@@ -183,7 +183,7 @@ namespace Simply.Data
             IDictionary<string, string> columns = new Dictionary<string, string>();
 
             ISimpleDefinitor<T> definitor = database.DefinitorFactory?.GetDefinitor<T>() ?? AttributeDefinitor<T>.New();
-            IDictionary<string, string> tempColumns = definitor.GetColumns();// typeof(T).GetColumnsOfType(includeNotMappedProperties: true) ?? new Dictionary<string, string>();
+            IDictionary<string, string> tempColumns = definitor.GetColumns();
             tempColumns.Where(q => row.ContainsCellName(q.Value))
                 .ToList()
                 .ForEach(q =>
@@ -192,7 +192,7 @@ namespace Simply.Data
                 });
 
             instance = Activator.CreateInstance<T>();
-            PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true);// typeof(T).GetValidPropertiesOfType(includeNotMappedProperties: true);
+            PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true);
 
             properties = properties
                 .Where(q => columns.Keys.Contains(q.Name))
@@ -221,8 +221,8 @@ namespace Simply.Data
 
             ISimpleDefinitor<T> definitor = AttributeDefinitor<T>.New();
             // TODO :
-            IDictionary<string, string> columns = definitor.GetColumns();// type.GetColumnsOfType(includeNotMappedProperties: true);
-            PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true, includeComputedProperties: true); // type.GetValidPropertiesOfType(includeNotMappedProperties: true);
+            IDictionary<string, string> columns = definitor.GetColumns();
+            PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true, includeComputedProperties: true);
 
             properties = properties
                 .Where(q => columns.Keys.Contains(q.Name))
