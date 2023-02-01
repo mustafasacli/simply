@@ -2,24 +2,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Simply.Common</id>
-        <version>1.5.0.0</version>
+        <version>1.6.0.0</version>
         <authors>mustafa sacli</authors>
         <title>simply.common</title>
         <summary>this package is used for common operations.</summary>
         <projectUrl>https://github.com/mustafasacli/simply</projectUrl>
         <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <releaseNotes>ISimpleDefinitorFactory DefinitorFactory property added into ISimpleDatabase interface and SimpleDatabase class.
-		SimpleDbRowExtensions class added into project. DataExtensions class arranged. 
-		GetColumns, GetColumnsReverse methods added into ISimpleDefinitor interface and AttributeDefinitor class.
-		DbConnectionTypeBuilder class arranged. DynamicExtensions removed. 
-		TypeExtensions class renamed to SimpleTypeExtensions. Methods which use GetCustomAttribute extension method, removed from GenericExtensions, PropertyExtension, SimpleTypeExtensions classes.
-		System.ComponentModel.DataAnnotations reference removed.</releaseNotes>
+        <releaseNotes>System.ComponentModel.DataAnnotations reference removed.</releaseNotes>
         <description>Supports common operations.</description>
         <copyright>Copyright ©2022 mustafa.sacli</copyright>
         <tags>Common Extensions</tags>
-        <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5.1" />
-        </frameworkAssemblies>
     </metadata>
 </package>
