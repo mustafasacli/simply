@@ -290,7 +290,7 @@ namespace Simply.Data
         /// </summary>
         /// <param name="row">The row.</param>
         /// <param name="convertFunction">The convert function.</param>
-        /// <returns>A T.</returns>
+        /// <returns>A T instance.</returns>
         public static T ConvertRowTo<T>(this SimpleDbRow row, Func<SimpleDbRow, T> convertFunction) where T : class
         {
             return convertFunction(row);
