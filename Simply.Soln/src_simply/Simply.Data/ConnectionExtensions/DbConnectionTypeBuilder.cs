@@ -400,13 +400,13 @@ namespace Simply.Data
         /// <returns>Returns Table Name with Schema includes connection type prefix-suffix.</returns>
         public static string GetFullTableName<T>(this DbConnectionTypes connectionType, ISimpleDefinitor<T> simpleDefinitor, bool includeSchemaName = true) where T : class
         {
-            string tableName = simpleDefinitor.GetTableName();// typeof(T).GetTableNameOfType();
+            string tableName = simpleDefinitor.GetTableName();
             IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
             string fullTableName = $"{querySetting.Prefix}{tableName}{querySetting.Suffix}";
 
             if (!includeSchemaName) return fullTableName;
 
-            string schema = simpleDefinitor.GetSchemaName();// typeof(T).GetSchemaNameOfType();
+            string schema = simpleDefinitor.GetSchemaName();
             if (!string.IsNullOrWhiteSpace(schema))
             {
                 fullTableName = $"{querySetting.Prefix}{schema}{querySetting.Suffix}.{fullTableName}";

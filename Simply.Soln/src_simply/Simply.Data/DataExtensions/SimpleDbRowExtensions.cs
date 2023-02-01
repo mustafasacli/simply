@@ -284,5 +284,16 @@ namespace Simply.Data
 
             return instance;
         }
+
+        /// <summary>
+        /// Converts the row to T object instance.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="convertFunction">The convert function.</param>
+        /// <returns>A T.</returns>
+        public static T ConvertRowTo<T>(this SimpleDbRow row, Func<SimpleDbRow, T> convertFunction) where T : class
+        {
+            return convertFunction(row);
+        }
     }
 }
