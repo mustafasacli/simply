@@ -133,7 +133,18 @@ namespace Simply.Common.Interfaces
         /// Get Column Name-Property Name as dictionary.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="includeNotMappedProperties"></param>
+        /// <param name="includeComputedProperties"></param>
         /// <returns>The columns reverse.</returns>
-        IDictionary<string, string> GetColumnsReverse();
+        IDictionary<string, string> GetColumnsReverse(bool includeNotMappedProperties = false, bool includeComputedProperties = false);
+
+        /// <summary>
+        /// Get Property Name-Column Name as dictionary.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="includeNotMappedProperties"></param>
+        /// <param name="includeComputedProperties"></param>
+        /// <returns>The columns.</returns>
+        IDictionary<string, string> GetColumns(bool includeNotMappedProperties = false, bool includeComputedProperties = false);
     }
 }

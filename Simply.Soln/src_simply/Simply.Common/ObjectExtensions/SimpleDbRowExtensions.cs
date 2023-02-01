@@ -27,14 +27,14 @@ namespace Simply.Common
             if (rows.Count < 1)
                 return list;
 
-            Type type = typeof(T);
+            IDictionary<string, string> columns = new Dictionary<string, string>();
 
-            IDictionary<string, string> columns = type.GetColumnsOfType(includeNotMappedProperties: true);
-            PropertyInfo[] properties = type.GetValidPropertiesOfType(includeNotMappedProperties: true);
-
-            properties = properties
-                .Where(q => columns.Keys.Contains(q.Name))
-                .ToArray() ?? new PropertyInfo[0];
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            properties.ToList()
+                .ForEach(q =>
+                {
+                    columns[q.Name] = q.Name;
+                });
 
             if (!properties.Any())
                 throw new Exception("Any Property has found for mapping.");
@@ -74,12 +74,7 @@ namespace Simply.Common
             if (rows.Count < 1)
                 return list;
 
-            Type type = typeof(T);
-
-            PropertyInfo[] properties = type.GetValidPropertiesOfType(includeNotMappedProperties: true);
-            properties = properties
-                .Where(q => columnPropertyMap.Keys.Contains(q.Name))
-                .ToArray() ?? new PropertyInfo[0];
+            PropertyInfo[] properties = typeof(T).GetProperties();
 
             if (properties.Length < 1)
                 throw new Exception("Any Property has found for mapping.");
@@ -156,39 +151,6 @@ namespace Simply.Common
                 if (message.IsValid())
                     throw new Exception(message);
             }
-        }
-
-        /// <summary>
-        /// Convert dynamic object to new T object instance.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="row">The dyn to act on.</param>
-        /// <returns>to converted.</returns>
-        public static T ConvertRowTo<T>(this SimpleDbRow row) where T : class
-        {
-            if (row == null)
-                throw new ArgumentNullException(nameof(row));
-
-            T instance = null;
-
-            if (row.CellCount < 1)
-                return instance;
-
-            IDictionary<string, string> columns = new Dictionary<string, string>();
-
-            IDictionary<string, string> tempColumns = typeof(T).GetColumnsOfType(includeNotMappedProperties: true) ?? new Dictionary<string, string>();
-            tempColumns.Where(q => row.ContainsCellName(q.Value)).ToList().ForEach(q => columns[q.Key] = q.Value);
-
-            instance = Activator.CreateInstance<T>();
-            PropertyInfo[] properties = typeof(T).GetValidPropertiesOfType(includeNotMappedProperties: true);
-
-            properties = properties
-                .Where(q => columns.Keys.Contains(q.Name))
-                .ToArray();
-
-            SetPropertyValuesFromRow(ref instance, properties, row, columns);
-
-            return instance;
         }
     }
 }

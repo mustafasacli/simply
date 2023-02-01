@@ -39,6 +39,7 @@
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDbRowListOperator.cs" Link="DatabaseExtensions\SimpleDbRowListOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DatabaseExtensions\SimpleDatabaseExtension.cs" Link="DatabaseExtensions\SimpleDatabaseExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataExtensions\DataExtension.cs" Link="DataExtensions\DataExtension.cs" />
+		<Compile Include="..\..\src_simply\Simply.Data\DataExtensions\SimpleDbRowExtensions.cs" Link="DataExtensions\SimpleDbRowExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderAsyncOperator.cs" Link="DataReader\DataReaderAsyncOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderOperator.cs" Link="DataReader\DataReaderOperator.cs" />
         <Compile Include="..\..\src_simply\Simply.Data\DbCommandExtensions\CommandExtensions.cs" Link="DbCommandExtensions\CommandExtensions.cs" />

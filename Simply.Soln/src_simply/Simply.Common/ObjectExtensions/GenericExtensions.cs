@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -39,175 +37,26 @@ namespace Simply.Common
         }
 
         /// <summary>
-        /// Gets Valid Properties of object instance.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="instance">The t to act on.</param>
-        /// <returns>An array of property information.</returns>
-        public static PropertyInfo[] GetValidProperties<T>(this T instance) where T : class
-        {
-            PropertyInfo[] props = instance.GetRealType().GetValidPropertiesOfType();
-            return props;
-        }
-
-        /// <summary>
         /// Gets Property Values in a dictionary.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="instance">The t to act on.</param>
-        /// <param name="includeNotMappedProperties">.</param>
         /// <returns>The properties.</returns>
-        public static IDictionary<string, object> GetPropertyValues<T>(this T instance, bool includeNotMappedProperties = false) where T : class
+        public static IDictionary<string, object> GetPropertyValues<T>(this T instance) where T : class
         {
-            IDictionary<string, object> dict = new Dictionary<string, object>();
+            IDictionary<string, object> propertyValues = new Dictionary<string, object>();
 
-            PropertyInfo[] properties = typeof(T).GetValidPropertiesOfType(
-                includeNotMappedProperties: includeNotMappedProperties, includeReadonlyProperties: true);
-
-            foreach (PropertyInfo property in properties)
-            {
-                dict.Add(property.Name, property.GetValue(instance));
-            }
-
-            return dict;
-        }
-
-        /// <summary>
-        /// Gets given property values as object array.
-        /// </summary>
-        /// <typeparam name="T">.</typeparam>
-        /// <param name="instance">.</param>
-        /// <param name="propertyNames">.</param>
-        /// <returns>.</returns>
-        public static object[] GetPropertyValues<T>(this T instance, List<string> propertyNames)
-        {
-            object[] values = new object[0];
-
-            if (propertyNames == null || instance == null || propertyNames.Count == 0)
-                return values;
-
-            values =
-            instance.GetType()
-                .GetValidPropertiesOfType()
-                .Where(q => propertyNames.Contains(q.Name))
-                .Select(q => q.GetValue(instance, null))
-                .ToArray() ?? new object[0];
-
-            return values;
-        }
-
-        /// <summary>
-        /// Get Column Name-Property Name as dictionary.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="instance">The t to act on.</param>
-        /// <returns>The columns reverse.</returns>
-        [Obsolete("Method moved to ISimpleDefinitor interface and AttributeDefinitor class.")]
-        public static IDictionary<string, string> GetColumnsReverse<T>(this T instance) where T : class
-        {
-            IDictionary<string, string> dict = new Dictionary<string, string>();
-
-            PropertyInfo[] properties = instance.GetRealType().GetProperties();
-
-            properties = properties.Where(p => p.CanWrite && p.CanRead)
-                                    .Where(p => p.GetCustomAttribute<NotMappedAttribute>() == null)
-                                    .Where(p => p.PropertyType.IsSimpleTypeV2()).ToArray();
-
-            foreach (PropertyInfo property in properties)
-            {
-                dict.Add(property.GetColumnNameOfProperty(), property.Name);
-            }
-
-            return dict;
-        }
-
-        /// <summary>
-        /// Get Property Name-Column Name as dictionary.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="instance">The t to act on.</param>
-        /// <returns>The columns.</returns>
-        [Obsolete("Method moved to ISimpleDefinitor interface and AttributeDefinitor class.")]
-        public static IDictionary<string, string> GetColumns<T>(this T instance) where T : class
-        {
-            IDictionary<string, string> dictionary = new Dictionary<string, string>();
-
-            PropertyInfo[] properties = instance.GetRealType().GetProperties();
-
-            properties = properties.Where(p => p.CanWrite && p.CanRead)
-                                .Where(p => p.GetCustomAttribute<NotMappedAttribute>() == null)
-                                .Where(p => TypeExtensions.IsSimpleTypeV2(p.PropertyType)).ToArray();
-
-            foreach (PropertyInfo property in properties)
-            {
-                dictionary.Add(property.Name, property.GetColumnNameOfProperty());
-            }
-
-            return dictionary;
-        }
-
-        /// <summary>
-        /// Gets First Key Property Name, if object has no key property and isFirstPropKey value is
-        /// true returns first property name as key property.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="instance">The t to act on.</param>
-        /// <param name="isFirstPropertyKey">
-        /// (Optional) True if is first property key, false if not.
-        /// </param>
-        /// <returns>The key.</returns>
-        [Obsolete("Method is deprecated.")]
-        public static string GetKey<T>(this T instance, bool isFirstPropertyKey = false) where T : class
-        {
-            string key = string.Empty;
-
-            PropertyInfo[] properties = instance.GetRealType().GetProperties();
-
-            properties = properties.Where(p => p.CanWrite && p.CanRead)
-                                    .Where(p => p.GetCustomAttribute<NotMappedAttribute>() == null)
-                                    .Where(p => TypeExtensions.IsSimpleTypeV2(p.PropertyType))
-                                    .ToArray() ?? new PropertyInfo[0];
-            PropertyInfo[] keyProperties = properties
-                .Where(p => (p.GetCustomAttributes(typeof(KeyAttribute), true) ?? new object[] { }).Length > 0)
+            PropertyInfo[] properties = typeof(T)
+                .GetProperties()
+                .Where(q => q.CanRead)
                 .ToArray();
 
-            if (keyProperties.Length > 0)
+            foreach (PropertyInfo property in properties)
             {
-                key = keyProperties[0].Name;
-            }
-            else
-            {
-                if (isFirstPropertyKey)
-                    key = properties[0].Name;
+                propertyValues.Add(property.Name, property.GetValue(instance));
             }
 
-            return key;
-        }
-
-        /// <summary>
-        /// Gets table name.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="instance">The t to act on.</param>
-        /// <returns>The table name.</returns>
-        [Obsolete("Method is deprecated.")]
-        public static string GetTableName<T>(this T instance) where T : class
-        {
-            string tableName = instance.GetRealType().GetTableNameOfType();
-            return tableName;
-        }
-
-        /// <summary>
-        /// Gets schema name.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="instance">The t to act on.</param>
-        /// <returns>The schema name.</returns>
-        [Obsolete("Method is deprecated.")]
-        public static string GetSchemaName<T>(this T instance) where T : class
-        {
-            string schemaName = instance.GetRealType().GetSchemaNameOfType();
-            return schemaName;
+            return propertyValues;
         }
 
         /// <summary>
@@ -232,7 +81,7 @@ namespace Simply.Common
         public static object GetPropertyValue<T>(this T instance, string propertyName)
         {
             PropertyInfo property = typeof(T).GetProperty(propertyName);
-            if (property == null) 
+            if (property == null)
                 throw new Exception($"{propertyName} property is not belong to class.");
 
             object value = property?.GetValue(instance, null);

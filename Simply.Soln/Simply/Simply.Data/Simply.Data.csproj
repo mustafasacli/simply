@@ -155,6 +155,9 @@
     <Compile Include="..\..\src_simply\Simply.Data\DataExtensions\DataExtension.cs">
       <Link>DataExtensions\DataExtension.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Data\DataExtensions\SimpleDbRowExtensions.cs">
+      <Link>DataExtensions\SimpleDbRowExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Data\DataReader\DataReaderAsyncOperator.cs">
       <Link>DataReader\DataReaderAsyncOperator.cs</Link>
     </Compile>

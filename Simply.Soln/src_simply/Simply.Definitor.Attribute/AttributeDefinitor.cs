@@ -22,7 +22,7 @@ namespace Simply.Definitor.Attribute
         /// create a new instance of ISimpleDefinitor.
         /// </summary>
         /// <returns>A ISimpleDefinitor.</returns>
-        public static ISimpleDefinitor<T> New<T>() where T : class
+        public static ISimpleDefinitor<T> New()
         { return new AttributeDefinitor<T>(); }
 
         /// <summary>
@@ -439,29 +439,54 @@ namespace Simply.Definitor.Attribute
             return columnName;
         }
 
-
         /// <summary>
         /// Get Column Name-Property Name as dictionary.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="instance">The t to act on.</param>
+        /// <param name="includeNotMappedProperties"></param>
+        /// <param name="includeComputedProperties"></param>
         /// <returns>The columns reverse.</returns>
-        public IDictionary<string, string> GetColumnsReverse()
+        public IDictionary<string, string> GetColumnsReverse(bool includeNotMappedProperties = false,
+            bool includeComputedProperties = false)
         {
-            IDictionary<string, string> dict = new Dictionary<string, string>();
+            IDictionary<string, string> dictionary = new Dictionary<string, string>();
 
-            PropertyInfo[] properties = typeof(T).GetProperties();
+            PropertyInfo[] properties = GetValidProperties(includeNotMappedProperties: includeNotMappedProperties, includeComputedProperties: includeComputedProperties);
 
-            properties = properties.Where(p => p.CanWrite && p.CanRead)
-                                    .Where(p => p.GetCustomAttribute<NotMappedAttribute>() == null)
-                                    .Where(p => p.PropertyType.IsSimpleTypeV2()).ToArray();
+            properties = properties.GetReadWriteProperties()
+                                .Where(p => SimpleTypeExtensions.IsSimpleTypeV2(p.PropertyType)).ToArray();
 
             foreach (PropertyInfo property in properties)
             {
-                dict.Add(property.GetColumnNameOfProperty(), property.Name);
+                dictionary.Add(GetColumnNameOfProperty(property), property.Name);
             }
 
-            return dict;
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Get Property Name-Column Name as dictionary.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="includeNotMappedProperties"></param>
+        /// <param name="includeComputedProperties"></param>
+        /// <returns>The columns.</returns>
+        public IDictionary<string, string> GetColumns(bool includeNotMappedProperties = false,
+            bool includeComputedProperties = false)
+        {
+            IDictionary<string, string> dictionary = new Dictionary<string, string>();
+
+            PropertyInfo[] properties = GetValidProperties(includeNotMappedProperties: includeNotMappedProperties, includeComputedProperties: includeComputedProperties);
+
+            properties = properties.GetReadWriteProperties()
+                                .Where(p => SimpleTypeExtensions.IsSimpleTypeV2(p.PropertyType)).ToArray();
+
+            foreach (PropertyInfo property in properties)
+            {
+                dictionary.Add(property.Name, GetColumnNameOfProperty(property));
+            }
+
+            return dictionary;
         }
     }
 }
