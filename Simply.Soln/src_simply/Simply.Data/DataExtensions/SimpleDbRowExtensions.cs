@@ -119,7 +119,7 @@ namespace Simply.Data
             bool hasErrorThrowned = false;
             StringBuilder errorMessageBuilder = new StringBuilder();
 
-            properties = properties ?? new PropertyInfo[0];
+            properties = properties ?? ArrayHelper.Empty<PropertyInfo>();
 
             foreach (PropertyInfo property in properties)
             {

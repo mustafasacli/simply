@@ -300,7 +300,7 @@ namespace Simply.Data.DbCommandExtensions
         /// <param name="command">The command <see cref="IDbCommand"/>.</param>
         /// <param name="commandParameters">database command parameters<see cref="List{DbCommandParameter}"/>.</param>
         /// <returns>Returns IDbCommand object instance.</returns>
-        // [Obsolete("Method is depreated. it will be removed later versions.")]
+        // -[Obsolete("Method is depreated. it will be removed later versions.")]
         internal static IDbCommand IncludeCommandParameters(this IDbCommand command,
             List<DbCommandParameter> commandParameters)
         {
@@ -391,7 +391,7 @@ namespace Simply.Data.DbCommandExtensions
         /// <param name="command">Db command.</param>
         /// <param name="parameters">Db Command Parameters.</param>
         /// <returns>Returns IDbCommand object instance.</returns>
-        // [Obsolete("Method is depreated. it will be removed later versions.")]
+        // -[Obsolete("Method is depreated. it will be removed later versions.")]
         public static IDbCommand IncludeCommandParameters(this IDbCommand command, object[] parameters)
         {
             if (!(parameters?.Any() ?? false))
