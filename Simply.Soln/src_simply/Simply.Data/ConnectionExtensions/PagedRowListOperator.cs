@@ -38,7 +38,7 @@ namespace Simply.Data
         /// if it is null then paging will be disabled.
         /// </param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<SimpleDbRow> QueryDbRowList(this IDbConnection connection,
             string sqlText, object obj, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
@@ -75,7 +75,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="pageInfo">page info for skip and take counts. it is optional. if it is null then paging will be disabled.</param>
         /// <returns>Returns SimpleDbRow object list.</returns>
-        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDbCommandResult<List<SimpleDbRow>> GetDbRowList(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             IDbTransaction transaction = null, IPageInfo pageInfo = null)
@@ -130,7 +130,7 @@ namespace Simply.Data
         /// <param name="transaction">Database transaction.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns as SimpleDbRow object list.</returns>
-        // [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static List<SimpleDbRow> SelectDbRowList(this IDbConnection connection,
            string odbcSqlQuery, object[] values, IDbTransaction transaction = null,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null)
