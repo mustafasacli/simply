@@ -1,6 +1,6 @@
-﻿using Simply.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
@@ -37,7 +37,7 @@ namespace Simply.Ef
                 });
             types = types.Distinct().ToList();
             types =
-            types.Where(q => q.GetKeysOfType().Length < 1)
+            types.Where(q => q.GetProperties().Any(p => p.GetCustomAttribute<KeyAttribute>() != null) == false)
             .ToList() ?? new List<Type>();
 
             return types;

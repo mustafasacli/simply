@@ -1,5 +1,4 @@
-﻿using Simply.Common;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 
 namespace Simply.Ef
 {
