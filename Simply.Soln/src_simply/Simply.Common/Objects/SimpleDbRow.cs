@@ -49,6 +49,26 @@ namespace Simply.Common.Objects
         { get { return cells; } }
 
         /// <summary>
+        /// Gets value of element at given index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public object this[int index]
+        {
+            get { return GetValue(index); }
+        }
+
+        /// <summary>
+        /// Gets value of element at given cell name
+        /// </summary>
+        /// <param name="cellName"></param>
+        /// <returns></returns>
+        public object this[string cellName]
+        {
+            get { return GetValue(cellName); }
+        }
+
+        /// <summary>
         /// Gets the type.
         /// </summary>
         /// <param name="indx">The indx.</param>
@@ -62,14 +82,14 @@ namespace Simply.Common.Objects
         /// <summary>
         /// Gets the type.
         /// </summary>
-        /// <param name="columnName">The column name.</param>
+        /// <param name="cellName">The column name.</param>
         /// <returns>A Type.</returns>
-        public Type GetType(string columnName)
+        public Type GetType(string cellName)
         {
-            CheckColumnNameIsNull(columnName);
-            SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == columnName);
+            CheckColumnNameIsNull(cellName);
+            SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == cellName);
             if (cell == null)
-                throw new ArgumentException($"Sequence not contains {columnName} given name.");
+                throw new ArgumentException($"Sequence not contains {cellName} given name.");
 
             return cell.CellType;
         }
@@ -77,12 +97,12 @@ namespace Simply.Common.Objects
         /// <summary>
         /// Removes the cell with given name.
         /// </summary>
-        /// <param name="columnName">The column name.</param>
+        /// <param name="cellName">The column name.</param>
         /// <returns>An int.</returns>
-        public int RemoveCell(string columnName)
+        public int RemoveCell(string cellName)
         {
-            CheckColumnNameIsNull(columnName);
-            SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == columnName);
+            CheckColumnNameIsNull(cellName);
+            SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == cellName);
             int result = 0;
 
             if (cell == null)
@@ -100,25 +120,25 @@ namespace Simply.Common.Objects
         /// <summary>
         /// Gets the value.
         /// </summary>
-        /// <param name="indx">The indx.</param>
+        /// <param name="index">The indx.</param>
         /// <returns>An object.</returns>
-        public object GetValue(int indx)
+        public object GetValue(int index)
         {
-            CheckIndexIsValid(indx);
-            return Cells[indx].Value;
+            CheckIndexIsValid(index);
+            return Cells[index].Value;
         }
 
         /// <summary>
         /// Gets the value.
         /// </summary>
-        /// <param name="columnName">The column name.</param>
+        /// <param name="cellName">The cell name.</param>
         /// <returns>An object.</returns>
-        public object GetValue(string columnName)
+        public object GetValue(string cellName)
         {
-            CheckColumnNameIsNull(columnName);
-            SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == columnName);
+            CheckColumnNameIsNull(cellName);
+            SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == cellName);
             if (cell == null)
-                throw new ArgumentException($"Sequence not contains cell with \"{columnName}\" given name.");
+                throw new ArgumentException($"Sequence not contains cell with \"{cellName}\" given name.");
 
             return cell.Value;
         }
@@ -163,12 +183,12 @@ namespace Simply.Common.Objects
         /// <summary>
         /// Gets the value.
         /// </summary>
-        /// <param name="columnName">The column name.</param>
+        /// <param name="cellName">The column name.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A T.</returns>
-        public T GetValue<T>(string columnName, T defaultValue) where T : struct
+        public T GetValue<T>(string cellName, T defaultValue) where T : struct
         {
-            object value = GetValue(columnName);
+            object value = GetValue(cellName);
             T instance = value.IsNullOrDbNull() ? defaultValue : (T)value;
             return instance;
         }
@@ -201,12 +221,12 @@ namespace Simply.Common.Objects
         /// <summary>
         /// Adds the cell.
         /// </summary>
-        /// <param name="columnName">The column name.</param>
+        /// <param name="cellName">The column name.</param>
         /// <param name="columnType">The column type.</param>
         /// <param name="cellValue">The cell value.</param>
-        public void AddCell(string columnName, Type columnType, object cellValue)
+        public void AddCell(string cellName, Type columnType, object cellValue)
         {
-            AddCell(new SimpleDbCell { CellName = columnName, CellType = columnType, Value = cellValue });
+            AddCell(new SimpleDbCell { CellName = cellName, CellType = columnType, Value = cellValue });
         }
 
         /// <summary>
@@ -279,11 +299,11 @@ namespace Simply.Common.Objects
         /// <summary>
         /// Checks the column name ıs null.
         /// </summary>
-        /// <param name="columnName">The column name.</param>
-        protected void CheckColumnNameIsNull(string columnName)
+        /// <param name="cellName">The column name.</param>
+        protected void CheckColumnNameIsNull(string cellName)
         {
-            if (columnName.IsNullOrSpace())
-                throw new ArgumentNullException(nameof(columnName));
+            if (cellName.IsNullOrSpace())
+                throw new ArgumentNullException(nameof(cellName));
         }
 
         /// <summary>
