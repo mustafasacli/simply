@@ -9,7 +9,7 @@
         <projectUrl>https://github.com/mustafasacli/simply</projectUrl>
         <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <releaseNotes>Query execution error fixed. simply.common nuıget version upgraded to 1.3.0.0.</releaseNotes>
+        <releaseNotes>Query execution error fixed. simply.common nuget version upgraded to 1.3.0.0.</releaseNotes>
         <description>Supports IDbConnection operations.</description>
         <copyright>Copyright ©2022 mustafa.sacli</copyright>
         <tags>IDbConnection Dapper DbConnection Extensions</tags>
