@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Simply.Common</id>
-        <version>1.6.0.0</version>
+        <version>1.7.0.0</version>
         <authors>mustafa sacli</authors>
         <title>simply.common</title>
         <summary>this package is used for common operations.</summary>
         <projectUrl>https://github.com/mustafasacli/simply</projectUrl>
         <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <releaseNotes>System.ComponentModel.DataAnnotations reference removed.</releaseNotes>
+        <releaseNotes>SimpleDbRow updated.</releaseNotes>
         <description>Supports common operations.</description>
         <copyright>Copyright ©2022 mustafa.sacli</copyright>
         <tags>Common Extensions</tags>
