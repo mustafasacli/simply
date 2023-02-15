@@ -10,7 +10,7 @@ Now, you can connect database.
 In [Simply.TestApps] repository, you can check Simply_Test_Db project. We create a class extended from Simply.Data.Database.SimpleDatabase class.
 In this class(SimpleMySqlDatabase) we set connection information.
 
-In SimplyTestConsoleApp project;
+In SimplyTestConsoleApp project; <br/>
 ISimpleDatabase database = new SimpleMySqlDatabase(); // create dtaabse instance
 int id = 100;
 Any method usages;
