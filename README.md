@@ -16,7 +16,7 @@ int id = 100;
 Any method usages;
 - database.Any("select * from customers where customerNumber < @id", new { id });
 - database.Any("select * from customers where customerNumber < ?id?", new { id },
-                SimpleCommandSetting.Create(parameterNamePrefix: '?'));
+SimpleCommandSetting.Create(parameterNamePrefix: '?'));
 - database.AnyOdbc("select * from customers where customerNumber < ?", new[] { (object)id });
 - database.AnyJdbc("select * from customers where customerNumber < ?1", new[] { (object)id });
 - SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
