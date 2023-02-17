@@ -127,6 +127,12 @@ namespace Simply.Data.Database
         { get; set; }
 
         /// <summary>
+        /// Gets or sets the internal exception handler.
+        /// </summary>
+        public Action<Exception> InternalExceptionHandler
+        { get; set; }
+
+        /// <summary>
         /// Gets, sets value for SimpleDbCommand logging.
         /// </summary>
         public bool LogCommand
@@ -162,9 +168,43 @@ namespace Simply.Data.Database
 
                     if (transactionState == 1)
                     {
-                        transaction?.CommitAndDispose();
-                        transactionState = 0;
+                        try
+                        {
+                            transaction?.CommitAndDispose();
+                            transactionState = 0;
+                        }
+                        catch (Exception ex1)
+                        {
+                            transactionState = 0;
+                            try
+                            {
+                                if (InternalExceptionHandler != null)
+                                {
+                                    InternalExceptionHandler(ex1);
+                                }
+                            }
+                            catch (Exception ee)
+                            {
+                                Trace.WriteLine(ee.ToString());
+                            }
+                            throw;
+                        }
                     }
+                }
+                catch (Exception ex2)
+                {
+                    try
+                    {
+                        if (InternalExceptionHandler != null)
+                        {
+                            InternalExceptionHandler(ex2);
+                        }
+                    }
+                    catch (Exception ee2)
+                    {
+                        Trace.WriteLine(ee2.ToString());
+                    }
+                    throw;
                 }
                 finally
                 {
@@ -182,8 +222,18 @@ namespace Simply.Data.Database
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            { Dispose(true); }
+            finally
+            { GC.SuppressFinalize(this); }
+        }
+
+        /// <summary>
+        /// the finalizer
+        /// </summary>
+        ~SimpleDatabase()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -205,9 +255,28 @@ namespace Simply.Data.Database
         {
             if (transactionState == 1)
             {
-                transaction.CommitAndDispose();
-                transactionState = 2;
-                transaction = null;
+                try
+                { transaction.CommitAndDispose(); }
+                catch (Exception ex1)
+                {
+                    try
+                    {
+                        if (InternalExceptionHandler != null)
+                        {
+                            InternalExceptionHandler(ex1);
+                        }
+                    }
+                    catch (Exception ee)
+                    {
+                        Trace.WriteLine(ee.ToString());
+                    }
+                    throw;
+                }
+                finally
+                {
+                    transactionState = 2;
+                    transaction = null;
+                }
             }
         }
 
@@ -218,18 +287,29 @@ namespace Simply.Data.Database
         {
             if (transactionState == 1)
             {
-                transaction.RollbackAndDispose();
-                transactionState = 2;
-                transaction = null;
+                try
+                { transaction.RollbackAndDispose(); }
+                catch (Exception ex1)
+                {
+                    try
+                    {
+                        if (InternalExceptionHandler != null)
+                        {
+                            InternalExceptionHandler(ex1);
+                        }
+                    }
+                    catch (Exception ee)
+                    {
+                        Trace.WriteLine(ee.ToString());
+                    }
+                    throw;
+                }
+                finally
+                {
+                    transactionState = 2;
+                    transaction = null;
+                }
             }
-        }
-
-        /// <summary>
-        /// Begins the transction.
-        /// </summary>
-        ~SimpleDatabase()
-        {
-            Dispose(false);
         }
 
         /// <summary>
@@ -608,7 +688,7 @@ namespace Simply.Data.Database
         /// <summary>
         /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
         /// </summary>
-        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/> 
+        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/>
         /// like #SELECT T1.* FROM TABLE T1 WHERE T1.INT_COLUMN = ?1 AND T2.DATE_COLUMN = ?2 #.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>
@@ -640,7 +720,7 @@ namespace Simply.Data.Database
             {
                 DbCommandParameter parameter = new DbCommandParameter
                 {
-                    ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix, 
+                    ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix,
                     (counter + 1).ToString(), QuerySetting.ParameterSuffix),
                     Value = parameterValues[counter],
                     Direction = ParameterDirection.Input,
@@ -668,6 +748,19 @@ namespace Simply.Data.Database
             simpleDbCommand.AddCommandParameters(commandParameters);
 
             return simpleDbCommand;
+        }
+
+        /// <summary>
+        /// Creates Db connection.
+        /// </summary>
+        /// <typeparam name="TDbConnection"></typeparam>
+        /// <param name="connectionString">database connection string</param>
+        /// <returns>TDbConnection object instance</returns>
+        public static TDbConnection Create<TDbConnection>(string connectionString) where TDbConnection : IDbConnection
+        {
+            TDbConnection dbConnection = (TDbConnection)Activator.CreateInstance(typeof(TDbConnection));
+            dbConnection.ConnectionString = connectionString;
+            return dbConnection;
         }
     }
 }

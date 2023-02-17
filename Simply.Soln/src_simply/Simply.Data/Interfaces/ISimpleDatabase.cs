@@ -40,6 +40,12 @@ namespace Simply.Data.Interfaces
         Action<IDbCommand> DbCommandLogAction { get; set; }
 
         /// <summary>
+        /// Gets or sets the internal exception handler.
+        /// </summary>
+        Action<Exception> InternalExceptionHandler
+        { get; set; }
+
+        /// <summary>
         /// Gets, sets value for simpledbcommand logging.
         /// </summary>
         bool LogCommand { get; set; }

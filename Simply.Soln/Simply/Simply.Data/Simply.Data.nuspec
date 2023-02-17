@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Simply.Data</id>
-        <version>4.0.1.0</version>
+        <version>4.1.1.0</version>
         <authors>mustafa sacli</authors>
         <title>simply.data</title>
         <summary>this package is used for database operations.</summary>
         <projectUrl>https://github.com/mustafasacli/simply</projectUrl>
         <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <releaseNotes>SimpleDatabase structure added into project. SimpleDatabase samples can be found in https://github.com/mustafasacli/Simply.TestApps repository. simply.common nuget version upgraded to 1.7.0.0.</releaseNotes>
+        <releaseNotes>InternalExceptionHandler property added simpledatabase. Some arrangements. SimpleDatabase samples can be found in https://github.com/mustafasacli/Simply.TestApps repository.</releaseNotes>
         <description>Supports IDbConnection operations.</description>
         <copyright>Copyright ©2022 mustafa.sacli</copyright>
         <tags>IDbConnection Dapper DbConnection Extensions</tags>
