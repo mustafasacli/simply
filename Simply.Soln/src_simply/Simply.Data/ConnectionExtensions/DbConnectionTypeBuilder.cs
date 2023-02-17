@@ -4,6 +4,7 @@ using Simply.Data.Constants;
 using Simply.Data.Enums;
 using Simply.Data.Interfaces;
 using Simply.Data.QuerySettings;
+using Simply.Definitor.Attribute;
 using System;
 using System.Collections.Concurrent;
 using System.Data;
@@ -400,7 +401,7 @@ namespace Simply.Data
         /// <returns>Returns Table Name with Schema includes connection type prefix-suffix.</returns>
         public static string GetFullTableName<T>(this DbConnectionTypes connectionType, ISimpleDefinitor<T> simpleDefinitor, bool includeSchemaName = true) where T : class
         {
-            string tableName = simpleDefinitor.GetTableName();
+            string tableName = (simpleDefinitor ?? AttributeDefinitor<T>.New()).GetTableName();
             IQuerySetting querySetting = QuerySettingsFactory.GetQuerySetting(connectionType);
             string fullTableName = $"{querySetting.Prefix}{tableName}{querySetting.Suffix}";
 
