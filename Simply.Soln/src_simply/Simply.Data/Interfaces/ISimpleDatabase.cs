@@ -70,12 +70,14 @@ namespace Simply.Data.Interfaces
         /// <summary>
         /// Commits the transaction.
         /// </summary>
-        void Commit();
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        void Commit(bool closeConnectionAtFinal = true);
 
         /// <summary>
         /// Rollbacks the transaction.
         /// </summary>
-        void Rollback();
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        void Rollback(bool closeConnectionAtFinal = true);
 
         /// <summary>
         /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.

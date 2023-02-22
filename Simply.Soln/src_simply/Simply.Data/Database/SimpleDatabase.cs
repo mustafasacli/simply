@@ -251,7 +251,8 @@ namespace Simply.Data.Database
         /// <summary>
         /// Commits the transaction.
         /// </summary>
-        public void Commit()
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        public void Commit(bool closeConnectionAtFinal = true)
         {
             if (transactionState == 1)
             {
@@ -276,6 +277,8 @@ namespace Simply.Data.Database
                 {
                     transactionState = 2;
                     transaction = null;
+                    if (closeConnectionAtFinal)
+                        connection?.CloseIfNot();
                 }
             }
         }
@@ -283,7 +286,8 @@ namespace Simply.Data.Database
         /// <summary>
         /// Rollbacks the transaction.
         /// </summary>
-        public void Rollback()
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        public void Rollback(bool closeConnectionAtFinal = true)
         {
             if (transactionState == 1)
             {
@@ -308,6 +312,8 @@ namespace Simply.Data.Database
                 {
                     transactionState = 2;
                     transaction = null;
+                    if (closeConnectionAtFinal)
+                        connection?.CloseIfNot();
                 }
             }
         }
