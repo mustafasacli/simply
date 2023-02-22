@@ -319,6 +319,14 @@ namespace Simply.Data.Database
         }
 
         /// <summary>
+        /// Closes the connection.
+        /// </summary>
+        public void Close()
+        {
+            connection?.CloseIfNot();
+        }
+
+        /// <summary>
         /// Translates the parameters from object.
         /// </summary>
         /// <param name="obj">object that contains parameters as property.</param>
