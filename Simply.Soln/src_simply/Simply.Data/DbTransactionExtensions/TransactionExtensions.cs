@@ -39,9 +39,9 @@ namespace Simply.Data.DbTransactionExtensions
         {
             if (transaction != null)
             {
-                try 
+                try
                 { transaction.Rollback(); }
-                finally 
+                finally
                 { DisposeTransaction(transaction); }
             }
         }

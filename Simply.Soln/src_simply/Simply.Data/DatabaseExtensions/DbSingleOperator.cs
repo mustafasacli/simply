@@ -1,5 +1,4 @@
-﻿using Simply.Common;
-using Simply.Common.Objects;
+﻿using Simply.Common.Objects;
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;

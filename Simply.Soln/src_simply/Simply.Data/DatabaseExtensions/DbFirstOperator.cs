@@ -1,5 +1,4 @@
-﻿using Simply.Common;
-using Simply.Common.Objects;
+﻿using Simply.Common.Objects;
 using Simply.Data.DbCommandExtensions;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
@@ -254,7 +253,7 @@ namespace Simply.Data
         public static SimpleDbRow FirstRowJdbc(this ISimpleDatabase database,
            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand = 
+            SimpleDbCommand simpleDbCommand =
                 database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
             SimpleDbRow simpleRow = database.FirstRow(simpleDbCommand);
             return simpleRow;

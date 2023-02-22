@@ -41,7 +41,7 @@
 
         public static readonly string CommandLogActionNotDefined = "Command Log Action not defined.";
 
-        public static readonly string DbTransactionNotDefined= "DbTransaction should be defined.";
+        public static readonly string DbTransactionNotDefined = "DbTransaction should be defined.";
 
         public static readonly string DbConnectionNotDefined = "DbConnection should be defined.";
     }
