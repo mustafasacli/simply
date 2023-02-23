@@ -145,6 +145,12 @@ namespace Simply.Data.Database
         { get; set; }
 
         /// <summary>
+        /// Gets or sets connection auto close.
+        /// </summary>
+        public bool AutoClose
+        { get; set; }
+
+        /// <summary>
         /// Gets the definitor factory.
         /// </summary>
         public ISimpleDefinitorFactory DefinitorFactory
@@ -254,32 +260,38 @@ namespace Simply.Data.Database
         /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
         public void Commit(bool closeConnectionAtFinal = true)
         {
-            if (transactionState == 1)
+            try
             {
-                try
-                { transaction.CommitAndDispose(); }
-                catch (Exception ex1)
+                if (transactionState == 1)
                 {
                     try
+                    { transaction.CommitAndDispose(); }
+                    catch (Exception ex1)
                     {
-                        if (InternalExceptionHandler != null)
+                        try
                         {
-                            InternalExceptionHandler(ex1);
+                            if (InternalExceptionHandler != null)
+                            {
+                                InternalExceptionHandler(ex1);
+                            }
                         }
+                        catch (Exception ee)
+                        {
+                            Trace.WriteLine(ee.ToString());
+                        }
+                        throw;
                     }
-                    catch (Exception ee)
+                    finally
                     {
-                        Trace.WriteLine(ee.ToString());
+                        transactionState = 2;
+                        transaction = null;
                     }
-                    throw;
                 }
-                finally
-                {
-                    transactionState = 2;
-                    transaction = null;
-                    if (closeConnectionAtFinal)
-                        connection?.CloseIfNot();
-                }
+            }
+            finally
+            {
+                if (closeConnectionAtFinal)
+                    connection?.CloseIfNot();
             }
         }
 
@@ -289,32 +301,38 @@ namespace Simply.Data.Database
         /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
         public void Rollback(bool closeConnectionAtFinal = true)
         {
-            if (transactionState == 1)
+            try
             {
-                try
-                { transaction.RollbackAndDispose(); }
-                catch (Exception ex1)
+                if (transactionState == 1)
                 {
                     try
+                    { transaction.RollbackAndDispose(); }
+                    catch (Exception ex1)
                     {
-                        if (InternalExceptionHandler != null)
+                        try
                         {
-                            InternalExceptionHandler(ex1);
+                            if (InternalExceptionHandler != null)
+                            {
+                                InternalExceptionHandler(ex1);
+                            }
                         }
+                        catch (Exception ee)
+                        {
+                            Trace.WriteLine(ee.ToString());
+                        }
+                        throw;
                     }
-                    catch (Exception ee)
+                    finally
                     {
-                        Trace.WriteLine(ee.ToString());
+                        transactionState = 2;
+                        transaction = null;
                     }
-                    throw;
                 }
-                finally
-                {
-                    transactionState = 2;
-                    transaction = null;
-                    if (closeConnectionAtFinal)
-                        connection?.CloseIfNot();
-                }
+            }
+            finally
+            {
+                if (closeConnectionAtFinal)
+                    connection?.CloseIfNot();
             }
         }
 
@@ -775,6 +793,32 @@ namespace Simply.Data.Database
             TDbConnection dbConnection = (TDbConnection)Activator.CreateInstance(typeof(TDbConnection));
             dbConnection.ConnectionString = connectionString;
             return dbConnection;
+        }
+
+        /// <summary>
+        /// Creates the simple database instance.
+        /// </summary>
+        /// <param name="logCommand">If true, log command.</param>
+        /// <param name="logDbCommand">If true, log db command.</param>
+        /// <param name="autoClose">If true, auto close.</param>
+        /// <param name="commandLogAction">The command log action.</param>
+        /// <param name="dbCommandLogAction">The db command log action.</param>
+        /// <param name="internalExceptionHandler">The internal exception handler.</param>
+        /// <returns>A TSimpleDatabase instance.</returns>
+        public static TSimpleDatabase CreateDb<TSimpleDatabase>(bool logCommand = false, bool logDbCommand = false, bool autoClose = false,
+            Action<SimpleDbCommand> commandLogAction = null, Action<IDbCommand> dbCommandLogAction = null,
+            Action<Exception> internalExceptionHandler = null) where TSimpleDatabase : ISimpleDatabase
+        {
+            TSimpleDatabase database = (TSimpleDatabase)Activator.CreateInstance(typeof(TSimpleDatabase));
+
+            database.LogCommand = logCommand;
+            database.LogDbCommand = logDbCommand;
+            database.AutoClose = autoClose;
+            database.CommandLogAction = commandLogAction;
+            database.DbCommandLogAction = dbCommandLogAction;
+            database.InternalExceptionHandler = internalExceptionHandler;
+
+            return database;
         }
     }
 }

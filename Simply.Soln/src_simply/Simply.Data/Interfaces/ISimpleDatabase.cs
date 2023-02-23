@@ -56,6 +56,11 @@ namespace Simply.Data.Interfaces
         bool LogDbCommand { get; set; }
 
         /// <summary>
+        /// Gets or sets connection auto close.
+        /// </summary>
+        bool AutoClose { get; set; }
+
+        /// <summary>
         /// Gets the definitor factory.
         /// </summary>
         ISimpleDefinitorFactory DefinitorFactory
