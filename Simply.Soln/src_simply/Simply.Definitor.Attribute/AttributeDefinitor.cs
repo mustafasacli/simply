@@ -302,7 +302,6 @@ namespace Simply.Definitor.Attribute
         /// <summary>
         /// Gets Valid Properties Of Type.
         /// </summary>
-        /// <param name="type">The type to act on.</param>
         /// <param name="includeNotMappedProperties"></param>
         /// <param name="includeReadonlyProperties"></param>
         /// <param name="includeComputedProperties"></param>
