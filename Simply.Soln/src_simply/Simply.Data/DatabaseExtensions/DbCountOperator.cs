@@ -18,12 +18,20 @@ namespace Simply.Data
         /// <returns>Returns row count as int value <see cref="int"/>.</returns>
         public static int Count(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            string format = database.QuerySetting.CountFormat;
-            simpleDbCommand.CommandText =
-                format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-            object commandResult = database.ExecuteScalar(simpleDbCommand);
-            int result = commandResult.ToInt();
-            return result;
+            try
+            {
+                string format = database.QuerySetting.CountFormat;
+                simpleDbCommand.CommandText =
+                    format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+                object commandResult = database.ExecuteScalar(simpleDbCommand);
+                int result = commandResult.ToInt();
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -34,12 +42,20 @@ namespace Simply.Data
         /// <returns>Returns row count as long value <see cref="long"/>.</returns>
         public static long CountLong(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            string format = database.QuerySetting.CountFormat;
-            simpleDbCommand.CommandText =
-                format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-            object commandResult = database.ExecuteScalar(simpleDbCommand);
-            long result = commandResult.ToLong();
-            return result;
+            try
+            {
+                string format = database.QuerySetting.CountFormat;
+                simpleDbCommand.CommandText =
+                    format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+                object commandResult = database.ExecuteScalar(simpleDbCommand);
+                long result = commandResult.ToLong();
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -53,10 +69,18 @@ namespace Simply.Data
         public static int Count(this ISimpleDatabase database, string sqlQuery,
             object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            int result = database.Count(simpleDbCommand);
-            return result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                int result = database.Count(simpleDbCommand);
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -70,10 +94,18 @@ namespace Simply.Data
         public static long CountLong(this ISimpleDatabase database, string sqlQuery,
             object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            long result = database.CountLong(simpleDbCommand);
-            return result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                long result = database.CountLong(simpleDbCommand);
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -89,10 +121,18 @@ namespace Simply.Data
         public static int CountOdbc(this ISimpleDatabase database, string odbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            int result = database.Count(simpleDbCommand);
-            return result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                int result = database.Count(simpleDbCommand);
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -108,10 +148,18 @@ namespace Simply.Data
         public static long CountLongOdbc(this ISimpleDatabase database, string odbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            long result = database.CountLong(simpleDbCommand);
-            return result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                long result = database.CountLong(simpleDbCommand);
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -127,10 +175,18 @@ namespace Simply.Data
         public static int CountJdbc(this ISimpleDatabase database, string jdbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            int result = database.Count(simpleDbCommand);
-            return result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                int result = database.Count(simpleDbCommand);
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -146,10 +202,18 @@ namespace Simply.Data
         public static long CountLongJdbc(this ISimpleDatabase database, string jdbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            long result = database.CountLong(simpleDbCommand);
-            return result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                long result = database.CountLong(simpleDbCommand);
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
     }
 }

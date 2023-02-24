@@ -85,8 +85,9 @@ namespace Simply.Data.Interfaces
         void Rollback(bool closeConnectionAtFinal = true);
 
         /// <summary>
-        /// Closes the connection.
+        /// Closes the database connection if there is no alive transaction.
         /// </summary>
+        /// <exception cref="System.Exception">if there is alive transaction.</exception>
         void Close();
 
         /// <summary>

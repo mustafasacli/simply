@@ -337,10 +337,14 @@ namespace Simply.Data.Database
         }
 
         /// <summary>
-        /// Closes the connection.
+        /// Closes the database connection if there is no alive transaction.
         /// </summary>
+        /// <exception cref="System.Exception">if there is alive transaction.</exception>
         public void Close()
         {
+            if (transactionState == 1)
+                throw new Exception("There is alive transaction.");
+
             connection?.CloseIfNot();
         }
 

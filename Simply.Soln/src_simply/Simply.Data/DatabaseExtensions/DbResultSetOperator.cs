@@ -25,10 +25,18 @@ namespace Simply.Data
         public static DataSet GetDataSet(this ISimpleDatabase database,
            string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
-            return resultSet.Result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
+                return resultSet.Result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -42,10 +50,18 @@ namespace Simply.Data
         public static DataSet GetDataSetOdbc(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
-            return resultSet.Result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
+                return resultSet.Result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -59,10 +75,18 @@ namespace Simply.Data
         public static DataSet GetDataSetJdbc(this ISimpleDatabase database,
            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
-            return resultSet.Result;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                IDbCommandResult<DataSet> resultSet = database.GetResultSetQuery(simpleDbCommand);
+                return resultSet.Result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -74,22 +98,30 @@ namespace Simply.Data
         public static IDbCommandResult<DataSet> GetResultSetQuery(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand)
         {
-            DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
-
-            DbDataAdapter dataAdapter = database.CreateDataAdapter();
-            if (dataAdapter is null)
-                throw new Exception(DbAppMessages.DataAdapterNotFound);
-
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand, false))
+            try
             {
-                dataAdapter.SelectCommand = (DbCommand)command;
-                DataSet dataSet = new DataSet();
-                result.ExecutionResult = dataAdapter.Fill(dataSet);
-                result.Result = dataSet;
-                result.OutputParameters = command.GetOutParameters();
-            }
+                DbCommandResult<DataSet> result = new DbCommandResult<DataSet>();
 
-            return result;
+                DbDataAdapter dataAdapter = database.CreateDataAdapter();
+                if (dataAdapter is null)
+                    throw new Exception(DbAppMessages.DataAdapterNotFound);
+
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand, false))
+                {
+                    dataAdapter.SelectCommand = (DbCommand)command;
+                    DataSet dataSet = new DataSet();
+                    result.ExecutionResult = dataAdapter.Fill(dataSet);
+                    result.Result = dataSet;
+                    result.OutputParameters = command.GetOutParameters();
+                }
+
+                return result;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -102,51 +134,59 @@ namespace Simply.Data
         public static IDbCommandResult<DataTable> GetDataSetResult(this ISimpleDatabase database,
              SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null)
         {
-            IDbCommandResult<DataTable> dataTableResult = new DbCommandResult<DataTable>();
-
-            bool isPageableAndSkipAndTakeFormatEmpty = false;
-            if (pageInfo != null)
+            try
             {
-                if (!pageInfo.IsPageable)
-                    return dataTableResult;
+                IDbCommandResult<DataTable> dataTableResult = new DbCommandResult<DataTable>();
 
-                string skipAndTakeFormat = database.QuerySetting.SkipAndTakeFormat;
-                isPageableAndSkipAndTakeFormatEmpty = skipAndTakeFormat.IsNullOrSpace();
-                if (!isPageableAndSkipAndTakeFormatEmpty)
+                bool isPageableAndSkipAndTakeFormatEmpty = false;
+                if (pageInfo != null)
                 {
-                    string format = skipAndTakeFormat.CopyValue();
-                    format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
-                    format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
-                    format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
-                    simpleDbCommand.CommandText = format.CopyValue();
+                    if (!pageInfo.IsPageable)
+                        return dataTableResult;
+
+                    string skipAndTakeFormat = database.QuerySetting.SkipAndTakeFormat;
+                    isPageableAndSkipAndTakeFormatEmpty = skipAndTakeFormat.IsNullOrSpace();
+                    if (!isPageableAndSkipAndTakeFormatEmpty)
+                    {
+                        string format = skipAndTakeFormat.CopyValue();
+                        format = format.Replace(InternalAppValues.SkipFormat, pageInfo.Skip.ToString());
+                        format = format.Replace(InternalAppValues.TakeFormat, pageInfo.Take.ToString());
+                        format = format.Replace(InternalAppValues.SqlScriptFormat, simpleDbCommand.CommandText);
+                        simpleDbCommand.CommandText = format.CopyValue();
+                    }
                 }
-            }
 
-            IDbCommandResult<DataSet> tempResultSet = database.GetResultSetQuery(simpleDbCommand);
+                IDbCommandResult<DataSet> tempResultSet = database.GetResultSetQuery(simpleDbCommand);
 
-            dataTableResult = new DbCommandResult<DataTable>
-            {
-                ExecutionResult = tempResultSet.ExecutionResult,
-                AdditionalValues = tempResultSet.AdditionalValues,
-                OutputParameters = tempResultSet.OutputParameters
-            };
-
-            if (tempResultSet.Result.Tables.Count > 0)
-            {
-                DataTable table = tempResultSet.Result.Tables[0];
-                if (isPageableAndSkipAndTakeFormatEmpty)
+                dataTableResult = new DbCommandResult<DataTable>
                 {
-                    dataTableResult.Result = table.CopyDatatable(pageInfo);
+                    ExecutionResult = tempResultSet.ExecutionResult,
+                    AdditionalValues = tempResultSet.AdditionalValues,
+                    OutputParameters = tempResultSet.OutputParameters
+                };
+
+                if (tempResultSet.Result.Tables.Count > 0)
+                {
+                    DataTable table = tempResultSet.Result.Tables[0];
+                    if (isPageableAndSkipAndTakeFormatEmpty)
+                    {
+                        dataTableResult.Result = table.CopyDatatable(pageInfo);
+                    }
+                    else
+                    {
+                        dataTableResult.Result = table;
+                    }
                 }
                 else
-                {
-                    dataTableResult.Result = table;
-                }
-            }
-            else
-            { dataTableResult.Result = new DataTable(); }
+                { dataTableResult.Result = new DataTable(); }
 
-            return dataTableResult;
+                return dataTableResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
     }
 }

@@ -21,10 +21,18 @@ namespace Simply.Data
         public static bool Any(this ISimpleDatabase database, string sqlQuery,
             object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            bool any = database.Any(simpleDbCommand);
-            return any;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                bool any = database.Any(simpleDbCommand);
+                return any;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -35,18 +43,24 @@ namespace Simply.Data
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool Any(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            bool any;
-
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
-            using (IDataReader dataReader = command.ExecuteDataReader())
+            try
             {
-                try
-                { any = dataReader.Any(closeAtFinal: true); }
-                finally
-                { dataReader?.CloseIfNot(); }
+                bool any;
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                using (IDataReader dataReader = command.ExecuteDataReader())
+                {
+                    try
+                    { any = dataReader.Any(closeAtFinal: true); }
+                    finally
+                    { dataReader?.CloseIfNot(); }
+                }
+                return any;
             }
-
-            return any;
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -60,10 +74,18 @@ namespace Simply.Data
         public static bool AnyOdbc(this ISimpleDatabase database, string odbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            bool any = database.Any(simpleDbCommand);
-            return any;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                bool any = database.Any(simpleDbCommand);
+                return any;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -78,10 +100,18 @@ namespace Simply.Data
         public static bool AnyJdbc(this ISimpleDatabase database, string jdbcSqlQuery,
             object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            bool any = database.Any(simpleDbCommand);
-            return any;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                bool any = database.Any(simpleDbCommand);
+                return any;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
     }
 }
