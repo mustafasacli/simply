@@ -40,6 +40,12 @@ namespace Simply.Data.Interfaces
         Action<IDbCommand> DbCommandLogAction { get; set; }
 
         /// <summary>
+        /// Gets or sets the internal exception handler.
+        /// </summary>
+        Action<Exception> InternalExceptionHandler
+        { get; set; }
+
+        /// <summary>
         /// Gets, sets value for simpledbcommand logging.
         /// </summary>
         bool LogCommand { get; set; }
@@ -48,6 +54,11 @@ namespace Simply.Data.Interfaces
         /// Gets, sets value for IDbCommand logging.
         /// </summary>
         bool LogDbCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets connection auto close.
+        /// </summary>
+        bool AutoClose { get; set; }
 
         /// <summary>
         /// Gets the definitor factory.
@@ -64,12 +75,20 @@ namespace Simply.Data.Interfaces
         /// <summary>
         /// Commits the transaction.
         /// </summary>
-        void Commit();
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        void Commit(bool closeConnectionAtFinal = true);
 
         /// <summary>
         /// Rollbacks the transaction.
         /// </summary>
-        void Rollback();
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        void Rollback(bool closeConnectionAtFinal = true);
+
+        /// <summary>
+        /// Closes the database connection if there is no alive transaction.
+        /// </summary>
+        /// <exception cref="System.Exception">if there is alive transaction.</exception>
+        void Close();
 
         /// <summary>
         /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
@@ -116,7 +135,7 @@ namespace Simply.Data.Interfaces
         /// <summary>
         /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
         /// </summary>
-        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/> 
+        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/>
         /// like #SELECT T1.* FROM TABLE T1 WHERE T1.INT_COLUMN = ?1 AND T2.DATE_COLUMN = ?2 #.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>

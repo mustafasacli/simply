@@ -89,8 +89,10 @@ namespace Simply.Data
         /// <param name="connection">The connection.</param>
         public static void CloseAndDispose(this IDbConnection connection)
         {
-            connection?.CloseIfNot();
-            connection?.Dispose();
+            try
+            { connection?.CloseIfNot(); }
+            finally
+            { connection?.Dispose(); }
         }
 
         /// <summary>

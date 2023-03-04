@@ -23,14 +23,22 @@ namespace Simply.Data
         public static object ExecuteScalar(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            object commandResult;
-
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            try
             {
-                commandResult = command.ExecuteScalar();
-            }
+                object commandResult;
 
-            return commandResult;
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                {
+                    commandResult = command.ExecuteScalar();
+                }
+
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -43,9 +51,17 @@ namespace Simply.Data
         public static T ExecuteScalarAs<T>(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand) where T : struct
         {
-            object commandResult = database.ExecuteScalar(simpleDbCommand);
-            T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
-            return instance;
+            try
+            {
+                object commandResult = database.ExecuteScalar(simpleDbCommand);
+                T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -59,10 +75,18 @@ namespace Simply.Data
         public static object ExecuteScalar(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            object commandResult = database.ExecuteScalar(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                object commandResult = database.ExecuteScalar(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -77,9 +101,17 @@ namespace Simply.Data
         public static T ExecuteScalarAs<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : struct
         {
-            object commandResult = database.ExecuteScalar(sqlQuery, parameterObject, commandSetting);
-            T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
-            return instance;
+            try
+            {
+                object commandResult = database.ExecuteScalar(sqlQuery, parameterObject, commandSetting);
+                T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -93,10 +125,18 @@ namespace Simply.Data
         public static object ExecuteScalarOdbc(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            object commandResult = database.ExecuteScalar(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                object commandResult = database.ExecuteScalar(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -110,9 +150,17 @@ namespace Simply.Data
         public static T ExecuteScalarOdbcAs<T>(this ISimpleDatabase database,
             string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
         {
-            object commandResult = database.ExecuteScalarOdbc(odbcSqlQuery, parameterValues, commandSetting);
-            T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
-            return instance;
+            try
+            {
+                object commandResult = database.ExecuteScalarOdbc(odbcSqlQuery, parameterValues, commandSetting);
+                T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         #region [ Task methods ]
@@ -178,16 +226,24 @@ namespace Simply.Data
         public static IDbCommandResult<object> ExecuteScalarResult(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbCommandResult<object> commandResult;
-
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            try
             {
-                commandResult = new DbCommandResult<object>();
-                commandResult.Result = command.ExecuteScalar();
-                commandResult.OutputParameters = command.GetOutParameters();
-            }
+                IDbCommandResult<object> commandResult;
 
-            return commandResult;
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                {
+                    commandResult = new DbCommandResult<object>();
+                    commandResult.Result = command.ExecuteScalar();
+                    commandResult.OutputParameters = command.GetOutParameters();
+                }
+
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -200,18 +256,26 @@ namespace Simply.Data
         public static IDbCommandResult<T> ExecuteScalarResultAs<T>(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand) where T : struct
         {
-            IDbCommandResult<object> commandResult =
-                database.ExecuteScalarResult(simpleDbCommand)
-                ?? new DbCommandResult<object>();
-
-            T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
-
-            return new DbCommandResult<T>()
+            try
             {
-                Result = instance,
-                AdditionalValues = commandResult.AdditionalValues,
-                ExecutionResult = commandResult.ExecutionResult
-            };
+                IDbCommandResult<object> commandResult =
+                    database.ExecuteScalarResult(simpleDbCommand)
+                    ?? new DbCommandResult<object>();
+
+                T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
+
+                return new DbCommandResult<T>()
+                {
+                    Result = instance,
+                    AdditionalValues = commandResult.AdditionalValues,
+                    ExecutionResult = commandResult.ExecutionResult
+                };
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -225,10 +289,18 @@ namespace Simply.Data
         public static IDbCommandResult<object> ExecuteScalarResult(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            IDbCommandResult<object> commandResult = database.ExecuteScalarResult(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                   database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                IDbCommandResult<object> commandResult = database.ExecuteScalarResult(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -243,14 +315,22 @@ namespace Simply.Data
         public static IDbCommandResult<T> ExecuteScalarResultAs<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : struct
         {
-            IDbCommandResult<object> commandResult = database.ExecuteScalarResult(sqlQuery, parameterObject, commandSetting);
-            T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
-            return new DbCommandResult<T>()
+            try
             {
-                Result = instance,
-                AdditionalValues = commandResult.AdditionalValues,
-                ExecutionResult = commandResult.ExecutionResult
-            };
+                IDbCommandResult<object> commandResult = database.ExecuteScalarResult(sqlQuery, parameterObject, commandSetting);
+                T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
+                return new DbCommandResult<T>()
+                {
+                    Result = instance,
+                    AdditionalValues = commandResult.AdditionalValues,
+                    ExecutionResult = commandResult.ExecutionResult
+                };
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -264,10 +344,18 @@ namespace Simply.Data
         public static IDbCommandResult<object> ExecuteScalarResultOdbc(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<object> commandResult = database.ExecuteScalarResult(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                IDbCommandResult<object> commandResult = database.ExecuteScalarResult(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -281,15 +369,23 @@ namespace Simply.Data
         public static IDbCommandResult<T> ExecuteScalarResultOdbcAs<T>(this ISimpleDatabase database,
             string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
         {
-            IDbCommandResult<object> commandResult = database.ExecuteScalarResultOdbc(odbcSqlQuery, parameterValues, commandSetting);
-
-            T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
-            return new DbCommandResult<T>()
+            try
             {
-                Result = instance,
-                AdditionalValues = commandResult.AdditionalValues,
-                ExecutionResult = commandResult.ExecutionResult
-            };
+                IDbCommandResult<object> commandResult = database.ExecuteScalarResultOdbc(odbcSqlQuery, parameterValues, commandSetting);
+
+                T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
+                return new DbCommandResult<T>()
+                {
+                    Result = instance,
+                    AdditionalValues = commandResult.AdditionalValues,
+                    ExecutionResult = commandResult.ExecutionResult
+                };
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -300,15 +396,26 @@ namespace Simply.Data
         /// <returns>Returns object array.</returns>
         public static IEnumerable<object> ExecuteScalar(this ISimpleDatabase database, List<SimpleDbCommand> dbCommands)
         {
-            List<object> valuesList = new List<object>();
+            bool autoClose = false;
 
-            dbCommands.ForEach(command =>
+            try
             {
-                object value = database.ExecuteScalar(command);
-                valuesList.Add(value);
-            });
-
-            return valuesList.AsEnumerable();
+                List<object> valuesList = new List<object>();
+                autoClose = database.AutoClose;
+                database.AutoClose = false;
+                dbCommands.ForEach(command =>
+                {
+                    object value = database.ExecuteScalar(command);
+                    valuesList.Add(value);
+                });
+                database.AutoClose = autoClose;
+                return valuesList.AsEnumerable();
+            }
+            finally
+            {
+                if (database.AutoClose || autoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -322,10 +429,18 @@ namespace Simply.Data
         public static object ExecuteScalarJdbc(this ISimpleDatabase database,
            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            object commandResult = database.ExecuteScalar(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                   database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                object commandResult = database.ExecuteScalar(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -339,9 +454,17 @@ namespace Simply.Data
         public static T ExecuteScalarJdbcAs<T>(this ISimpleDatabase database,
             string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
         {
-            object commandResult = database.ExecuteScalarJdbc(jdbcSqlQuery, parameterValues, commandSetting);
-            T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
-            return instance;
+            try
+            {
+                object commandResult = database.ExecuteScalarJdbc(jdbcSqlQuery, parameterValues, commandSetting);
+                T instance = !commandResult.IsNullOrDbNull() ? (T)commandResult : default;
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -355,10 +478,18 @@ namespace Simply.Data
         public static IDbCommandResult<object> ExecuteScalarResultJdbc(this ISimpleDatabase database,
            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<object> commandResult = database.ExecuteScalarResult(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                IDbCommandResult<object> commandResult = database.ExecuteScalarResult(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -372,15 +503,23 @@ namespace Simply.Data
         public static IDbCommandResult<T> ExecuteScalarResultJdbcAs<T>(this ISimpleDatabase database,
             string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : struct
         {
-            IDbCommandResult<object> commandResult = database.ExecuteScalarResultJdbc(jdbcSqlQuery, parameterValues, commandSetting);
-
-            T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
-            return new DbCommandResult<T>()
+            try
             {
-                Result = instance,
-                AdditionalValues = commandResult.AdditionalValues,
-                ExecutionResult = commandResult.ExecutionResult
-            };
+                IDbCommandResult<object> commandResult = database.ExecuteScalarResultJdbc(jdbcSqlQuery, parameterValues, commandSetting);
+
+                T instance = !commandResult.Result.IsNullOrDbNull() ? (T)commandResult.Result : default;
+                return new DbCommandResult<T>()
+                {
+                    Result = instance,
+                    AdditionalValues = commandResult.AdditionalValues,
+                    ExecutionResult = commandResult.ExecutionResult
+                };
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
     }
 }

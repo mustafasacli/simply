@@ -30,17 +30,25 @@ namespace Simply.Data
             if (!(pageInfo?.IsPageable ?? true))
                 return simpleDbRowList;
 
-            SimpleDbCommand dbCommand = database.ApplyPageInfo(simpleDbCommand, pageInfo);
-
-            using (IDbCommand command = database.CreateCommand(dbCommand))
-            using (IDataReader dataReader = command.ExecuteDataReader(behavior))
+            try
             {
-                try
+                SimpleDbCommand dbCommand = database.ApplyPageInfo(simpleDbCommand, pageInfo);
+
+                using (IDbCommand command = database.CreateCommand(dbCommand))
+                using (IDataReader dataReader = command.ExecuteDataReader(behavior))
                 {
-                    simpleDbRowList = dataReader.GetResultSetAsDbRow(closeAtFinal: true)?.ToList() ?? new List<SimpleDbRow>();
+                    try
+                    {
+                        simpleDbRowList = dataReader.GetResultSetAsDbRow(closeAtFinal: true)?.ToList() ?? new List<SimpleDbRow>();
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
-                finally
-                { dataReader?.CloseIfNot(); }
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
             }
 
             return simpleDbRowList;
@@ -69,10 +77,18 @@ namespace Simply.Data
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null,
             IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            List<SimpleDbRow> simpleDbRowList = database.ListRow(simpleDbCommand, pageInfo, behavior);
-            return simpleDbRowList;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                List<SimpleDbRow> simpleDbRowList = database.ListRow(simpleDbCommand, pageInfo, behavior);
+                return simpleDbRowList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -90,9 +106,17 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            List<SimpleDbRow> simpleDbRowList = database.ListRow(simpleDbCommand, pageInfo, behavior);
-            return simpleDbRowList;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                List<SimpleDbRow> simpleDbRowList = database.ListRow(simpleDbCommand, pageInfo, behavior);
+                return simpleDbRowList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -110,9 +134,17 @@ namespace Simply.Data
            string jdbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            List<SimpleDbRow> simpleDbRowList = database.ListRow(simpleDbCommand, pageInfo, behavior);
-            return simpleDbRowList;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                List<SimpleDbRow> simpleDbRowList = database.ListRow(simpleDbCommand, pageInfo, behavior);
+                return simpleDbRowList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -129,22 +161,30 @@ namespace Simply.Data
         {
             IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = new DbCommandResult<List<SimpleDbRow>>();
 
-            if (!(pageInfo?.IsPageable ?? true))
-                return simpleDbRowListResult;
-
-            SimpleDbCommand dbCommand = database.ApplyPageInfo(simpleDbCommand, pageInfo);
-
-            using (IDbCommand command = database.CreateCommand(dbCommand))
-            using (IDataReader dataReader = command.ExecuteDataReader(behavior))
+            try
             {
-                try
+                if (!(pageInfo?.IsPageable ?? true))
+                    return simpleDbRowListResult;
+
+                SimpleDbCommand dbCommand = database.ApplyPageInfo(simpleDbCommand, pageInfo);
+
+                using (IDbCommand command = database.CreateCommand(dbCommand))
+                using (IDataReader dataReader = command.ExecuteDataReader(behavior))
                 {
-                    simpleDbRowListResult.OutputParameters = command.GetOutParameters();
-                    simpleDbRowListResult.ExecutionResult = dataReader.RecordsAffected;
-                    simpleDbRowListResult.Result = dataReader.GetResultSetAsDbRow(closeAtFinal: true)?.ToList() ?? new List<SimpleDbRow>();
+                    try
+                    {
+                        simpleDbRowListResult.OutputParameters = command.GetOutParameters();
+                        simpleDbRowListResult.ExecutionResult = dataReader.RecordsAffected;
+                        simpleDbRowListResult.Result = dataReader.GetResultSetAsDbRow(closeAtFinal: true)?.ToList() ?? new List<SimpleDbRow>();
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
-                finally
-                { dataReader?.CloseIfNot(); }
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
             }
 
             return simpleDbRowListResult;
@@ -164,15 +204,23 @@ namespace Simply.Data
         {
             List<List<SimpleDbRow>> multiSimpleDbRowList = new List<List<SimpleDbRow>>();
 
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
-            using (IDataReader dataReader = command.ExecuteDataReader(behavior))
+            try
             {
-                try
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                using (IDataReader dataReader = command.ExecuteDataReader(behavior))
                 {
-                    multiSimpleDbRowList = dataReader.GetMultiDbRowList(closeAtFinal: true);
+                    try
+                    {
+                        multiSimpleDbRowList = dataReader.GetMultiDbRowList(closeAtFinal: true);
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
-                finally
-                { dataReader?.CloseIfNot(); }
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
             }
 
             return multiSimpleDbRowList;
@@ -198,10 +246,18 @@ namespace Simply.Data
         public static List<List<SimpleDbRow>> MultiListRow(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            List<List<SimpleDbRow>> multiSimpleDbRowList = database.MultiListRow(simpleDbCommand, behavior);
-            return multiSimpleDbRowList;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                   database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                List<List<SimpleDbRow>> multiSimpleDbRowList = database.MultiListRow(simpleDbCommand, behavior);
+                return multiSimpleDbRowList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -217,9 +273,17 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            List<List<SimpleDbRow>> multiSimpleDbRowList = database.MultiListRow(simpleDbCommand, behavior);
-            return multiSimpleDbRowList;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                List<List<SimpleDbRow>> multiSimpleDbRowList = database.MultiListRow(simpleDbCommand, behavior);
+                return multiSimpleDbRowList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -235,9 +299,17 @@ namespace Simply.Data
            string jdbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            List<List<SimpleDbRow>> multiSimpleDbRowList = database.MultiListRow(simpleDbCommand, behavior);
-            return multiSimpleDbRowList;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                List<List<SimpleDbRow>> multiSimpleDbRowList = database.MultiListRow(simpleDbCommand, behavior);
+                return multiSimpleDbRowList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /*******************************************************************/
@@ -254,17 +326,25 @@ namespace Simply.Data
         {
             IDbCommandResult<List<List<SimpleDbRow>>> multiSimpleDbRowListResult = new DbCommandResult<List<List<SimpleDbRow>>>();
 
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
-            using (IDataReader dataReader = command.ExecuteDataReader(behavior))
+            try
             {
-                try
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                using (IDataReader dataReader = command.ExecuteDataReader(behavior))
                 {
-                    multiSimpleDbRowListResult.OutputParameters = command.GetOutParameters();
-                    multiSimpleDbRowListResult.ExecutionResult = dataReader.RecordsAffected;
-                    multiSimpleDbRowListResult.Result = dataReader.GetMultiDbRowList(closeAtFinal: true);
+                    try
+                    {
+                        multiSimpleDbRowListResult.OutputParameters = command.GetOutParameters();
+                        multiSimpleDbRowListResult.ExecutionResult = dataReader.RecordsAffected;
+                        multiSimpleDbRowListResult.Result = dataReader.GetMultiDbRowList(closeAtFinal: true);
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
-                finally
-                { dataReader?.CloseIfNot(); }
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
             }
 
             return multiSimpleDbRowListResult;
@@ -293,10 +373,18 @@ namespace Simply.Data
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null,
             IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
-            return simpleDbRowListResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
+                return simpleDbRowListResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -314,9 +402,17 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
-            return simpleDbRowListResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
+                return simpleDbRowListResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -334,9 +430,17 @@ namespace Simply.Data
            string jdbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
-            return simpleDbRowListResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                IDbCommandResult<List<SimpleDbRow>> simpleDbRowListResult = database.ListRowResult(simpleDbCommand, pageInfo, behavior);
+                return simpleDbRowListResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
     }
 }

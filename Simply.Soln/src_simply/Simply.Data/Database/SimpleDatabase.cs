@@ -127,6 +127,12 @@ namespace Simply.Data.Database
         { get; set; }
 
         /// <summary>
+        /// Gets or sets the internal exception handler.
+        /// </summary>
+        public Action<Exception> InternalExceptionHandler
+        { get; set; }
+
+        /// <summary>
         /// Gets, sets value for SimpleDbCommand logging.
         /// </summary>
         public bool LogCommand
@@ -136,6 +142,12 @@ namespace Simply.Data.Database
         /// Gets, sets value for IDbCommand logging.
         /// </summary>
         public bool LogDbCommand
+        { get; set; }
+
+        /// <summary>
+        /// Gets or sets connection auto close.
+        /// </summary>
+        public bool AutoClose
         { get; set; }
 
         /// <summary>
@@ -162,9 +174,43 @@ namespace Simply.Data.Database
 
                     if (transactionState == 1)
                     {
-                        transaction?.CommitAndDispose();
-                        transactionState = 0;
+                        try
+                        {
+                            transaction?.CommitAndDispose();
+                            transactionState = 0;
+                        }
+                        catch (Exception ex1)
+                        {
+                            transactionState = 0;
+                            try
+                            {
+                                if (InternalExceptionHandler != null)
+                                {
+                                    InternalExceptionHandler(ex1);
+                                }
+                            }
+                            catch (Exception ee)
+                            {
+                                Trace.WriteLine(ee.ToString());
+                            }
+                            throw;
+                        }
                     }
+                }
+                catch (Exception ex2)
+                {
+                    try
+                    {
+                        if (InternalExceptionHandler != null)
+                        {
+                            InternalExceptionHandler(ex2);
+                        }
+                    }
+                    catch (Exception ee2)
+                    {
+                        Trace.WriteLine(ee2.ToString());
+                    }
+                    throw;
                 }
                 finally
                 {
@@ -182,8 +228,18 @@ namespace Simply.Data.Database
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            { Dispose(true); }
+            finally
+            { GC.SuppressFinalize(this); }
+        }
+
+        /// <summary>
+        /// the finalizer
+        /// </summary>
+        ~SimpleDatabase()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -201,35 +257,95 @@ namespace Simply.Data.Database
         /// <summary>
         /// Commits the transaction.
         /// </summary>
-        public void Commit()
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        public void Commit(bool closeConnectionAtFinal = true)
         {
-            if (transactionState == 1)
+            try
             {
-                transaction.CommitAndDispose();
-                transactionState = 2;
-                transaction = null;
+                if (transactionState == 1)
+                {
+                    try
+                    { transaction.CommitAndDispose(); }
+                    catch (Exception ex1)
+                    {
+                        try
+                        {
+                            if (InternalExceptionHandler != null)
+                            {
+                                InternalExceptionHandler(ex1);
+                            }
+                        }
+                        catch (Exception ee)
+                        {
+                            Trace.WriteLine(ee.ToString());
+                        }
+                        throw;
+                    }
+                    finally
+                    {
+                        transactionState = 2;
+                        transaction = null;
+                    }
+                }
+            }
+            finally
+            {
+                if (closeConnectionAtFinal)
+                    connection?.CloseIfNot();
             }
         }
 
         /// <summary>
         /// Rollbacks the transaction.
         /// </summary>
-        public void Rollback()
+        /// <param name="closeConnectionAtFinal">If true, close connection at final.</param>
+        public void Rollback(bool closeConnectionAtFinal = true)
         {
-            if (transactionState == 1)
+            try
             {
-                transaction.RollbackAndDispose();
-                transactionState = 2;
-                transaction = null;
+                if (transactionState == 1)
+                {
+                    try
+                    { transaction.RollbackAndDispose(); }
+                    catch (Exception ex1)
+                    {
+                        try
+                        {
+                            if (InternalExceptionHandler != null)
+                            {
+                                InternalExceptionHandler(ex1);
+                            }
+                        }
+                        catch (Exception ee)
+                        {
+                            Trace.WriteLine(ee.ToString());
+                        }
+                        throw;
+                    }
+                    finally
+                    {
+                        transactionState = 2;
+                        transaction = null;
+                    }
+                }
+            }
+            finally
+            {
+                if (closeConnectionAtFinal)
+                    connection?.CloseIfNot();
             }
         }
 
         /// <summary>
-        /// Begins the transction.
+        /// Closes the database connection if there is no alive transaction.
         /// </summary>
-        ~SimpleDatabase()
+        /// <exception cref="System.Exception">if there is alive transaction.</exception>
+        public void Close()
         {
-            Dispose(false);
+            if (transactionState == 1)
+                throw new Exception("There is alive transaction.");
+
+            connection?.CloseIfNot();
         }
 
         /// <summary>
@@ -608,7 +724,7 @@ namespace Simply.Data.Database
         /// <summary>
         /// Builds SimpleDbCommand instance for Translate of Odbc Sql Query.
         /// </summary>
-        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/> 
+        /// <param name="jdbcSqlQuery">Jdbc Sql query <see cref="string"/>
         /// like #SELECT T1.* FROM TABLE T1 WHERE T1.INT_COLUMN = ?1 AND T2.DATE_COLUMN = ?2 #.</param>
         /// <param name="parameterValues">Sql command parameter values.</param>
         /// <param name="commandSetting">The command setting.</param>
@@ -640,7 +756,7 @@ namespace Simply.Data.Database
             {
                 DbCommandParameter parameter = new DbCommandParameter
                 {
-                    ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix, 
+                    ParameterName = Concat(QuerySetting.ParameterPrefix, parameterNamePrefix,
                     (counter + 1).ToString(), QuerySetting.ParameterSuffix),
                     Value = parameterValues[counter],
                     Direction = ParameterDirection.Input,
@@ -668,6 +784,45 @@ namespace Simply.Data.Database
             simpleDbCommand.AddCommandParameters(commandParameters);
 
             return simpleDbCommand;
+        }
+
+        /// <summary>
+        /// Creates Db connection.
+        /// </summary>
+        /// <typeparam name="TDbConnection"></typeparam>
+        /// <param name="connectionString">database connection string</param>
+        /// <returns>TDbConnection object instance</returns>
+        public static TDbConnection Create<TDbConnection>(string connectionString) where TDbConnection : IDbConnection
+        {
+            TDbConnection dbConnection = (TDbConnection)Activator.CreateInstance(typeof(TDbConnection));
+            dbConnection.ConnectionString = connectionString;
+            return dbConnection;
+        }
+
+        /// <summary>
+        /// Creates the simple database instance.
+        /// </summary>
+        /// <param name="logCommand">If true, log command.</param>
+        /// <param name="logDbCommand">If true, log db command.</param>
+        /// <param name="autoClose">If true, auto close.</param>
+        /// <param name="commandLogAction">The command log action.</param>
+        /// <param name="dbCommandLogAction">The db command log action.</param>
+        /// <param name="internalExceptionHandler">The internal exception handler.</param>
+        /// <returns>A TSimpleDatabase instance.</returns>
+        public static TSimpleDatabase CreateDb<TSimpleDatabase>(bool logCommand = false, bool logDbCommand = false, bool autoClose = false,
+            Action<SimpleDbCommand> commandLogAction = null, Action<IDbCommand> dbCommandLogAction = null,
+            Action<Exception> internalExceptionHandler = null) where TSimpleDatabase : ISimpleDatabase
+        {
+            TSimpleDatabase database = (TSimpleDatabase)Activator.CreateInstance(typeof(TSimpleDatabase));
+
+            database.LogCommand = logCommand;
+            database.LogDbCommand = logDbCommand;
+            database.AutoClose = autoClose;
+            database.CommandLogAction = commandLogAction;
+            database.DbCommandLogAction = dbCommandLogAction;
+            database.InternalExceptionHandler = internalExceptionHandler;
+
+            return database;
         }
     }
 }

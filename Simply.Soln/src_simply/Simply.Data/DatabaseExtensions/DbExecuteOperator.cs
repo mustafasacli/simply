@@ -23,10 +23,18 @@ namespace Simply.Data
         public static int Execute(this ISimpleDatabase database, string sqlQuery,
             object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            int executionResult = database.Execute(simpleDbCommand);
-            return executionResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                int executionResult = database.Execute(simpleDbCommand);
+                return executionResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -36,14 +44,22 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">Db database command <see cref="SimpleDbCommand"/></param>
         public static int Execute(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            int executionResult;
-
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            try
             {
-                executionResult = command.ExecuteNonQuery();
-            }
+                int executionResult;
 
-            return executionResult;
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                {
+                    executionResult = command.ExecuteNonQuery();
+                }
+
+                return executionResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -57,10 +73,18 @@ namespace Simply.Data
         public static int ExecuteOdbc(this ISimpleDatabase database,
             string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            int executionResult = database.Execute(simpleDbCommand);
-            return executionResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                int executionResult = database.Execute(simpleDbCommand);
+                return executionResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         #region [ Task methods ]
@@ -127,10 +151,18 @@ namespace Simply.Data
         public static IDbCommandResult<int> ExecuteResult(this ISimpleDatabase database, string sqlQuery,
             object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -140,16 +172,24 @@ namespace Simply.Data
         /// <param name="simpleDbCommand">Db database command <see cref="SimpleDbCommand"/></param>
         public static IDbCommandResult<int> ExecuteResult(this ISimpleDatabase database, SimpleDbCommand simpleDbCommand)
         {
-            IDbCommandResult<int> commandResult = new DbCommandResult<int>(-1);
-
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+            try
             {
-                commandResult.ExecutionResult = command.ExecuteNonQuery();
-                commandResult.Result = commandResult.ExecutionResult;
-                commandResult.OutputParameters = command.GetOutParameters();
-            }
+                IDbCommandResult<int> commandResult = new DbCommandResult<int>(-1);
 
-            return commandResult;
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                {
+                    commandResult.ExecutionResult = command.ExecuteNonQuery();
+                    commandResult.Result = commandResult.ExecutionResult;
+                    commandResult.OutputParameters = command.GetOutParameters();
+                }
+
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -163,10 +203,18 @@ namespace Simply.Data
         public static IDbCommandResult<int> ExecuteResultOdbc(this ISimpleDatabase database,
             string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -177,14 +225,24 @@ namespace Simply.Data
         /// <returns>Returns execution result as int.</returns>
         public static int Execute(this ISimpleDatabase database, List<SimpleDbCommand> dbCommands)
         {
-            int executionResult = 0;
-
-            dbCommands.ForEach(command =>
+            try
             {
-                executionResult += database.Execute(command);
-            });
+                int executionResult = 0;
+                bool autoClose = database.AutoClose;
+                database.AutoClose = false;
 
-            return executionResult;
+                dbCommands.ForEach(command =>
+                {
+                    executionResult += database.Execute(command);
+                });
+                database.AutoClose = autoClose;
+                return executionResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -198,10 +256,18 @@ namespace Simply.Data
         public static int ExecuteJdbc(this ISimpleDatabase database,
             string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            int executionResult = database.Execute(simpleDbCommand);
-            return executionResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                int executionResult = database.Execute(simpleDbCommand);
+                return executionResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -215,10 +281,18 @@ namespace Simply.Data
         public static IDbCommandResult<int> ExecuteResultJdbc(this ISimpleDatabase database,
             string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting, setOverratedParametersToOutput: true);
-            IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
-            return commandResult;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                   database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting, setOverratedParametersToOutput: true);
+                IDbCommandResult<int> commandResult = database.ExecuteResult(simpleDbCommand);
+                return commandResult;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
     }
 }

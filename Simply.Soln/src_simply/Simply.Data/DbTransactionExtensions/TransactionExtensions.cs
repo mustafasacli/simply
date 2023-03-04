@@ -24,8 +24,10 @@ namespace Simply.Data.DbTransactionExtensions
         {
             if (transaction != null)
             {
-                transaction.Commit();
-                DisposeTransaction(transaction);
+                try
+                { transaction.Commit(); }
+                finally
+                { DisposeTransaction(transaction); }
             }
         }
 
@@ -37,8 +39,10 @@ namespace Simply.Data.DbTransactionExtensions
         {
             if (transaction != null)
             {
-                transaction.Rollback();
-                DisposeTransaction(transaction);
+                try
+                { transaction.Rollback(); }
+                finally
+                { DisposeTransaction(transaction); }
             }
         }
     }

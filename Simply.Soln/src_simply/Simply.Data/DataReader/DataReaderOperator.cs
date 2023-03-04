@@ -77,26 +77,21 @@ namespace Simply.Data
         }
 
         /// <summary>
-        /// GetDynamicResultSetSkipAndTake Get dynamic object List with skip and take options.
+        /// Gets simple db row List with skip and take options.
         /// </summary>
         /// <param name="reader">Data reader object instance.</param>
         /// <param name="skip">Count for Skip.</param>
         /// <param name="take">Count for Take.</param>
         /// <param name="closeAtFinal">if true datareader will be closed at final else not.</param>
-        /// <returns>Returns dynamic object list.</returns>
+        //// <returns>Simple db row list.</returns>
         public static IEnumerable<SimpleDbRow> GetSimpleRowListSkipAndTake(this IDataReader reader,
            uint skip = 0, uint take = 0, bool closeAtFinal = false)
         {
             if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
 
-            //IEnumerable<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
-
             try
             {
-                //if (reader.IsClosed || take == 0)
-                //    return simpleDbRowListlist;
-
                 uint counter = 0;
                 if (!reader.IsClosed && take != 0)
                 {
@@ -110,33 +105,24 @@ namespace Simply.Data
 
                         counter++;
                         yield return reader.GetSimpleDbRow();
-                        //SimpleDbRow row = reader.GetSimpleDbRow();
-                        //simpleDbRowListlist.Add(row);
                     }
                 }
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
-
-            //return simpleDbRowListlist;
         }
 
         /// <summary>
-        /// GetDynamicResultSet Gets ResultSet as dynamic object list.
+        /// Gets Result Set as simple row list.
         /// </summary>
         /// <param name="reader">.</param>
         /// <param name="closeAtFinal">(Optional) .</param>
-        /// <returns>Returns dynamic object list.</returns>
+        //// <returns>Simple db row list.</returns>
         public static IEnumerable<SimpleDbRow> GetResultSetAsDbRow(
             this IDataReader reader, bool closeAtFinal = false)
         {
             if (reader is null)
                 throw new ArgumentNullException(nameof(reader));
-
-            //List<SimpleDbRow> simpleDbRowListlist = new List<SimpleDbRow>();
-
-            //if (reader.IsClosed)
-            //    return simpleDbRowListlist;
 
             try
             {
@@ -144,16 +130,12 @@ namespace Simply.Data
                 {
                     while (reader.Read())
                     {
-                        yield return reader.GetSimpleDbRow(); ;
-                        //SimpleDbRow expando = reader.GetSimpleDbRow();
-                        //simpleDbRowListlist.Add(expando);
+                        yield return reader.GetSimpleDbRow();
                     }
                 }
             }
             finally
             { if (closeAtFinal) reader.CloseIfNot(); }
-
-            //return simpleDbRowListlist;
         }
 
         /// <summary>
@@ -219,7 +201,7 @@ namespace Simply.Data
         /// </summary>
         /// <param name="reader">The dataReader to act on.</param>
         /// <param name="closeAtFinal">(Optional) .</param>
-        /// <returns>An dynamic object.</returns>
+        /// <returns>An simple db row instance.</returns>
         public static SimpleDbRow FirstDbRow(this IDataReader reader, bool closeAtFinal = false)
         {
             if (reader is null)
@@ -248,7 +230,7 @@ namespace Simply.Data
         /// </summary>
         /// <param name="reader">The dataReader to act on.</param>
         /// <param name="closeAtFinal">(Optional) .</param>
-        /// <returns>An dynamic object.</returns>
+        /// <returns>An simple db row instance.</returns>
         public static SimpleDbRow LastDbRow(this IDataReader reader, bool closeAtFinal = false)
         {
             if (reader is null)
@@ -276,7 +258,7 @@ namespace Simply.Data
         /// Returns Single Row as dynamic object.
         /// </summary>
         /// <param name="reader">The dataReader to act on.</param>
-        /// <returns>An dynamic object.</returns>
+        /// <returns>An simple db row instance.</returns>
         public static SimpleDbRow SingleDbRow(this IDataReader reader)
         {
             if (reader is null)

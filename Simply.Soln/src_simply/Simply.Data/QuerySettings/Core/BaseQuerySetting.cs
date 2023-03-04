@@ -25,7 +25,7 @@ namespace Simply.Data
 
         /// <summary>
         /// Gets Table and Column Name Prefix.
-        /// </summary> 
+        /// </summary>
         public string Prefix
         { get; protected set; }
 

@@ -22,9 +22,17 @@ namespace Simply.Data
         public static T Single<T>(
             this ISimpleDatabase database, SimpleDbCommand simpleDbCommand) where T : class, new()
         {
-            SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
-            T instance = simpleRow.ConvertRowTo<T>();
-            return instance;
+            try
+            {
+                SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
+                T instance = simpleRow.ConvertRowTo<T>();
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -47,9 +55,17 @@ namespace Simply.Data
         public static T Single<T>(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            T instance = database.Single<T>(simpleDbCommand);
-            return instance;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                T instance = database.Single<T>(simpleDbCommand);
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -63,9 +79,17 @@ namespace Simply.Data
         public static T SingleOdbc<T>(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            T instance = database.Single<T>(simpleDbCommand);
-            return instance;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                T instance = database.Single<T>(simpleDbCommand);
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -79,9 +103,17 @@ namespace Simply.Data
         public static T SingleJdbc<T>(this ISimpleDatabase database,
            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null) where T : class, new()
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            T instance = database.Single<T>(simpleDbCommand);
-            return instance;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                T instance = database.Single<T>(simpleDbCommand);
+                return instance;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         #region [ SimpleDbRow methods ]
@@ -97,15 +129,23 @@ namespace Simply.Data
         {
             SimpleDbRow simpleRow;
 
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
-            using (IDataReader dataReader = command.ExecuteDataReader())
+            try
             {
-                try
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                using (IDataReader dataReader = command.ExecuteDataReader())
                 {
-                    simpleRow = dataReader.SingleDbRow();
+                    try
+                    {
+                        simpleRow = dataReader.SingleDbRow();
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
-                finally
-                { dataReader?.CloseIfNot(); }
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
             }
 
             return simpleRow;
@@ -130,10 +170,18 @@ namespace Simply.Data
         public static SimpleDbRow SingleRow(this ISimpleDatabase database,
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand =
-                database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
-            SimpleDbRow simpleDbRow = database.SingleRow(simpleDbCommand);
-            return simpleDbRow;
+            try
+            {
+                SimpleDbCommand simpleDbCommand =
+                    database.BuildSimpleDbCommandForQuery(sqlQuery, parameterObject, commandSetting);
+                SimpleDbRow simpleDbRow = database.SingleRow(simpleDbCommand);
+                return simpleDbRow;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -147,9 +195,17 @@ namespace Simply.Data
         public static SimpleDbRow SingleOdbcRow(this ISimpleDatabase database,
            string odbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
-            SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
-            return simpleRow;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForOdbcQuery(odbcSqlQuery, parameterValues, commandSetting);
+                SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
+                return simpleRow;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -163,9 +219,17 @@ namespace Simply.Data
         public static SimpleDbRow SingleJdbcRow(this ISimpleDatabase database,
            string jdbcSqlQuery, object[] parameterValues, ICommandSetting commandSetting = null)
         {
-            SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
-            SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
-            return simpleRow;
+            try
+            {
+                SimpleDbCommand simpleDbCommand = database.BuildSimpleDbCommandForJdbcQuery(jdbcSqlQuery, parameterValues, commandSetting);
+                SimpleDbRow simpleRow = database.SingleRow(simpleDbCommand);
+                return simpleRow;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         #endregion [ SimpleDbRow methods ]
@@ -266,17 +330,25 @@ namespace Simply.Data
         {
             IDbCommandResult<SimpleDbRow> simpleDbRowResult = new DbCommandResult<SimpleDbRow>();
 
-            using (IDbCommand command = database.CreateCommand(simpleDbCommand))
-            using (IDataReader dataReader = command.ExecuteDataReader())
+            try
             {
-                try
+                using (IDbCommand command = database.CreateCommand(simpleDbCommand))
+                using (IDataReader dataReader = command.ExecuteDataReader())
                 {
-                    simpleDbRowResult.OutputParameters = command.GetOutParameters();
-                    simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
-                    simpleDbRowResult.Result = dataReader.SingleDbRow();
+                    try
+                    {
+                        simpleDbRowResult.OutputParameters = command.GetOutParameters();
+                        simpleDbRowResult.ExecutionResult = dataReader.RecordsAffected;
+                        simpleDbRowResult.Result = dataReader.SingleDbRow();
+                    }
+                    finally
+                    { dataReader?.CloseIfNot(); }
                 }
-                finally
-                { dataReader?.CloseIfNot(); }
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
             }
 
             return simpleDbRowResult;

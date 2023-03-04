@@ -22,10 +22,8 @@ namespace Simply.Data
             this.Suffix = Empty;
             this.StringConcatOperation = "CONCAT";
 
-            // this.SkipAndTakeFormat = "SELECT * FROM ( SELECT a.* , rownumber() over () AS rn FROM ( #SQL_SCRIPT# ) AS a) AS rs WHERE rs.rn between ( #SKIP# + 1) AND ( #SKIP# + #TAKE# )";
             this.SkipAndTakeFormat = "SELECT RS.* FROM ( SELECT A.* , ROWNUMBER() OVER () AS RN FROM ( #SQL_SCRIPT# ) AS A) AS RS WHERE RS.RN between ( #SKIP# + 1) AND ( #SKIP# + #TAKE# )";
 
-            // this.LastFormat = "SELECT * FROM ( SELECT *, rownumber() over () AS rn2 FROM ( SELECT a.* , rownumber() over () AS rn FROM ( #SQL_SCRIPT# ) AS a) AS rs order by rs.rn desc) WHERE rn2 =< 1";
             this.LastFormat = "SELECT * FROM ( SELECT RS.*, ROWNUMBER() OVER () AS RN2 FROM ( SELECT A.* , ROWNUMBER() OVER () AS RN FROM ( #SQL_SCRIPT# ) AS A) AS RS ORDER BY RS.RN DESC) WHERE RN2 =< 1";
             this.SubstringFormat = "SUBSTR(#0#, #1#, #2#)";
             this.CountFormat = "SELECT COUNT(1) AS CNT FROM ( #SQL_SCRIPT# )";

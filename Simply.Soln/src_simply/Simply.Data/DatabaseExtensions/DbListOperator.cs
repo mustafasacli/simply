@@ -1,5 +1,4 @@
-﻿using Simply.Common;
-using Simply.Common.Objects;
+﻿using Simply.Common.Objects;
 using Simply.Data.Interfaces;
 using Simply.Data.Objects;
 using System.Collections.Generic;
@@ -24,10 +23,18 @@ namespace Simply.Data
         public static List<T> List<T>(this ISimpleDatabase database,
             SimpleDbCommand simpleDbCommand, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            List<SimpleDbRow> simpleDbRowListResult =
-            database.ListRow(simpleDbCommand, pageInfo, behavior);
-            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
-            return instanceList;
+            try
+            {
+                List<SimpleDbRow> simpleDbRowListResult =
+                database.ListRow(simpleDbCommand, pageInfo, behavior);
+                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                return instanceList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -53,10 +60,18 @@ namespace Simply.Data
             string sqlQuery, object parameterObject, ICommandSetting commandSetting = null,
             IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            List<SimpleDbRow> simpleDbRowListResult =
-            database.ListRow(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
-            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
-            return instanceList;
+            try
+            {
+                List<SimpleDbRow> simpleDbRowListResult =
+                database.ListRow(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
+                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                return instanceList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -74,10 +89,18 @@ namespace Simply.Data
            string odbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            List<SimpleDbRow> simpleDbRowListResult =
-            database.ListRowOdbc(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
-            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
-            return instanceList;
+            try
+            {
+                List<SimpleDbRow> simpleDbRowListResult =
+                database.ListRowOdbc(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
+                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                return instanceList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
@@ -95,10 +118,18 @@ namespace Simply.Data
            string jdbcSqlQuery, object[] parameterValues,
            ICommandSetting commandSetting = null, IPageInfo pageInfo = null, CommandBehavior? behavior = null) where T : class
         {
-            List<SimpleDbRow> simpleDbRowListResult =
-            database.ListRowJdbc(jdbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
-            List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
-            return instanceList;
+            try
+            {
+                List<SimpleDbRow> simpleDbRowListResult =
+                database.ListRowJdbc(jdbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
+                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                return instanceList;
+            }
+            finally
+            {
+                if (database.AutoClose)
+                    database.Close();
+            }
         }
 
         /// <summary>
