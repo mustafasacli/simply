@@ -22,7 +22,7 @@ namespace Simply.Data
         /// <param name="transaction">(Optional) Database transaction.</param>
         /// <param name="commandBehavior">Db Command Behavior.</param>
         /// <returns>Returns an IDataReader instance.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is deprecated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDataReader ExecuteReaderQuery(
             this IDbConnection connection, SimpleDbCommand simpleDbCommand,
             out DbCommandParameter[] outputParameters, IDbTransaction transaction = null,
@@ -56,7 +56,7 @@ namespace Simply.Data
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
         /// <param name="commandTimeout">db command timeout(optional).</param>
         /// <returns>Returns an IDataReader instance.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is deprecated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDataReader ExecuteReader(this IDbConnection connection,
             string sqlQuery, object parameterObject, CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null, CommandBehavior? commandBehavior = null,
@@ -94,7 +94,7 @@ namespace Simply.Data
         /// <param name="commandBehavior">CommandBehaviour for DataReader.</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>Returns an IDataReader instance.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is deprecated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static IDataReader ExecuteReader(this IDbConnection connection,
             string sqlQuery, object parameterObject, IDbTransaction transaction = null,
              ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null)
@@ -136,7 +136,7 @@ namespace Simply.Data
         /// <param name="commandBehavior">Db Command Behavior</param>
         /// <param name="commandSetting">Command setting</param>
         /// <returns>An asynchronous result that yields the execute reader.</returns>
-        [Obsolete("Method is depreated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
+        [Obsolete("Method is deprecated. it will be removed later versions. Please, use ISimpleDatabase extension methods. You can check the github.com/mustafasacli/simply repo.")]
         public static async Task<IDataReader> ExecuteReaderAsync(this IDbConnection connection,
             string sqlQuery, object parameterObject, IDbTransaction transaction = null,
             ICommandSetting commandSetting = null, CommandBehavior? commandBehavior = null)
