@@ -146,7 +146,6 @@ namespace Simply.Common
         {
             MemberExpression expression = (MemberExpression)action.Body;
             string name = expression.Member.Name;
-
             return name;
         }
 
@@ -160,6 +159,22 @@ namespace Simply.Common
         {
             Type realType = (instance?.GetType() ?? typeof(T));
             return realType;
+        }
+
+        /// <summary>
+        /// Sets the given property value and returns current instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <param name="keySelector">The key selector.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="System.NullReferenceException">if instance is null. throw null reference exception.</exception>
+        /// <exception cref="System.NotSupportedException">if the conversion cannot be performed.</exception>
+        /// <returns>Returns current instance.</returns>
+        public static T With<T, TKey>(this T instance, Expression<Func<T, TKey>> keySelector, object value) where T : class
+        {
+            string propertyName = keySelector.GetMemberName();
+            instance.SetPropertyValue(propertyName, value);
+            return instance;
         }
     }
 }
