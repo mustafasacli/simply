@@ -68,5 +68,25 @@ namespace Simply.Common
             bool isEmpty = !(list?.Any() ?? false);
             return isEmpty;
         }
+
+        /// <summary>
+        /// Gets the empty, if array is null.
+        /// </summary>
+        /// <param name="array">The object array.</param>
+        /// <returns>An array of T object.</returns>
+        public static T[] GetEmptyIsNull<T>(this T[] array) where T : class
+        {
+            return array ?? Empty<T>();
+        }
+
+        /// <summary>
+        /// Gets the empty, if list is null.
+        /// </summary>
+        /// <param name="list">The object list.</param>
+        /// <returns>An list of T object.</returns>
+        public static List<T> GetEmptyIsNull<T>(this List<T> list) where T : class
+        {
+            return list ?? EmptyList<T>();
+        }
     }
 }
