@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Simply.Common
 {
@@ -175,6 +177,25 @@ namespace Simply.Common
             string propertyName = keySelector.GetMemberName();
             instance.SetPropertyValue(propertyName, value);
             return instance;
+        }
+
+        /// <summary>
+        /// Creates a Deep clone of given object instance.
+        /// </summary>
+        /// <param name="instance">object instance.</param>
+        /// <returns>Returns a new instance.</returns>
+        public static T DeepClone<T>(this T instance) where T : class
+        {
+            if (instance == null)
+                return null;
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, instance);
+                stream.Position = 0;
+                return (T)formatter.Deserialize(stream);
+            }
         }
     }
 }
