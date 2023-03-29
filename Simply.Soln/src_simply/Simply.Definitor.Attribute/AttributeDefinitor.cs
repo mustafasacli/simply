@@ -441,7 +441,6 @@ namespace Simply.Definitor.Attribute
         /// <summary>
         /// Get Column Name-Property Name as dictionary.
         /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="includeNotMappedProperties"></param>
         /// <param name="includeComputedProperties"></param>
         /// <returns>The columns reverse.</returns>
@@ -466,7 +465,6 @@ namespace Simply.Definitor.Attribute
         /// <summary>
         /// Get Property Name-Column Name as dictionary.
         /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="includeNotMappedProperties"></param>
         /// <param name="includeComputedProperties"></param>
         /// <returns>The columns.</returns>

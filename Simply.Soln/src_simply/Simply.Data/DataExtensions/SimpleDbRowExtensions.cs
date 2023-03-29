@@ -206,7 +206,6 @@ namespace Simply.Data
         /// <summary>
         /// Converts the rows to list.
         /// </summary>
-        /// <param name="database">simple database object</param>
         /// <param name="rows">The rows.</param>
         /// <returns>A list of TS.</returns>
         public static List<T> ConvertRowsToList<T>(this List<SimpleDbRow> rows) where T : class

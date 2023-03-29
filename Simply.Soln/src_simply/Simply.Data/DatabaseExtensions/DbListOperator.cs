@@ -27,7 +27,7 @@ namespace Simply.Data
             {
                 List<SimpleDbRow> simpleDbRowListResult =
                 database.ListRow(simpleDbCommand, pageInfo, behavior);
-                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                List<T> instanceList = database.ConvertRowsToList<T>(simpleDbRowListResult);
                 return instanceList;
             }
             finally
@@ -64,7 +64,7 @@ namespace Simply.Data
             {
                 List<SimpleDbRow> simpleDbRowListResult =
                 database.ListRow(sqlQuery, parameterObject, commandSetting, pageInfo, behavior);
-                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                List<T> instanceList = database.ConvertRowsToList<T>(simpleDbRowListResult);
                 return instanceList;
             }
             finally
@@ -93,7 +93,7 @@ namespace Simply.Data
             {
                 List<SimpleDbRow> simpleDbRowListResult =
                 database.ListRowOdbc(odbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
-                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                List<T> instanceList = database.ConvertRowsToList<T>(simpleDbRowListResult);
                 return instanceList;
             }
             finally
@@ -122,7 +122,7 @@ namespace Simply.Data
             {
                 List<SimpleDbRow> simpleDbRowListResult =
                 database.ListRowJdbc(jdbcSqlQuery, parameterValues, commandSetting, pageInfo, behavior);
-                List<T> instanceList = simpleDbRowListResult.ConvertRowsToList<T>();
+                List<T> instanceList = database.ConvertRowsToList<T>(simpleDbRowListResult);
                 return instanceList;
             }
             finally
@@ -151,7 +151,7 @@ namespace Simply.Data
             commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
             commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
             commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
-            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            commandResult.Result = database.ConvertRowsToList<T>(simpleDbRowListResult.Result);
             return commandResult;
         }
 
@@ -185,7 +185,7 @@ namespace Simply.Data
             commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
             commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
             commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
-            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            commandResult.Result = database.ConvertRowsToList<T>(simpleDbRowListResult.Result);
             return commandResult;
         }
 
@@ -211,7 +211,7 @@ namespace Simply.Data
             commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
             commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
             commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
-            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            commandResult.Result = database.ConvertRowsToList<T>(simpleDbRowListResult.Result);
             return commandResult;
         }
 
@@ -237,7 +237,7 @@ namespace Simply.Data
             commandResult.OutputParameters = simpleDbRowListResult.OutputParameters;
             commandResult.AdditionalValues = simpleDbRowListResult.AdditionalValues;
             commandResult.ExecutionResult = simpleDbRowListResult.ExecutionResult;
-            commandResult.Result = simpleDbRowListResult.Result.ConvertRowsToList<T>();
+            commandResult.Result = database.ConvertRowsToList<T>(simpleDbRowListResult.Result);
             return commandResult;
         }
     }
