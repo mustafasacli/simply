@@ -172,7 +172,7 @@ namespace Simply.Common
         /// <exception cref="System.NullReferenceException">if instance is null. throw null reference exception.</exception>
         /// <exception cref="System.NotSupportedException">if the conversion cannot be performed.</exception>
         /// <returns>Returns current instance.</returns>
-        public static T With<T, TKey>(this T instance, Expression<Func<T, TKey>> keySelector, object value) where T : class
+        public static T With<T, TKey>(this T instance, Expression<Func<T, TKey>> keySelector, TKey value) where T : class
         {
             string propertyName = keySelector.GetMemberName();
             instance.SetPropertyValue(propertyName, value);
@@ -181,6 +181,7 @@ namespace Simply.Common
 
         /// <summary>
         /// Creates a Deep clone of given object instance.
+        /// Class and other classes which property of T, must have system.serializable attribute.
         /// </summary>
         /// <param name="instance">object instance.</param>
         /// <returns>Returns a new instance.</returns>
