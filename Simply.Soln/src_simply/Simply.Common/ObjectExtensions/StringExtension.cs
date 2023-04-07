@@ -43,13 +43,22 @@ namespace Simply.Common
         /// The Trim All spaces.
         /// </summary>
         /// <param name="text">The s to act on.</param>
+        /// <param name="trimNewLine">if true trims new line chars.</param>
+        /// <param name="trimTabs">if true trims tab chars.</param>
         /// <returns>A string.</returns>
-        public static string TrimAll(this string text)
+        public static string TrimAll(this string text, bool trimNewLine = true, bool trimTabs = true)
         {
             if (text.IsNullOrEmpty())
                 return text;
 
             string result = text.Replace(" ", "");
+
+            if (trimNewLine)
+                result = result.Replace("\r", "").Replace("\n", "");
+
+            if (trimTabs)
+                result = result.Replace("\t", "");
+
             return result;
         }
 

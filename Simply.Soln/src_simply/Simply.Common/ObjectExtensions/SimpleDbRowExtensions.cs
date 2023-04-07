@@ -152,5 +152,17 @@ namespace Simply.Common
                     throw new Exception(message);
             }
         }
+
+        /// <summary>
+        /// Converts simpledbrow instance to T type instance with given convert function.
+        /// </summary>
+        /// <param name="row">simple db row instance.</param>
+        /// <param name="convertFunc">The convert func.</param>
+        /// <returns>Returns a T instance.</returns>
+        public static T ConvertTo<T>(this SimpleDbRow row, Func<SimpleDbRow, T> convertFunc)
+        {
+            T instance = convertFunc(row);
+            return instance;
+        }
     }
 }
