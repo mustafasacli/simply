@@ -216,9 +216,6 @@ namespace Simply.Data.Database
                 {
                     connection?.CloseAndDispose();
                 }
-
-                // There are no unmanaged resources to release, but
-                // if we add them, they need to be released here.
             }
             disposed = true;
         }
