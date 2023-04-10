@@ -485,5 +485,30 @@ namespace Simply.Definitor.Attribute
 
             return dictionary;
         }
+
+        /// <summary>
+        /// Gets Table Name of type.
+        /// </summary>
+        /// <param name="type">The type to act on.</param>
+        /// <returns>The table name of type.</returns>
+        public string GetTableNameOfType(Type type)
+        {
+            string table_name = type.GetCustomAttribute<TableAttribute>()?.Name;
+            if (string.IsNullOrWhiteSpace(table_name))
+                table_name = type.Name;
+
+            return table_name;
+        }
+
+        /// <summary>
+        /// Gets Schema Name of type.
+        /// </summary>
+        /// <param name="type">The type to act on.</param>
+        /// <returns>The schema name of type.</returns>
+        public string GetSchemaNameOfType(Type type)
+        {
+            string schema_name = type.GetCustomAttribute<TableAttribute>()?.Schema ?? string.Empty;
+            return schema_name;
+        }
     }
 }

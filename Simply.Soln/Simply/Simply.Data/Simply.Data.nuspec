@@ -2,23 +2,23 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Simply.Data</id>
-        <version>4.4.0.0</version>
+        <version>4.5.0.0</version>
         <authors>mustafa sacli</authors>
         <title>simply.data</title>
         <summary>this package is used for database operations.</summary>
         <projectUrl>https://github.com/mustafasacli/simply</projectUrl>
         <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <releaseNotes>Simply.Common nuget version upgraded to 1.9.0. SimpleDatabase samples can be found in https://github.com/mustafasacli/Simply.TestApps repository.</releaseNotes>
+        <releaseNotes>GetTableNameOfType, GetSchemaNameOfType methods added to AttributeDefinitor. Simply.Common nuget version upgraded to 1.10.0. SimpleDatabase samples can be found in https://github.com/mustafasacli/Simply.TestApps repository.</releaseNotes>
         <description>Supports IDbConnection operations.</description>
-        <copyright>Copyright ©2022 mustafa.sacli</copyright>
+        <copyright>Copyright 2022 mustafa.sacli</copyright>
         <tags>IDbConnection Dapper DbConnection Extensions</tags>
         <frameworkAssemblies>
           <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework="net451" />
           <frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework="net451" />
         </frameworkAssemblies>
         <dependencies>
-          <dependency id="Simply.Common" version="1.9.0.0" />
+          <dependency id="Simply.Common" version="1.10.0.0" />
         </dependencies>
     </metadata>
 </package>
