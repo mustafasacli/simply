@@ -106,14 +106,29 @@ namespace Simply.Common.Interfaces
         /// <summary>
         /// Gets Table Name.
         /// </summary>
-        /// <returns>The table name of type.</returns>
+        /// <returns>The table name.</returns>
         string GetTableName();
 
         /// <summary>
-        /// Gets Schema Name Of Type.
+        /// Gets Table Name of type.
         /// </summary>
-        /// <returns>The schema name of type.</returns>
+        /// <param name="type">The type to act on.</param>
+        /// <returns>The table name of type.</returns>
+        string GetTableNameOfType(Type type);
+
+        /// <summary>
+        /// Gets Schema Name.
+        /// </summary>
+        /// <returns>The schema name.</returns>
         string GetSchemaName();
+
+        /// <summary>
+        /// Gets Schema Name of type.
+        /// </summary>
+        /// <param name="type">The type to act on.</param>
+        /// <returns>The schema name of type.</returns>
+        string GetSchemaNameOfType(Type type);
+
 
         /// <summary>
         /// Get Column Name from Property Of Type.

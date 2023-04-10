@@ -2,6 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <AssemblyVersion>1.10.0.0</AssemblyVersion>
+    <FileVersion>1.10.0.0</FileVersion>
+    <Version>1.10.0</Version>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/mustafasacli/simply</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mustafasacli/simply</RepositoryUrl>
+    <Copyright>2022 mustafa.sacli</Copyright>
+    <Description>Supports common operations.</Description>
+    <PackageTags>Common Extensions</PackageTags>
+    <PackageReleaseNotes>GetTableNameOfType, GetSchemaNameOfType methods added to ISimpleDefinitor interface.</PackageReleaseNotes>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>simply.common.snk</AssemblyOriginatorKeyFile>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
     <ItemGroup>
