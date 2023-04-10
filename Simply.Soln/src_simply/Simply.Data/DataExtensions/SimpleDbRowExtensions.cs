@@ -33,8 +33,8 @@ namespace Simply.Data
                 return list;
 
             ISimpleDefinitor<T> definitor = database.DefinitorFactory?.GetDefinitor<T>() ?? AttributeDefinitor<T>.New();
-            // TODO :
-            IDictionary<string, string> columns = definitor.GetColumns();
+
+            IDictionary<string, string> columns = definitor.GetColumns(includeNotMappedProperties: true, includeComputedProperties: true);
             PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true, includeComputedProperties: true);
 
             properties = properties
@@ -219,7 +219,7 @@ namespace Simply.Data
                 return list;
 
             ISimpleDefinitor<T> definitor = AttributeDefinitor<T>.New();
-            // TODO :
+
             IDictionary<string, string> columns = definitor.GetColumns();
             PropertyInfo[] properties = definitor.GetValidProperties(includeNotMappedProperties: true, includeComputedProperties: true);
 
