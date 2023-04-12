@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Supports database operations.</Description>
-    <PackageReleaseNotes>GetTableNameOfType, GetSchemaNameOfType methods added to AttributeDefinitor.Simply.Common nuget version upgraded to 1.10.0. SimpleDatabase samples can be found in https://github.com/mustafasacli/Simply.TestApps repository.</PackageReleaseNotes>
-    <Version>4.5.0</Version>
+    <PackageReleaseNotes>Mapping error fixed. SimpleDatabase samples can be found in https://github.com/mustafasacli/Simply.TestApps repository.</PackageReleaseNotes>
+    <Version>4.5.1</Version>
     <PackageProjectUrl>https://github.com/mustafasacli/simply</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mustafasacli/simply</RepositoryUrl>
     <Copyright>Copyright 2022 mustafa.sacli</Copyright>
