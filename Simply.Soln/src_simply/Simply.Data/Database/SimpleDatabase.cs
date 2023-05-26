@@ -57,6 +57,7 @@ namespace Simply.Data.Database
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleDatabase"/> class.
         /// </summary>
+        /// <exception cref="{System.NotImplementedException}" >Empty contructor can not be implemented.</exception>
         public SimpleDatabase()
         {
             throw new NotImplementedException("Empty contructor can not be implemented.");
@@ -713,6 +714,10 @@ namespace Simply.Data.Database
                 this.DbCommandLogAction(dbCommand);
         }
 
+        /// <summary>
+        /// Gets the debugger display.
+        /// </summary>
+        /// <returns>A string.</returns>
         private string GetDebuggerDisplay()
         {
             return ToString();
