@@ -198,5 +198,20 @@ namespace Simply.Common
                 return (T)formatter.Deserialize(stream);
             }
         }
+
+        /// <summary>
+        /// Maps classes with static functions.
+        /// </summary>
+        /// <typeparam name="T1">T1 input class</typeparam>
+        /// <typeparam name="T2">T2 out class</typeparam>
+        /// <param name="t1Instance">input class instance</param>
+        /// <param name="func">convert function</param>
+        /// <returns>returns out class instance.</returns>
+        public static T2 MapWith<T1, T2>(this T1 t1Instance, Func<T1, T2> func) where T1 : class
+            where T2 : class
+        {
+            T2 t2Instance = func(t1Instance);
+            return t2Instance;
+        }
     }
 }
