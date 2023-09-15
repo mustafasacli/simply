@@ -5,8 +5,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <AssemblyVersion>1.10.0.0</AssemblyVersion>
-    <FileVersion>1.10.0.0</FileVersion>
-    <Version>1.10.0</Version>
+    <FileVersion>1.11.0.0</FileVersion>
+    <Version>1.11.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mustafasacli/simply</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mustafasacli/simply</RepositoryUrl>
