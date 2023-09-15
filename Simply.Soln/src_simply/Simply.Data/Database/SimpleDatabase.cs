@@ -57,10 +57,9 @@ namespace Simply.Data.Database
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleDatabase"/> class.
         /// </summary>
-        /// <exception cref="{System.NotImplementedException}" >Empty contructor can not be implemented.</exception>
         public SimpleDatabase()
         {
-            throw new NotImplementedException("Empty contructor can not be implemented.");
+            // throw new NotImplementedException("Empty contructor can not be implemented.");
         }
 
         /// <summary>

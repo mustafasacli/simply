@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Simply.Data</id>
-        <version>4.5.1.0</version>
+        <version>4.6.0.0</version>
         <authors>mustafa sacli</authors>
         <title>simply.data</title>
         <summary>this package is used for database operations.</summary>
@@ -18,7 +18,7 @@
           <frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework="net451" />
         </frameworkAssemblies>
         <dependencies>
-          <dependency id="Simply.Common" version="1.10.0.0" />
+          <dependency id="Simply.Common" version="1.11.0.0" />
         </dependencies>
     </metadata>
 </package>
