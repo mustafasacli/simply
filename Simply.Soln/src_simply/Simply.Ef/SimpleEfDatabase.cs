@@ -19,7 +19,7 @@ namespace Simply.Ef
         /// </summary>
         public SimpleEfDatabase()
         {
-            throw new NotImplementedException("Empty contructor can not be implemented.");
+            // throw new NotImplementedException("Empty contructor can not be implemented.");
         }
 
         /// <summary>
