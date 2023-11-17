@@ -164,5 +164,144 @@ namespace Simply.Common
             T instance = convertFunc(row);
             return instance;
         }
+
+        /// <summary>
+        /// Tos the json string.
+        /// </summary>
+        /// <param name="row">Simple db row instance.</param>
+        /// <param name="formatSetting">Format settings.</param>
+        /// <returns>A string.</returns>
+        public static string ToJsonString(this SimpleDbRow row, SimpleFormatSetting formatSetting)
+        {
+            if (row == null)
+                return string.Empty;
+
+            if (row.CellCount == 0)
+                return string.Empty;
+
+            formatSetting = formatSetting ?? SimpleFormatSetting.New();
+
+            string nullString = "null";
+            string tabString = "\t";
+            StringBuilder stringBuilder = new StringBuilder();
+            int count = row.CellCount;
+            int counter = 0;
+
+            foreach (var cell in row.Cells)
+            {
+                if (formatSetting.AddTab)
+                    stringBuilder.Append(tabString);
+
+                stringBuilder.AppendFormat("\"{0}\" : ", cell.CellName);
+                object value = row[cell.CellName];
+
+                if (value.IsNullOrDbNull())
+                {
+                    stringBuilder.Append(nullString);
+                }
+                else
+                {
+                    if (value is string str)
+                    {
+                        stringBuilder.Append("\"" + str + "\"");
+                    }
+                    else if (value is DateTime date)
+                    {
+                        stringBuilder.Append("\"" + date.ToString(formatSetting.DatetimeFormat) + "\"");
+                    }
+                    else
+                    {
+                        stringBuilder.Append(value.ToString());
+                    }
+                }
+
+                if (counter != count - 1)
+                    stringBuilder.Append(",");
+
+                if (formatSetting.AddNewLine)
+                    stringBuilder.AppendLine();
+            }
+
+            string tempValue = stringBuilder.ToString();
+            string result = string.Concat("{", formatSetting.AddNewLine ? Environment.NewLine : string.Empty, tempValue, "}");
+            return result;
+        }
+
+        /// <summary>
+        /// Tos the xml string.
+        /// </summary>
+        /// <param name="row">Simple db row instance.</param>
+        /// <param name="formatSetting">Format settings.</param>
+        /// <returns>A string.</returns>
+        public static string ToXmlString(this SimpleDbRow row,
+            SimpleFormatSetting formatSetting)
+        {
+            if (formatSetting.MainXmlNodeName.IsNullOrSpace())
+                throw new ArgumentNullException(nameof(SimpleFormatSetting.MainXmlNodeName));
+
+            if (row == null || row.CellCount == 0)
+                return string.Format("<{0}></{0}>", formatSetting.MainXmlNodeName);
+
+            formatSetting = formatSetting ?? SimpleFormatSetting.New();
+
+            string tabString = "\t";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (var cell in row.Cells)
+            {
+                if (formatSetting.AddNewLine)
+                    stringBuilder.AppendLine();
+
+                if (formatSetting.AddTab)
+                    stringBuilder.Append(tabString);
+
+                object value = row[cell.CellName];
+
+                if (value.IsNullOrDbNull())
+                {
+                    stringBuilder.AppendFormat("<{0} nil=\"true\"></{0}>", cell.CellName);
+                }
+                else
+                {
+                    if (value is string str)
+                    {
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", cell.CellName, str);
+                    }
+                    else if (value is DateTime date)
+                    {
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", cell.CellName, date.ToString(formatSetting.DatetimeFormat));
+                    }
+                    else
+                    {
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", cell.CellName, value.ToString());
+                    }
+                }
+            }
+
+            string tempValue = stringBuilder.ToString();
+            string result = string.Format("<{0}>{1}</{0}>", formatSetting.MainXmlNodeName, tempValue);
+            return result;
+        }
+
+        /// <summary>
+        /// Tos the json string.
+        /// </summary>
+        /// <param name="rows">Simple db row list.</param>
+        /// <param name="formatSetting">Format settings.</param>
+        /// <returns>A string.</returns>
+        public static string ToJsonString(this List<SimpleDbRow> rows, SimpleFormatSetting formatSetting)
+        {
+            if (!(rows?.Any() ?? false))
+                return string.Empty;
+            var rowJsonStrings = rows.Select(s => s.ToJsonString(formatSetting))
+                .Where(w => !string.IsNullOrWhiteSpace(w))
+                .ToList() ?? ArrayHelper.EmptyList<string>();
+
+            if (!rowJsonStrings.Any())
+                return string.Empty;
+
+            string result = string.Concat("[ ", string.Join(formatSetting.AddNewLine ? "," + Environment.NewLine : ",", rowJsonStrings), " ]");
+            return result;
+        }
     }
 }
