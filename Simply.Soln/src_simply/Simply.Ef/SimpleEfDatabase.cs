@@ -1,7 +1,6 @@
 ﻿using Simply.Data;
 using Simply.Data.Database;
 using Simply.Data.Interfaces;
-using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
