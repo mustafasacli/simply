@@ -80,7 +80,6 @@ namespace Simply.Common
                     }
                     else if (value is DateTime date)
                     {
-                        // "yyyyy-MM-dd HH:mm:ss.fffffff"
                         stringBuilder.Append("\"" + date.ToString(formatSetting.DatetimeFormat) + "\"");
                     }
                     else
@@ -104,7 +103,6 @@ namespace Simply.Common
         /// Tos the xml string.
         /// </summary>
         /// <param name="keyValuePairs">The key value pairs.</param>
-        /// <param name="mainRowName">The main row name.</param>
         /// <param name="formatSetting">Format settings.</param>
         /// <returns>A string.</returns>
         public static string ToXmlString(this IDictionary<string, object> keyValuePairs,
@@ -143,7 +141,6 @@ namespace Simply.Common
                     }
                     else if (value is DateTime date)
                     {
-                        // "yyyyy-MM-dd HH:mm:ss.fffffff"
                         stringBuilder.AppendFormat("<{0}>{1}</{0}>", key, date.ToString(formatSetting.DatetimeFormat));
                     }
                     else
