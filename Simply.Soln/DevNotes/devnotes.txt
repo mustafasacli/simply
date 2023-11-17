@@ -88,3 +88,7 @@ metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL 
 07-11-2023 Notlar;
 - SimpleDbRow nesnesine ToJsonString ve ToXmlString extension metotlarý ile stringe çevrilecek.
 - IDictionary<string, object> nesnesine ToJsonString ve ToXmlString extension metotlarý ile stringe çevrilecek. (DONE, WILL BE TESTED.)
+
+17-11-2023 Notlar;
+- SimpleDbRow nesnesine ToJsonString ve ToXmlString extension metotlarý ile stringe çevrilecek. (DONE, WILL BE TESTED.)
+- IDictionary<string, object> nesnesine ToJsonString ve ToXmlString extension metotlarý ile stringe çevrilecek. (DONE, WILL BE TESTED.)

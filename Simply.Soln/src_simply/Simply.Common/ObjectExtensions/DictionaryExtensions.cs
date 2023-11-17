@@ -87,6 +87,7 @@ namespace Simply.Common
                         stringBuilder.Append(value.ToString());
                     }
                 }
+
                 if (counter != count - 1)
                     stringBuilder.Append(",");
 
