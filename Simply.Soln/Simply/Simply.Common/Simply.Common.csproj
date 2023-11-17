@@ -93,6 +93,9 @@
     <Compile Include="..\..\src_simply\Simply.Common\Objects\SimpleDbRow.cs">
       <Link>Objects\SimpleDbRow.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\Objects\SimpleFormatSetting.cs">
+      <Link>Objects\SimpleFormatSetting.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -86,4 +86,5 @@ metodu SimpleDatabase içine alýnacak ve yapý buna göre düzenlenecek.(DONE, WILL 
 - PageInfo yapýsý, ICommandSetting yapýsý içine alýnacak.(NOT CERTAIN)(REJECTED: IPageInfo nesnesi, ICommandSettings nesnesinden ayrý olarak bir çok yerde kullanýldýðý için þimdilik reddedildi.)
 
 07-11-2023 Notlar;
-- SimpleDbRow nesnesine ToJsonString extension metodu ile stringe çevrilecek.
+- SimpleDbRow nesnesine ToJsonString ve ToXmlString extension metotlarý ile stringe çevrilecek.
+- IDictionary<string, object> nesnesine ToJsonString ve ToXmlString extension metotlarý ile stringe çevrilecek.
