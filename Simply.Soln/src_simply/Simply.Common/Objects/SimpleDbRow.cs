@@ -221,12 +221,36 @@ namespace Simply.Common.Objects
         /// <summary>
         /// Adds the cell.
         /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <returns>Returns current instance.</returns>
+        public SimpleDbRow AddCellAndReturn(SimpleDbCell cell)
+        {
+            AddCell(cell);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the cell.
+        /// </summary>
         /// <param name="cellName">The column name.</param>
         /// <param name="columnType">The column type.</param>
         /// <param name="cellValue">The cell value.</param>
         public void AddCell(string cellName, Type columnType, object cellValue)
         {
             AddCell(new SimpleDbCell { CellName = cellName, CellType = columnType, Value = cellValue });
+        }
+
+        /// <summary>
+        /// Adds the cell.
+        /// </summary>
+        /// <param name="cellName">The column name.</param>
+        /// <param name="columnType">The column type.</param>
+        /// <param name="cellValue">The cell value.</param>
+        /// <returns>Returns current instance.</returns>
+        public SimpleDbRow AddCellAndReturn(string cellName, Type columnType, object cellValue)
+        {
+            AddCell(new SimpleDbCell { CellName = cellName, CellType = columnType, Value = cellValue });
+            return this;
         }
 
         /// <summary>

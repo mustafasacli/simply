@@ -19,7 +19,7 @@
         /// <param name="addNewLine">If true, add new line.</param>
         /// <param name="datetimeFormat">The datetime format.</param>
         public SimpleFormatSetting(bool addTab = true, bool addNewLine = true,
-            string datetimeFormat = "yyyyy-MM-dd HH:mm:ss.fffffff")
+            string datetimeFormat = "yyyy-MM-dd HH:mm:ss.fffffff")
         {
             this.AddTab = addTab;
             this.AddNewLine = addNewLine;
@@ -42,7 +42,7 @@
         /// Gets or sets the datetime format.
         /// </summary>
         public string DatetimeFormat
-        { get; set; } = "yyyyy-MM-dd HH:mm:ss.fffffff";
+        { get; set; } = "yyyy-MM-dd HH:mm:ss.fffffff";
 
         /// <summary>
         /// Gets or sets the main xml node name. it is used for xml formatting.
