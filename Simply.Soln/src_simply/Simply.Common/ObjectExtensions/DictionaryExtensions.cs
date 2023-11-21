@@ -1,6 +1,7 @@
 ﻿using Simply.Common.Objects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -80,7 +81,23 @@ namespace Simply.Common
                     }
                     else if (value is DateTime date)
                     {
-                        stringBuilder.Append("\"" + date.ToString(formatSetting.DatetimeFormat) + "\"");
+                        stringBuilder.Append("\"" + date.ToString(formatSetting.DatetimeFormat, CultureInfo.InvariantCulture) + "\"");
+                    }
+                    else if (value is double doubleValue)
+                    {
+                        stringBuilder.Append(doubleValue.ToString().Replace(".", string.Empty).Replace(",", "."));
+                    }
+                    else if (value is float floatValue)
+                    {
+                        stringBuilder.Append(floatValue.ToString().Replace(".", string.Empty).Replace(",", "."));
+                    }
+                    else if (value is decimal decimalValue)
+                    {
+                        stringBuilder.Append(decimalValue.ToString().Replace(".", string.Empty).Replace(",", "."));
+                    }
+                    else if (value is bool boolValue)
+                    {
+                        stringBuilder.Append(boolValue.ToString().ToLower());
                     }
                     else
                     {
@@ -88,15 +105,15 @@ namespace Simply.Common
                     }
                 }
 
-                if (counter != count - 1)
-                    stringBuilder.Append(",");
+                if ((counter++) != count - 1)
+                    stringBuilder.Append(", ");
 
                 if (formatSetting.AddNewLine)
                     stringBuilder.AppendLine();
             }
 
             string tempValue = stringBuilder.ToString();
-            string result = string.Concat("{", formatSetting.AddNewLine ? Environment.NewLine : string.Empty, tempValue, "}");
+            string result = string.Concat("{ ", formatSetting.AddNewLine ? Environment.NewLine : string.Empty, tempValue, " }");
             return result;
         }
 
@@ -142,7 +159,23 @@ namespace Simply.Common
                     }
                     else if (value is DateTime date)
                     {
-                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", key, date.ToString(formatSetting.DatetimeFormat));
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", key, date.ToString(formatSetting.DatetimeFormat, CultureInfo.InvariantCulture));
+                    }
+                    else if (value is double doubleValue)
+                    {
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", key, doubleValue.ToString().Replace(".", string.Empty).Replace(",", "."));
+                    }
+                    else if (value is float floatValue)
+                    {
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", key, floatValue.ToString().Replace(".", string.Empty).Replace(",", "."));
+                    }
+                    else if (value is decimal decimalValue)
+                    {
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", key, decimalValue.ToString().Replace(".", string.Empty).Replace(",", "."));
+                    }
+                    else if (value is bool boolValue)
+                    {
+                        stringBuilder.AppendFormat("<{0}>{1}</{0}>", key, boolValue.ToString().ToLower());
                     }
                     else
                     {
