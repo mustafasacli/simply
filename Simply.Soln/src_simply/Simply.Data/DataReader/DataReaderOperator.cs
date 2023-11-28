@@ -315,5 +315,19 @@ namespace Simply.Data
 
             return metaDataRow;
         }
+
+        /// <summary>
+        /// Gets ordinal value.
+        /// </summary>
+        /// <typeparam name="T">Type for conversion.</typeparam>
+        /// <param name="dr">data row object instance.</param>
+        /// <param name="ordinal">data row column ordinal</param>
+        /// <returns>Returns coverted value.</returns>
+        public static T Get<T>(this IDataRecord dr, int ordinal) where T :
+            struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
+        {
+            T nullValue = default(T);
+            return dr.IsDBNull(ordinal) ? nullValue : (T)dr.GetValue(ordinal);
+        }
     }
 }
