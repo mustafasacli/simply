@@ -213,5 +213,64 @@ namespace Simply.Common
             T2 t2Instance = func(t1Instance);
             return t2Instance;
         }
+
+        /// <summary>
+        /// Orders Linq by given parameters.
+        /// </summary>
+        /// <typeparam name="TEntity">Source class type.</typeparam>
+        /// <typeparam name="TKey">Order property selector.</typeparam>
+        /// <param name="source">Source Linq</param>
+        /// <param name="keySelector">Order by property selector.</param>
+        /// <param name="isDesc">is order by descrement.</param>
+        /// <returns>Return Linq query with order.</returns>
+        public static IQueryable<TEntity> OrderBy<TEntity, TKey>(this IQueryable<TEntity> source,
+            Expression<Func<TEntity, TKey>> keySelector, bool isDesc = false) where TEntity : class
+        {
+            string command = isDesc ? "OrderByDescending" : "OrderBy";
+            var type = typeof(TEntity);
+            string orderByPropertyName = keySelector.GetMemberName();
+            var property = type.GetProperty(orderByPropertyName);
+            var parameter = Expression.Parameter(type, "p");
+            var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+            var orderByExpression = Expression.Lambda(propertyAccess, parameter);
+            var resultExpression = Expression.Call(typeof(Queryable), command, new Type[] { type, property.PropertyType },
+                                          source.Expression, Expression.Quote(orderByExpression));
+
+            return source.Provider.CreateQuery<TEntity>(resultExpression);
+
+        }
+
+        /// <summary>
+        /// Orders Linq by given parameters.
+        /// </summary>
+        /// <typeparam name="TEntity">Source class type.</typeparam>
+        /// <param name="source">Source Linq</param>
+        /// <param name="orderByPropertyName">Order by property name.</param>
+        /// <param name="isDesc">is order by descrement.</param>
+        /// <returns>Return Linq query with order.</returns>
+        public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> source,
+            string orderByPropertyName, bool isDesc = false) where TEntity : class
+        {
+            if (string.IsNullOrWhiteSpace(orderByPropertyName))
+                throw new ArgumentNullException(nameof(orderByPropertyName));
+
+            if (source is null)
+                return source;
+
+            string command = isDesc ? "OrderByDescending" : "OrderBy";
+            var type = typeof(TEntity);
+
+            var property = type.GetProperty(orderByPropertyName);
+            if (property is null)
+                throw new ArgumentNullException(string.Format("No property found with given name : {0}.", orderByPropertyName));
+
+            var parameter = Expression.Parameter(type, "p");
+            var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+            var orderByExpression = Expression.Lambda(propertyAccess, parameter);
+            var resultExpression = Expression.Call(typeof(Queryable), command, new Type[] { type, property.PropertyType },
+                                          source.Expression, Expression.Quote(orderByExpression));
+
+            return source.Provider.CreateQuery<TEntity>(resultExpression);
+        }
     }
 }
