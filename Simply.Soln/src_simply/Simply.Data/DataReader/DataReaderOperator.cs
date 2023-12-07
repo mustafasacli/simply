@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 
 namespace Simply.Data
 {
@@ -169,6 +170,35 @@ namespace Simply.Data
             }
 
             return row;
+        }
+
+
+
+        /// <summary>
+        /// Gets the simple db row.
+        /// </summary>
+        /// <param name="dataReader">The data reader.</param>
+        /// <param name="columnPropertyMapping"></param>
+        /// <returns>A SimpleDbRow.</returns>
+        internal static T GetInstance<T>(this IDataReader dataReader, IDictionary<string, string> columnPropertyMapping) where T : class, new()
+        {
+            T rowInstance = new T();
+            Type t = typeof(T);
+
+            foreach (string columnName in columnPropertyMapping.Keys)
+            {
+                string propertyName = columnPropertyMapping[columnName];
+                if (string.IsNullOrWhiteSpace(propertyName))
+                    throw new ArgumentNullException(string.Format("Property name cannot be empty for \"{0}\" column."));
+
+                PropertyInfo propertyInfo = t.GetProperty(propertyName);
+                if (propertyInfo == null)
+                    throw new ArgumentNullException(string.Format("Property not found for \"{0}\" column."));
+
+                propertyInfo.SetValue(rowInstance, dataReader[columnName]);
+            }
+
+            return rowInstance;
         }
 
         /// <summary>
