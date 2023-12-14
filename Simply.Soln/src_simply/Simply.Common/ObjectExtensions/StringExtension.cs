@@ -346,5 +346,58 @@ namespace Simply.Common
             string str = result.ToString();
             return str;
         }
+
+        /// <summary>
+        /// Removes the apostrophe(').
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="replaceApostropheWithSpace">if true apostrophe(') replaced with " ", else empty string.</param>
+        /// <returns>A string.</returns>
+        public static string RemoveApostrophe(this string input, bool replaceApostropheWithSpace = false)
+        {
+            if (input.IsNullOrSpace())
+                return input;
+
+            string result = input
+                .Replace("'", replaceApostropheWithSpace ? " " : string.Empty)
+                ?? string.Empty;
+            return result;
+        }
+
+        /// <summary>
+        /// Removes double quote(").
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="replaceDoubleQuoteWithSpace">if true  double quote(") replaced with " ", else empty string.</param>
+        /// <returns>A string.</returns>
+        public static string RemoveDoubleQuote(this string input, bool replaceDoubleQuoteWithSpace = false)
+        {
+            if (input.IsNullOrSpace())
+                return input;
+
+            string result = input
+                .Replace("\"", replaceDoubleQuoteWithSpace ? " " : string.Empty)
+                ?? string.Empty;
+            return result;
+        }
+
+        /// <summary>
+        /// Removes the apostrophe(') and double quote(").
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="replaceApostropheWithSpace">if true apostrophe(') replaced with " ", else empty string.</param>
+        /// <param name="replaceDoubleQuoteWithSpace">if true  double quote(") replaced with " ", else empty string.</param>
+        /// <returns>A string.</returns>
+        public static string RemoveApostropheAndDoubleQuote(this string input, bool replaceApostropheWithSpace = false, bool replaceDoubleQuoteWithSpace = false)
+        {
+            if (input.IsNullOrSpace())
+                return input;
+
+            string result = input
+                .Replace("'", replaceApostropheWithSpace ? " " : string.Empty)
+                .Replace("\"", replaceDoubleQuoteWithSpace ? " " : string.Empty)
+                ?? string.Empty;
+            return result;
+        }
     }
 }
