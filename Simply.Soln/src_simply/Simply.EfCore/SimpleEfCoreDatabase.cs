@@ -19,7 +19,7 @@ namespace Simply.EfCore
         /// </summary>
         public SimpleEfCoreDatabase()
         {
-            throw new NotImplementedException("Empty contructor can not be implemented.");
+           // throw new NotImplementedException("Empty contructor can not be implemented.");
         }
 
         /// <summary>
