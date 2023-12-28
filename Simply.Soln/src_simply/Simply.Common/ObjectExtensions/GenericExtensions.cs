@@ -272,5 +272,17 @@ namespace Simply.Common
 
             return source.Provider.CreateQuery<TEntity>(resultExpression);
         }
+
+        /// <summary>
+        /// Gets Nullable object value or default value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tInstance"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns>nullable object is not null returns value, else returns default value.</returns>
+        public static T Val<T>(this T? tInstance, T defaultValue) where T : struct
+        {
+            return tInstance ?? defaultValue;
+        }
     }
 }
