@@ -134,7 +134,6 @@ namespace Simply.Common
             if (!(keyValuePairs?.Any() ?? false))
                 return string.Format("<{0}></{0}>", formatSetting.MainXmlNodeName);
 
-
             string tabString = "\t";
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -188,6 +187,20 @@ namespace Simply.Common
             string tempValue = stringBuilder.ToString();
             string result = string.Format("<{0}>{1}</{0}>", formatSetting.MainXmlNodeName, tempValue);
             return result;
+        }
+
+        /// <summary>
+        /// Sets the value and return instance.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>Return cuurent dictionary instance.</returns>
+        public static Dictionary<TKey, TValue> SetValueAndReturn<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value)        {
+            dictionary[key] = value;
+            return dictionary;
         }
     }
 }
