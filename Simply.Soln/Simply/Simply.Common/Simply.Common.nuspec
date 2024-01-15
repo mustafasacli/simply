@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Simply.Common</id>
-        <version>1.13.0.0</version>
+        <version>1.14.0.0</version>
         <authors>mustafa sacli</authors>
         <title>simply.common</title>
         <summary>this package is used for common operations.</summary>
@@ -10,8 +10,7 @@
         <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <releaseNotes>
-        ToJsonString method in DictionaryExtensions arranged.
-        SimpleFormatSetting ctor arranged.
+        SetValueAndReturn method added to DictionaryExtensions.
         </releaseNotes>
         <description>Supports common operations.</description>
         <copyright>2022 mustafa.sacli</copyright>

@@ -198,7 +198,8 @@ namespace Simply.Common
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <returns>Return cuurent dictionary instance.</returns>
-        public static Dictionary<TKey, TValue> SetValueAndReturn<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value)        {
+        public static Dictionary<TKey, TValue> SetValueAndReturn<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        {
             dictionary[key] = value;
             return dictionary;
         }

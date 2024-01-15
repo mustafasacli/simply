@@ -4,16 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.13.0.0</AssemblyVersion>
-    <FileVersion>1.13.0.0</FileVersion>
-    <Version>1.13.0</Version>
+    <AssemblyVersion>1.14.0.0</AssemblyVersion>
+    <FileVersion>1.14.0.0</FileVersion>
+    <Version>1.14.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mustafasacli/simply</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mustafasacli/simply</RepositoryUrl>
     <Copyright>2022 mustafa.sacli</Copyright>
     <Description>Supports common operations.</Description>
     <PackageTags>Common Extensions</PackageTags>
-    <PackageReleaseNotes>ToJsonString method in DictionaryExtensions arranged. SimpleFormatSetting ctor arranged.</PackageReleaseNotes>
+    <PackageReleaseNotes>SetValueAndReturn method added to DictionaryExtensions.</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>simply.common.snk</AssemblyOriginatorKeyFile>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
