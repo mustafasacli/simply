@@ -126,13 +126,14 @@ namespace Simply.Common
         public static string ToXmlString(this IDictionary<string, object> keyValuePairs,
             SimpleFormatSetting formatSetting)
         {
+            formatSetting = formatSetting ?? SimpleFormatSetting.New();
+
             if (formatSetting.MainXmlNodeName.IsNullOrSpace())
                 throw new ArgumentNullException(nameof(SimpleFormatSetting.MainXmlNodeName));
 
             if (!(keyValuePairs?.Any() ?? false))
                 return string.Format("<{0}></{0}>", formatSetting.MainXmlNodeName);
 
-            formatSetting = formatSetting ?? SimpleFormatSetting.New();
 
             string tabString = "\t";
             StringBuilder stringBuilder = new StringBuilder();

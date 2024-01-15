@@ -17,9 +17,8 @@
         /// </summary>
         /// <param name="addTab">If true, add tab.</param>
         /// <param name="addNewLine">If true, add new line.</param>
-        /// <param name="datetimeFormat">The datetime format.</param>
-        public SimpleFormatSetting(bool addTab = true, bool addNewLine = true,
-            string datetimeFormat = "yyyy-MM-dd HH:mm:ss.fffffff")
+        /// <param name="datetimeFormat">The datetime format(standart format: yyyy-MM-dd HH:mm:ss.fffffff).</param>
+        public SimpleFormatSetting(bool addTab, bool addNewLine, string datetimeFormat)
         {
             this.AddTab = addTab;
             this.AddNewLine = addNewLine;
