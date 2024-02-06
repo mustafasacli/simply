@@ -399,5 +399,29 @@ namespace Simply.Common
                 ?? string.Empty;
             return result;
         }
+
+        /// <summary>
+        /// Chunks the specified text.
+        /// </summary>
+        /// <param name="chunkText">The chunk text.</param>
+        /// <param name="chunkSize">Size of the chunk.</param>
+        /// <returns>string is null or empty or white space returns empty array, else returns chunked strings</returns>
+        public static IEnumerable<string> Chunk(this string chunkText, uint chunkSize = 10)
+        {
+            if (chunkText.IsNullOrSpace())
+                return Enumerable.Empty<string>();
+
+            chunkSize = chunkSize < 1 ? 1 : chunkSize;
+            int chunkLen = (int)chunkSize;
+
+            if (chunkText.Length <= chunkLen)
+                return new string[] { chunkText };
+
+            var chunkList = new List<string> { chunkText.Substring(0, chunkLen) };
+            var tmpChunks = Chunk(chunkText.Substring(chunkLen), chunkSize);
+            chunkList.AddRange(tmpChunks);
+
+            return chunkList;
+        }
     }
 }
