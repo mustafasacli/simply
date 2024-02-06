@@ -406,7 +406,7 @@ namespace Simply.Common
         /// <param name="chunkText">The chunk text.</param>
         /// <param name="chunkSize">Size of the chunk.</param>
         /// <returns>string is null or empty or white space returns empty array, else returns chunked strings</returns>
-        public static IEnumerable<string> Chunk(this string chunkText, uint chunkSize = 10)
+        public static IEnumerable<string> Chunk(this string chunkText, uint chunkSize = 1000)
         {
             if (chunkText.IsNullOrSpace())
                 return Enumerable.Empty<string>();
