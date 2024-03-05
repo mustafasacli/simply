@@ -103,5 +103,14 @@ namespace Simply.Data.Objects
             this.Take = take;
             return this;
         }
+
+        /// <summary>
+        /// Returns page info object instance for First record of result set.
+        /// </summary>
+        /// <returns>Returns page info object instance for First record of result set.</returns>
+        public static IPageInfo First()
+        {
+            return new PageInfo(0, 1);
+        }
     }
 }

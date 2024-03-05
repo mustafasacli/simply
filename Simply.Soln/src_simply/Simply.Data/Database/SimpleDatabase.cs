@@ -669,9 +669,9 @@ namespace Simply.Data.Database
         /// <returns>Applies paging and return simpledbcommand instance.</returns>
         public virtual SimpleDbCommand ApplyPageInfo(SimpleDbCommand dbCommand, IPageInfo pageInfo = null)
         {
-            if (pageInfo is null) return dbCommand;
+            //if (pageInfo is null) return dbCommand;
 
-            if (!pageInfo.IsPageable) return dbCommand;
+            if (!(pageInfo?.IsPageable ?? false)) return dbCommand;
 
             string skipAndTakeFormat = this.QuerySetting.SkipAndTakeFormat;
             bool isPageableAndSkipAndTakeFormatEmpty = skipAndTakeFormat.IsNullOrSpace();
