@@ -72,6 +72,9 @@
     <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\GenericExtensions.cs">
       <Link>ObjectExtensions\GenericExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\IntegerExtension.cs">
+      <Link>ObjectExtensions\IntegerExtension.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ObjectExtension.cs">
       <Link>ObjectExtensions\ObjectExtension.cs</Link>
     </Compile>

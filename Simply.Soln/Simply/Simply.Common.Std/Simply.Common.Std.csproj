@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.15.0.0</AssemblyVersion>
-    <FileVersion>1.15.0.0</FileVersion>
+    <AssemblyVersion>1.16.0.0</AssemblyVersion>
+    <FileVersion>1.16.0.0</FileVersion>
     <Version>1.15.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mustafasacli/simply</PackageProjectUrl>
@@ -13,7 +13,8 @@
     <Copyright>2022 mustafa.sacli</Copyright>
     <Description>Supports common operations.</Description>
     <PackageTags>Common Extensions</PackageTags>
-    <PackageReleaseNotes>Chunk text method added.</PackageReleaseNotes>
+    <PackageReleaseNotes>ValOrDefault method added to GenericExtensions.
+IntegerExtension added to common project.</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>simply.common.snk</AssemblyOriginatorKeyFile>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>

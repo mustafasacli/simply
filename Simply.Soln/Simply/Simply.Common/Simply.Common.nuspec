@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Simply.Common</id>
-        <version>1.15.0.0</version>
+        <version>1.16.0.0</version>
         <authors>mustafa sacli</authors>
         <title>simply.common</title>
         <summary>this package is used for common operations.</summary>
@@ -10,7 +10,8 @@
         <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <releaseNotes>
-        Chunk text method added.
+        ValOrDefault method added to GenericExtensions.
+        IntegerExtension added to common project.
         </releaseNotes>
         <description>Supports common operations.</description>
         <copyright>2022 mustafa.sacli</copyright>

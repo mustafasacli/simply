@@ -237,7 +237,6 @@ namespace Simply.Common
                                           source.Expression, Expression.Quote(orderByExpression));
 
             return source.Provider.CreateQuery<TEntity>(resultExpression);
-
         }
 
         /// <summary>
@@ -277,12 +276,23 @@ namespace Simply.Common
         /// Gets Nullable object value or default value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="tInstance"></param>
+        /// <param name="instance"></param>
         /// <param name="defaultValue"></param>
         /// <returns>nullable object is not null returns value, else returns default value.</returns>
-        public static T Val<T>(this T? tInstance, T defaultValue) where T : struct
+        public static T Val<T>(this T? instance, T defaultValue) where T : struct
         {
-            return tInstance ?? defaultValue;
+            return instance ?? defaultValue;
+        }
+
+        /// <summary>
+        /// Gets Nullable object value or default value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns>nullable object is not null returns value, else returns default value.</returns>
+        public static T ValOrDefault<T>(this T? instance) where T : struct
+        {
+            return instance ?? default;
         }
     }
 }
