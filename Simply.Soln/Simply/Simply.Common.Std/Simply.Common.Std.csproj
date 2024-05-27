@@ -30,6 +30,7 @@ IntegerExtension added to common project.</PackageReleaseNotes>
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\DictionaryExtensions.cs" Link="ObjectExtensions\DictionaryExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\EnumExtensions.cs" Link="ObjectExtensions\EnumExtensions.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\GenericExtensions.cs" Link="ObjectExtensions\GenericExtensions.cs" />
+		<Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\IntegerExtension.cs" Link="ObjectExtensions\IntegerExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ObjectExtension.cs" Link="ObjectExtensions\ObjectExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\PropertyExtension.cs" Link="ObjectExtensions\PropertyExtension.cs" />
         <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\SimpleDbRowExtensions.cs" Link="ObjectExtensions\SimpleDbRowExtensions.cs" />
