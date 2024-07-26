@@ -60,6 +60,9 @@
     <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ArrayHelper.cs">
       <Link>ObjectExtensions\ArrayHelper.cs</Link>
     </Compile>
+    <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\ByteArrayExtensions.cs">
+      <Link>ObjectExtensions\ByteArrayExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\src_simply\Simply.Common\ObjectExtensions\DatetimeExtensions.cs">
       <Link>ObjectExtensions\DatetimeExtensions.cs</Link>
     </Compile>

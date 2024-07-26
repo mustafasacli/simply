@@ -294,5 +294,17 @@ namespace Simply.Common
         {
             return instance ?? default;
         }
+
+        /// <summary>
+        /// operates action in values array.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="values">The values.</param>
+        /// <param name="action">The action.</param>
+        public static void ForEach<T>(this T[] values, Action<T> action)
+        {
+            foreach (var value in values)
+                action(value);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Simply.Common
 {
@@ -423,5 +424,27 @@ namespace Simply.Common
 
             return chunkList;
         }
+
+        /// <summary>
+        /// Joins the with.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="separator">The seperator value.</param>
+        /// <returns></returns>
+        public static string JoinWith(this string[] value, string separator)
+        {
+            return string.Join(separator, value);
+        }
+
+        /// <summary>
+        /// Determines whether value [is regex match] [the specified pattern].
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="pattern">The pattern.</param>
+        /// <returns>
+        ///   <c>true</c> if [is regex match] [the specified pattern]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsRegexMatch(this string value, string pattern)
+        { return Regex.IsMatch(value, pattern); }
     }
 }
