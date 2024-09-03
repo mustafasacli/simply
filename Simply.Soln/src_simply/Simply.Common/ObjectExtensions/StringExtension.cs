@@ -446,5 +446,19 @@ namespace Simply.Common
         /// </returns>
         public static bool IsRegexMatch(this string value, string pattern)
         { return Regex.IsMatch(value, pattern); }
+
+        /// <summary>
+        /// Reverses the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static string Reverse(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return value;
+
+            string result = string.Concat(value.ToCharArray().Reverse());
+            return result;
+        }
     }
 }
