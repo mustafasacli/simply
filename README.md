@@ -15,15 +15,15 @@ ISimpleDatabase database = new SimpleMySqlDatabase(); // create database instanc
 
 int id = 100;
 Any method usages;
-- database.Any("select * from customers where customerNumber < @id", new { id });
+- database.Any("select * from customers where customerNumber < @id", new { id }); <br/>
 - database.Any("select * from customers where customerNumber < ?id?", new { id }, <br/>
-SimpleCommandSetting.Create(parameterNamePrefix: '?'));
-- database.AnyOdbc("select * from customers where customerNumber < ?", new[] { (object)id });
-- database.AnyJdbc("select * from customers where customerNumber < ?1", new[] { (object)id });
-- SimpleDbCommand simpleDbCommand = new SimpleDbCommand()
-            {
-                CommandType = CommandType.Text,
-                CommandText = "select * from customers where customerNumber < @id"
-            };
-            simpleDbCommand.AddParameter(new DbCommandParameter { ParameterName = "id", Value = id });
-           bool exist = database.Any(simpleDbCommand);
+SimpleCommandSetting.Create(parameterNamePrefix: '?')); <br/>
+- database.AnyOdbc("select * from customers where customerNumber < ?", new[] { (object)id }); <br/>
+- database.AnyJdbc("select * from customers where customerNumber < ?1", new[] { (object)id }); <br/>
+- SimpleDbCommand simpleDbCommand = new SimpleDbCommand() <br/>
+            { <br/>
+                CommandType = CommandType.Text, <br/>
+                CommandText = "select * from customers where customerNumber < @id" <br/>
+            }; <br/>
+            simpleDbCommand.AddParameter(new DbCommandParameter { ParameterName = "id", Value = id }); <br/>
+           bool exist = database.Any(simpleDbCommand); <br/>
