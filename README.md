@@ -11,7 +11,8 @@ In [Simply.TestApps] repository, you can check Simply_Test_Db project. We create
 In this class(SimpleMySqlDatabase) we set connection information.
 
 In SimplyTestConsoleApp project; <br/>
-ISimpleDatabase database = new SimpleMySqlDatabase(); // create dtaabse instance
+ISimpleDatabase database = new SimpleMySqlDatabase(); // create database instance <br/>
+
 int id = 100;
 Any method usages;
 - database.Any("select * from customers where customerNumber < @id", new { id });
