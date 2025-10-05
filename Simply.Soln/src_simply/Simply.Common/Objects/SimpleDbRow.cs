@@ -89,7 +89,7 @@ namespace Simply.Common.Objects
             CheckColumnNameIsNull(cellName);
             SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == cellName);
             if (cell == null)
-                throw new ArgumentException($"Sequence not contains {cellName} given name.");
+                throw new ArgumentException($"Sequence not contains the cell with \"{cellName}\" given name.");
 
             return cell.CellType;
         }
@@ -138,7 +138,7 @@ namespace Simply.Common.Objects
             CheckColumnNameIsNull(cellName);
             SimpleDbCell cell = Cells.FirstOrDefault(q => q.CellName == cellName);
             if (cell == null)
-                throw new ArgumentException($"Sequence not contains cell with \"{cellName}\" given name.");
+                throw new ArgumentException($"Sequence not contains the cell with \"{cellName}\" given name.");
 
             return cell.Value;
         }

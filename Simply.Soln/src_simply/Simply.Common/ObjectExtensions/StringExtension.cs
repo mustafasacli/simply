@@ -317,7 +317,7 @@ namespace Simply.Common
         }
 
         /// <summary>
-        ///
+        /// Capitalizes first letters of given text.
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
@@ -458,6 +458,75 @@ namespace Simply.Common
                 return value;
 
             string result = string.Concat(value.ToCharArray().Reverse());
+            return result;
+        }
+
+        /// <summary>
+        /// Determines whether this instance is number.
+        /// </summary>
+        /// <param name="willBeChecked">The string will be checked for.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified will be checked is number; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNumber(this string willBeChecked)
+        {
+            if (string.IsNullOrWhiteSpace(willBeChecked))
+                return false;
+
+            bool willBeReturned = true;
+            char[] charArray = willBeChecked.ToCharArray();
+            for (int i = 0; i < charArray.Length; i++)
+            {
+                char ch = charArray[i];
+                willBeReturned = char.IsNumber(ch);
+                if (!willBeReturned)
+                    break;
+            }
+
+            return willBeReturned;
+        } // end IsNumber
+
+        /// <summary>
+        /// Hexadecimals to decimal.
+        /// </summary>
+        /// <param name="strHex">The string hexadecimal.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException">
+        /// Input string can not be null, empty or white-space string.
+        /// or
+        /// Illegal characters are given. Characters: \"0123456789ABCDEF\".
+        /// </exception>
+        public static decimal HexToDecimal(this string strHex)
+        {
+            if (string.IsNullOrWhiteSpace(strHex))
+            {
+                throw new ArgumentException("Input string can not be null, empty or white-space string.");
+            }
+
+            char[] hexx = IntegerExtension.HexNumCharList.ToCharArray();
+
+            char[] ToHexArr = strHex.Reverse().ToArray();
+            int count = ToHexArr.AsQueryable().Count(c => !hexx.Contains(c));
+
+            if (count > 0)
+            {
+                throw new ArgumentException("Illegal characters are given. Characters: \"0123456789ABCDEF\".");
+            }
+
+            List<char> lstChars = hexx.ToList();
+            decimal result = decimal.Zero;
+            int indx;
+            for (int counter = 0; counter < ToHexArr.Length; counter++)
+            {
+                indx = lstChars.IndexOf(ToHexArr[ToHexArr.Length - counter - 1]);
+                if (indx < 0)
+                {
+                    throw new ArgumentException("Illegal characters are given. Characters: \"0123456789ABCDEF\".");
+                }
+
+                result += (decimal)(indx * Math.Pow(16, ToHexArr.Length - counter - 1));
+            }
+
             return result;
         }
     }

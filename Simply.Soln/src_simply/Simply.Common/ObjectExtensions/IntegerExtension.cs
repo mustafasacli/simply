@@ -6,6 +6,16 @@
     public static class IntegerExtension
     {
         /// <summary>
+        /// The hexadecimal number character list
+        /// </summary>
+        public const string HexNumCharList = "0123456789ABCDEF";
+
+        /// <summary>
+        /// The decimal number character list
+        /// </summary>
+        public const string DecNumCharList = "0123456789";
+
+        /// <summary>
         /// Get days as the hours.
         /// </summary>
         /// <param name="days">The days.</param>
@@ -43,6 +53,29 @@
         public static int AsMiliSeconds(this int seconds)
         {
             return seconds * 1000;
+        }
+
+        /// <summary>
+        /// Converts decimal value to hexadecimal representation.
+        /// </summary>
+        /// <param name="dcc"></param>
+        /// <returns></returns>
+        public static string DecimalToHex(this decimal dcc)
+        {
+            string s = string.Empty;
+            decimal dd = dcc;
+            decimal d1;
+
+            do
+            {
+                d1 = dd % 16;
+                s = string.Format("{0}{1}", HexNumCharList[(int)d1], s);
+                dd /= 16.0M;
+                dd = decimal.Truncate(dd);
+            } while (dd >= 16);
+            s = string.Format("{0}{1}", HexNumCharList[(int)dd], s);
+
+            return s;
         }
     }
 }

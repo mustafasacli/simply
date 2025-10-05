@@ -10,7 +10,7 @@ namespace Simply.Common
     public static class DatetimeExtensions
     {
         /// <summary>
-        ///
+        /// Returns datetime.tostring with given format.
         /// </summary>
         /// <param name="dateTime">datetime object instance</param>
         /// <param name="format">datetime string format</param>
@@ -22,7 +22,7 @@ namespace Simply.Common
         }
 
         /// <summary>
-        /// Retruns datetime.tostring with given format.
+        /// Returns datetime.tostring with given format.
         /// </summary>
         /// <param name="dateTime">datetime object instance</param>
         /// <param name="format">datetime string format</param>
@@ -34,7 +34,7 @@ namespace Simply.Common
         }
 
         /// <summary>
-        ///
+        /// Returns Last Business Day Of Month.
         /// </summary>
         /// <param name="dateTime">datetime object.</param>
         /// <returns></returns>
@@ -67,7 +67,7 @@ namespace Simply.Common
         /// <returns>Returns string object.</returns>
         public static string ToOracleDate(this DateTime dateTime)
         {
-            string dateString = dateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            string dateString = dateTime.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture).Replace(".", "/");
             return dateString;
         }
 
